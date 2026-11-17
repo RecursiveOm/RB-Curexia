@@ -1,0 +1,82 @@
+<section class="relative z-20 w-full py-28 px-6 sm:px-12 lg:px-16 service-ecosystem-section" id="act-services">
+  <div class="w-full max-w-[1520px] mx-auto space-y-8">
+    <header class="services-editorial-head">
+      <div class="services-head-copy">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="section-kicker">04 · PLATFORM ARCHITECTURE</span>
+          <span class="section-kicker-line"></span>
+          <span class="text-[10px] sm:text-[11px] font-semibold tracking-[0.2em] uppercase text-champagne/80">24 CONNECTED MODULES</span>
+        </div>
+        <h2 class="satin-headline font-light text-3xl sm:text-5xl lg:text-[58px] leading-[1.03]">
+          One ecosystem.<br/><span class="satin-violet font-normal">Twenty-four ways</span> to connect care.
+        </h2>
+        <p class="services-intro-copy">A connected architecture spanning clinical decision support, hospital operations and the infrastructure that brings care together.</p>
+      </div>
+      <div class="services-head-actions">
+        <label class="service-search-shell" for="service-search-input">
+          <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8" stroke-width="1.8"></circle><path d="m21 21-4.35-4.35" stroke-linecap="round" stroke-width="1.8"></path></svg>
+          <input aria-label="Search 24 platform modules" id="service-search-input" placeholder="Find a module…" type="search" autocomplete="off" />
+          <span class="search-shortcut">⌕</span>
+        </label>
+        <button class="btn-secondary-cinema py-3 px-5 text-[10px] shrink-0" id="btn-inspect-hd-tools" type="button"><span>Explore interface</span><span aria-hidden="true">↗</span></button>
+      </div>
+    </header>
+
+    <div class="services-filter-row">
+      <div aria-label="Service categories" class="service-filter-pills" role="tablist">
+        <button class="srv-cat-btn is-active" data-srv-cat="all" type="button" role="tab" aria-selected="true">All modules <span>24</span></button>
+        <button class="srv-cat-btn" data-srv-cat="support" type="button" role="tab" aria-selected="false">Clinical support <span>08</span></button>
+        <button class="srv-cat-btn" data-srv-cat="analytics" type="button" role="tab" aria-selected="false">Analytics &amp; operations <span>10</span></button>
+        <button class="srv-cat-btn" data-srv-cat="core" type="button" role="tab" aria-selected="false">Core platforms <span>06</span></button>
+      </div>
+      <span class="services-count-label" id="services-count-label" aria-live="polite">24 modules · 3 connected pillars</span>
+    </div>
+
+    <div class="services-feature-row">
+      <div class="ecosystem-visual-card" aria-label="RBCurexia connected healthcare ecosystem illustration">
+        <div class="ecosystem-card-topline"><span>THE RBCUREXIA ECOSYSTEM</span><span class="ecosystem-live-dot"><i></i> CONNECTED BY DESIGN</span></div>
+        <div class="ecosystem-orbit-stage">
+          <div class="ecosystem-orbit orbit-a"></div>
+          <div class="ecosystem-orbit orbit-b"></div>
+          <div class="ecosystem-orbit orbit-c"></div>
+          <div class="ecosystem-core-glow"></div>
+          <div class="ecosystem-core">
+            <img src="/assets/embedded-90b24ba6af66.webp" alt="RBCurexia monogram" />
+            <strong>RBCUREXIA</strong>
+            <span>CONNECTED CARE</span>
+          </div>
+          <span class="orbit-marker marker-one"><i></i> Clinical intelligence</span>
+          <span class="orbit-marker marker-two"><i></i> Hospital operations</span>
+          <span class="orbit-marker marker-three"><i></i> Patient continuity</span>
+          <span class="orbit-cross cross-one">✳</span><span class="orbit-cross cross-two">✧</span>
+        </div>
+        <div class="ecosystem-card-foot"><span>01 — 24</span><span>One coordinated care architecture</span><span>EST. AS A CONNECTED SYSTEM</span></div>
+      </div>
+
+      <aside class="service-featured-panel cinema-surface" id="featured-service-panel" aria-live="polite">
+        <div class="service-featured-top">
+          <span class="featured-overline">SELECTED MODULE</span>
+          <span class="featured-index" id="spot-badge">LABS</span>
+        </div>
+        <div class="service-featured-icon" id="spot-icon">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M9 3h6m-5 0v5.5L5.5 16A2 2 0 0 0 7.2 19h9.6a2 2 0 0 0 1.7-3L14 8.5V3"/></svg>
+        </div>
+        <span class="featured-category" id="spot-cat-label">· Clinical Support Tool</span>
+        <h3 class="font-display text-2xl sm:text-3xl lg:text-[36px] font-light text-white leading-tight" id="spot-title">Labonix Gateway</h3>
+        <p class="featured-subtitle" id="spot-sub">Order, track &amp; restock</p>
+        <p class="featured-description" id="spot-desc">Order diagnostic pathology panels directly from the patient chart, monitor sample processing status, and automate laboratory reagent restocking.</p>
+        <div class="service-featured-bottom">
+          <a class="btn-primary-cinema py-3 px-5 text-[10px] text-center" href="#act-concierge" id="spot-deploy-btn">Request module demo <span>↗</span></a>
+          <button class="featured-preview-link" id="spot-preview-btn" type="button">Inspect in tools suite <span>↗</span></button>
+        </div>
+      </aside>
+    </div>
+
+    <div class="service-clusters-heading">
+      <div><span class="section-kicker">EXPLORE THE ARCHITECTURE</span><h3 class="font-display text-xl sm:text-2xl font-light text-white mt-2">Three pillars. <span class="satin-violet">Twenty-four modules.</span></h3></div>
+      <p>Select any module to see what it brings into the ecosystem.</p>
+    </div>
+    <div class="service-cluster-grid" id="services-24-grid" aria-live="polite"></div>
+    <div class="services-bottom-note"><span class="services-bottom-mark">✦</span><span>Designed to connect clinical workflows, hospital infrastructure and continuity of care.</span></div>
+  </div>
+</section>

@@ -8,6 +8,21 @@ function requireFirebase() {
 }
 
 export async function submitContactInquiry(payload) {
+  if (import.meta.env.DEV) {
+    try {
+      const res = await fetch('/api/contact-inquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (res.ok) {
+        return await res.json();
+      }
+    } catch {
+      // Fallback to Firebase callable
+    }
+  }
+
   requireFirebase();
   const callable = httpsCallable(firebaseFunctions, 'submitContactInquiry');
   const response = await callable(payload);
@@ -22,6 +37,21 @@ export async function subscribeToNewsletter(payload) {
 }
 
 export async function recordVisitorSession(payload = {}) {
+  if (import.meta.env.DEV) {
+    try {
+      const res = await fetch('/api/visitor-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (res.ok) {
+        return await res.json();
+      }
+    } catch {
+      // Fallback to Firebase callable
+    }
+  }
+
   if (!isFirebaseConfigured || !firebaseFunctions) {
     return { success: false, reason: 'unconfigured' };
   }

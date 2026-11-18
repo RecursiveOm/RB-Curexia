@@ -243,17 +243,61 @@
       color: #ede8d0;
     }
 
-    /* Selective Key-Phrase Illumination in Mission Manifesto */
-    .manifesto-highlight {
-      color: rgba(246, 244, 240, 0.28);
-      transition: color 0.6s ease, text-shadow 0.6s ease;
+    /* Mission Manifesto Sequential Scroll Illumination */
+    .manifesto-phrase {
+      display: inline;
+      color: rgba(246, 244, 240, 0.22);
+      opacity: 0.35;
+      will-change: color, opacity, text-shadow;
     }
+    .manifesto-phrase.is-illuminated {
+      color: #FFFFFF;
+      opacity: 1;
+    }
+    .manifesto-phrase.manifesto-highlight {
+      color: rgba(246, 244, 240, 0.22);
+      opacity: 0.35;
+    }
+    .manifesto-phrase.manifesto-highlight.is-illuminated,
     .manifesto-highlight.illuminated {
       color: #ede8d0;
-      text-shadow: 0 0 28px rgba(237, 232, 208, 0.22);
+      opacity: 1;
+      text-shadow: 0 0 28px rgba(237, 232, 208, 0.5), 0 0 50px rgba(168, 85, 247, 0.25);
     }
     .manifesto-dim {
-      color: rgba(246, 244, 240, 0.52);
+      color: rgba(246, 244, 240, 0.35);
+    }
+
+    /* Architecture Ecosystem 3D Stage Styles */
+    .ecosystem-platform-card {
+      position: relative;
+      overflow: hidden;
+    }
+    .ecosystem-platform-card.is-active {
+      border-color: rgba(192, 132, 252, 0.8) !important;
+      background: linear-gradient(135deg, rgba(26, 11, 48, 0.95), rgba(16, 7, 32, 0.95)) !important;
+      box-shadow: 0 0 30px rgba(168, 85, 247, 0.25), inset 0 0 20px rgba(192, 132, 252, 0.15);
+    }
+    .ecosystem-platform-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(168, 85, 247, 0.15), transparent 70%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+    .ecosystem-platform-card:hover::before,
+    .ecosystem-platform-card.is-active::before {
+      opacity: 1;
+    }
+    .ecosystem-platform-card.is-active {
+      border-color: rgba(168, 85, 247, 0.7) !important;
+      background-color: #160a2d !important;
+      box-shadow: 0 0 25px rgba(168, 85, 247, 0.25);
+    }
+    .architecture-node-badge:hover {
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
     }
 
     /* 3D Perspective Stage */

@@ -7,6 +7,9 @@ export function initializeRbcurexiaExperience({ submitContact, subscribeNewslett
   window.__RBCUREXIA_EXPERIENCE_INITIALIZED__ = true;
 
     gsap.registerPlugin(ScrollTrigger);
+    window.gsap = gsap;
+    window.ScrollTrigger = ScrollTrigger;
+    window.THREE = THREE;
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const HEART_ALBEDO_URI = "/assets/embedded-d0777971a3aa.webp";
@@ -86,23 +89,48 @@ export function initializeRbcurexiaExperience({ submitContact, subscribeNewslett
     let networkVisible = false;
 
     function runOpeningChoreography() {
+      const curtain = document.getElementById('opening-curtain');
+      const heroHead = document.getElementById('hero-main-headline');
+      const heroEye = document.getElementById('hero-eyebrow');
+      const heroSub = document.getElementById('hero-subcopy');
+      const heroCtas = document.getElementById('hero-ctas');
+
+      const revealHero = () => {
+        if (curtain) {
+          curtain.style.opacity = '0';
+          setTimeout(() => { if (curtain) curtain.style.display = 'none'; }, 400);
+        }
+        if (heroEye) heroEye.style.opacity = '1';
+        if (heroHead) { heroHead.style.opacity = '1'; heroHead.style.transform = 'none'; }
+        if (heroSub) { heroSub.style.opacity = '1'; heroSub.style.transform = 'none'; }
+        if (heroCtas) { heroCtas.style.opacity = '1'; heroCtas.style.transform = 'none'; }
+      };
+
       if (prefersReducedMotion) {
-        gsap.set('#opening-curtain', { display: 'none' });
-        gsap.set(['#hero-eyebrow', '#hero-main-headline', '#hero-subcopy', '#hero-ctas'], { opacity: 1, y: 0 });
+        revealHero();
         return;
       }
 
-      const tl = gsap.timeline();
-      tl.to('#curtain-glow', { opacity: 1, scale: 1.25, duration: 0.7, ease: 'power2.out' })
-        .to('#curtain-logo', { opacity: 1, scale: 1, duration: 0.7, ease: 'power3.out' }, '-=0.5')
-        .to('#curtain-wordmark', { opacity: 1, duration: 0.5, ease: 'power2.out' }, '-=0.4')
-        .to('#opening-curtain', { opacity: 0, duration: 0.9, ease: 'power3.inOut', delay: 0.25, onComplete: () => {
-          document.getElementById('opening-curtain').style.display = 'none';
+      // Hard safety timer: curtain NEVER blocks for more than 1.1s under any circumstance
+      const safetyTimer = setTimeout(revealHero, 1100);
+
+      const tl = gsap.timeline({
+        onComplete: () => {
+          clearTimeout(safetyTimer);
+          revealHero();
+        }
+      });
+
+      tl.to('#curtain-glow', { opacity: 1, scale: 1.25, duration: 0.35, ease: 'power2.out' })
+        .to('#curtain-logo', { opacity: 1, scale: 1, duration: 0.35, ease: 'power3.out' }, '-=0.2')
+        .to('#curtain-wordmark', { opacity: 1, duration: 0.3, ease: 'power2.out' }, '-=0.15')
+        .to('#opening-curtain', { opacity: 0, duration: 0.45, ease: 'power2.inOut', delay: 0.1, onComplete: () => {
+          if (curtain) curtain.style.display = 'none';
         }})
-        .to('#hero-eyebrow', { opacity: 1, duration: 0.7, ease: 'power2.out' }, '-=0.4')
-        .to('#hero-main-headline', { y: 0, opacity: 1, duration: 1.0, ease: 'power4.out' }, '-=0.5')
-        .to('#hero-subcopy', { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' }, '-=0.6')
-        .to('#hero-ctas', { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' }, '-=0.6');
+        .to('#hero-eyebrow', { opacity: 1, duration: 0.5, ease: 'power2.out' }, '-=0.3')
+        .to('#hero-main-headline', { y: 0, opacity: 1, duration: 0.6, ease: 'power4.out' }, '-=0.4')
+        .to('#hero-subcopy', { y: 0, opacity: 1, duration: 0.5, ease: 'power3.out' }, '-=0.4')
+        .to('#hero-ctas', { y: 0, opacity: 1, duration: 0.5, ease: 'power3.out' }, '-=0.4');
     }
 
     function initScrollMotionSystem() {
@@ -139,7 +167,7 @@ export function initializeRbcurexiaExperience({ submitContact, subscribeNewslett
       });
 
       if (prefersReducedMotion) {
-        document.querySelectorAll('.manifesto-highlight').forEach(el => el.classList.add('illuminated'));
+        document.querySelectorAll('.manifesto-phrase').forEach(el => el.classList.add('is-illuminated', 'illuminated'));
         return;
       }
 
@@ -166,16 +194,38 @@ export function initializeRbcurexiaExperience({ submitContact, subscribeNewslett
         }
       });
 
-      // Mission Manifesto — Selective Key-Phrase Illumination on Scroll
-      document.querySelectorAll('.manifesto-highlight').forEach((phrase) => {
-        ScrollTrigger.create({
-          trigger: phrase,
-          start: 'top 80%',
-          end: 'bottom 25%',
-          onEnter: () => phrase.classList.add('illuminated'),
-          onLeaveBack: () => phrase.classList.remove('illuminated')
+      // Mission Manifesto — Strict Sequential One-By-One Illumination on Scroll
+      const pinTrigger = document.getElementById('manifesto-scroll-pin');
+      const manifestoPhrases = document.querySelectorAll('#mission-manifesto .manifesto-phrase');
+      if (pinTrigger && manifestoPhrases.length) {
+        gsap.set(manifestoPhrases, {
+          color: 'rgba(246, 244, 240, 0.22)',
+          opacity: 0.35,
+          textShadow: 'none'
         });
-      });
+
+        const manifestoTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: pinTrigger,
+            start: 'top 22%',
+            end: '+=900',
+            pin: true,
+            scrub: 0.5,
+            anticipatePin: 1
+          }
+        });
+
+        manifestoPhrases.forEach((phrase, idx) => {
+          const isHighlight = phrase.classList.contains('manifesto-highlight');
+          manifestoTl.to(phrase, {
+            color: isHighlight ? '#EDE8D0' : '#FFFFFF',
+            opacity: 1,
+            textShadow: isHighlight ? '0 0 24px rgba(237,232,208,0.5), 0 0 45px rgba(168,85,247,0.3)' : '0 0 16px rgba(255,255,255,0.3)',
+            duration: 1.0,
+            ease: 'power2.inOut'
+          }, idx * 1.0);
+        });
+      }
 
       // Mission 3 Scenes — Smooth Clip-Path Mask Reveals & Layered Image Parallax
       document.querySelectorAll('.clip-reveal-mask').forEach((mask) => {
@@ -197,7 +247,7 @@ export function initializeRbcurexiaExperience({ submitContact, subscribeNewslett
 
       document.querySelectorAll('.parallax-img').forEach((img) => {
         gsap.to(img, {
-          yPercent: 10,
+          yPercent: 8,
           ease: 'none',
           scrollTrigger: {
             trigger: img.parentElement,
@@ -210,15 +260,15 @@ export function initializeRbcurexiaExperience({ submitContact, subscribeNewslett
 
       document.querySelectorAll('.parallax-badge').forEach((badge) => {
         gsap.fromTo(badge,
-          { y: 35, opacity: 0 },
+          { y: 30, opacity: 0 },
           {
-            y: -10,
+            y: 0,
             opacity: 1,
             ease: 'power2.out',
             scrollTrigger: {
               trigger: badge.parentElement,
-              start: 'top 75%',
-              end: 'bottom 40%',
+              start: 'top 78%',
+              end: 'bottom 45%',
               scrub: 0.8
             }
           }
@@ -226,20 +276,24 @@ export function initializeRbcurexiaExperience({ submitContact, subscribeNewslett
       });
 
       // Staggered Capability Pillars Reveal
-      gsap.fromTo('.stagger-item',
-        { y: 40, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.7,
-          stagger: 0.1,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: '.stagger-grid',
-            start: 'top 82%'
+      const staggerGrid = document.querySelector('.stagger-grid');
+      const staggerItems = document.querySelectorAll('.stagger-item');
+      if (staggerGrid && staggerItems.length) {
+        gsap.fromTo(staggerItems,
+          { y: 40, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.7,
+            stagger: 0.1,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: staggerGrid,
+              start: 'top 82%'
+            }
           }
-        }
-      );
+        );
+      }
 
       // Panacea Dashboard — 3D Perspective Product Reveal + Progressive Callout Panels
       gsap.fromTo('#panacea-3d-monolith',
@@ -485,6 +539,7 @@ export function initializeRbcurexiaExperience({ submitContact, subscribeNewslett
     //    (Viewport-Gated via IntersectionObserver for Optimal Performance!)
     // =========================================================================
     let scene, camera, renderer, heartMesh, heartMaterial, dropletMesh, dropletMaterial, particleSystem;
+    let orbitRing1, orbitRing2, orbitP1, orbitP2;
     let sequenceStart = 0;
     let mouseTarget = { x: 0, y: 0 }, mouseCurrent = { x: 0, y: 0 };
 
@@ -729,6 +784,30 @@ export function initializeRbcurexiaExperience({ submitContact, subscribeNewslett
       particleSystem = new THREE.Points(pGeo, pMat);
       scene.add(particleSystem);
 
+      // 3D Concentric Telemetry Orbit Rings (like labonix biotech cybernetics)
+      const orbitRingGroup = new THREE.Group();
+      scene.add(orbitRingGroup);
+
+      const r1Geo = new THREE.TorusGeometry(1.08, 0.0035, 16, 96);
+      const r1Mat = new THREE.MeshBasicMaterial({ color: 0xede8d0, transparent: true, opacity: 0.35 });
+      orbitRing1 = new THREE.Mesh(r1Geo, r1Mat);
+      orbitRing1.rotation.x = Math.PI * 0.38;
+      orbitRing1.rotation.y = Math.PI * 0.12;
+      orbitRingGroup.add(orbitRing1);
+
+      const r2Geo = new THREE.TorusGeometry(1.28, 0.0038, 16, 96);
+      const r2Mat = new THREE.MeshBasicMaterial({ color: 0xa855f7, transparent: true, opacity: 0.42 });
+      orbitRing2 = new THREE.Mesh(r2Geo, r2Mat);
+      orbitRing2.rotation.x = -Math.PI * 0.32;
+      orbitRing2.rotation.y = -Math.PI * 0.28;
+      orbitRingGroup.add(orbitRing2);
+
+      const pSphereGeo = new THREE.SphereGeometry(0.022, 12, 12);
+      orbitP1 = new THREE.Mesh(pSphereGeo, new THREE.MeshBasicMaterial({ color: 0xede8d0, transparent: true, opacity: 0.95 }));
+      orbitP2 = new THREE.Mesh(pSphereGeo, new THREE.MeshBasicMaterial({ color: 0x00f2fe, transparent: true, opacity: 0.95 }));
+      orbitRing1.add(orbitP1);
+      orbitRing2.add(orbitP2);
+
       const dropletGeo = new THREE.SphereGeometry(0.032, 36, 36);
       dropletMaterial = new THREE.ShaderMaterial({
         vertexShader: dropletVertexShader,
@@ -817,6 +896,13 @@ export function initializeRbcurexiaExperience({ submitContact, subscribeNewslett
         particleSystem.rotation.y = now * 0.018;
       }
 
+      if (orbitRing1 && orbitRing2) {
+        orbitRing1.rotation.z = now * 0.45;
+        orbitRing2.rotation.z = -now * 0.38;
+        orbitP1.position.set(Math.cos(now * 1.5) * 1.08, Math.sin(now * 1.5) * 1.08, 0);
+        orbitP2.position.set(Math.cos(-now * 1.25) * 1.28, Math.sin(-now * 1.25) * 1.28, 0);
+      }
+
       heartMaterial.uniforms.uTime.value = now;
       heartMaterial.uniforms.uIntroLight.value = introLight;
       heartMaterial.uniforms.uAtrialKick.value = atrialKick;
@@ -825,6 +911,145 @@ export function initializeRbcurexiaExperience({ submitContact, subscribeNewslett
       heartMaterial.uniforms.uMouse.value.set(mouseCurrent.x, mouseCurrent.y);
 
       renderer.render(scene, camera);
+    }
+
+    // =========================================================================
+    // 4.5 3D INTERACTIVE GENOMIC DNA HELIX (Inspired by Labonix Diagnostic Biotech)
+    // =========================================================================
+    function initMissionDnaScene() {
+      const canvas = document.getElementById('mission-3d-dna-stage');
+      if (!canvas) return;
+      const parent = canvas.parentElement;
+      if (!parent) return;
+
+      const width = parent.clientWidth || 600;
+      const height = parent.clientHeight || 420;
+
+      const dnaScene = new THREE.Scene();
+      const dnaCamera = new THREE.PerspectiveCamera(38, width / height, 0.1, 50);
+      dnaCamera.position.set(0, 0, 4.4);
+
+      let dnaRenderer;
+      try {
+        dnaRenderer = new THREE.WebGLRenderer({
+          canvas,
+          alpha: true,
+          antialias: true,
+          powerPreference: 'high-performance'
+        });
+      } catch (err) {
+        return;
+      }
+
+      dnaRenderer.setSize(width, height);
+      dnaRenderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+      const dnaGroup = new THREE.Group();
+      dnaScene.add(dnaGroup);
+
+      // Generate 3D DNA Double Helix (2 intertwining strands + 24 connecting rungs)
+      const NUM_RUNGS = 24;
+      const RADIUS = 0.82;
+      const HEIGHT = 3.4;
+      const TURNS = 2.2;
+      const rungGroup = new THREE.Group();
+      dnaGroup.add(rungGroup);
+
+      const sphereGeo = new THREE.SphereGeometry(0.045, 12, 12);
+      const matCyan = new THREE.MeshBasicMaterial({ color: 0x00f2fe, transparent: true, opacity: 0.95 });
+      const matMagenta = new THREE.MeshBasicMaterial({ color: 0xa855f7, transparent: true, opacity: 0.95 });
+      const matChampagne = new THREE.MeshBasicMaterial({ color: 0xede8d0, transparent: true, opacity: 0.85 });
+
+      for (let i = 0; i < NUM_RUNGS; i++) {
+        const t = (i / (NUM_RUNGS - 1));
+        const angle = t * Math.PI * 2 * TURNS;
+        const y = (t - 0.5) * HEIGHT;
+
+        const x1 = Math.cos(angle) * RADIUS;
+        const z1 = Math.sin(angle) * RADIUS;
+        const node1 = new THREE.Mesh(sphereGeo, matCyan);
+        node1.position.set(x1, y, z1);
+        rungGroup.add(node1);
+
+        const x2 = Math.cos(angle + Math.PI) * RADIUS;
+        const z2 = Math.sin(angle + Math.PI) * RADIUS;
+        const node2 = new THREE.Mesh(sphereGeo, matMagenta);
+        node2.position.set(x2, y, z2);
+        rungGroup.add(node2);
+
+        // Connecting Base-Pair Rung
+        const rungPts = [new THREE.Vector3(x1, y, z1), new THREE.Vector3(x2, y, z2)];
+        const rungGeo = new THREE.BufferGeometry().setFromPoints(rungPts);
+        const rungMat = new THREE.LineBasicMaterial({
+          color: i % 2 === 0 ? 0x00f2fe : 0xa855f7,
+          transparent: true,
+          opacity: 0.5
+        });
+        const rungLine = new THREE.Line(rungGeo, rungMat);
+        rungGroup.add(rungLine);
+
+        // Center base-pair node
+        const centerNode = new THREE.Mesh(new THREE.SphereGeometry(0.026, 8, 8), matChampagne);
+        centerNode.position.set((x1 + x2) * 0.5, y, (z1 + z2) * 0.5);
+        rungGroup.add(centerNode);
+      }
+
+      // 90 Ambient floating genomic particles
+      const pCount = 90;
+      const pPositions = new Float32Array(pCount * 3);
+      for (let i = 0; i < pCount; i++) {
+        pPositions[i * 3]     = (Math.random() - 0.5) * 4.6;
+        pPositions[i * 3 + 1] = (Math.random() - 0.5) * 4.0;
+        pPositions[i * 3 + 2] = (Math.random() - 0.5) * 2.2;
+      }
+      const pGeo = new THREE.BufferGeometry();
+      pGeo.setAttribute('position', new THREE.BufferAttribute(pPositions, 3));
+      const pMat = new THREE.PointsMaterial({
+        color: 0xa855f7,
+        size: 0.045,
+        transparent: true,
+        opacity: 0.65,
+        blending: THREE.AdditiveBlending
+      });
+      const pCloud = new THREE.Points(pGeo, pMat);
+      dnaGroup.add(pCloud);
+
+      dnaGroup.rotation.z = -0.32;
+      dnaGroup.rotation.x = 0.22;
+
+      let dnaMouseX = 0, dnaMouseY = 0;
+      parent.addEventListener('mousemove', (e) => {
+        const r = parent.getBoundingClientRect();
+        dnaMouseX = ((e.clientX - r.left) / r.width) * 2 - 1;
+        dnaMouseY = -(((e.clientY - r.top) / r.height) * 2 - 1);
+      }, { passive: true });
+
+      let dnaVisible = false;
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach(e => { dnaVisible = e.isIntersecting; });
+      }, { rootMargin: '100px 0px' });
+      obs.observe(parent);
+
+      let dnaClock = new THREE.Clock();
+      function animateDna() {
+        requestAnimationFrame(animateDna);
+        if (!dnaVisible) return;
+        const time = dnaClock.getElapsedTime();
+        dnaGroup.rotation.y = time * 0.45 + dnaMouseX * 0.35;
+        dnaGroup.rotation.x = 0.22 - dnaMouseY * 0.25;
+        pCloud.rotation.y = -time * 0.18;
+        dnaRenderer.render(dnaScene, dnaCamera);
+      }
+      animateDna();
+
+      window.addEventListener('resize', () => {
+        if (!parent || !dnaRenderer) return;
+        const w = parent.clientWidth || 600;
+        const h = parent.clientHeight || 420;
+        dnaCamera.aspect = w / h;
+        dnaCamera.updateProjectionMatrix();
+        dnaRenderer.setSize(w, h);
+      }, { passive: true });
     }
 
     // =========================================================================
@@ -900,6 +1125,267 @@ export function initializeRbcurexiaExperience({ submitContact, subscribeNewslett
       renderSynapses();
     }
 
+    function initEcosystemThreeScene() {
+      const canvas = document.getElementById('ecosystem-3d-stage');
+      const container = document.getElementById('ecosystem-isometric-container');
+      if (!canvas || !container) return;
+
+      const isMobile = window.innerWidth < 640;
+      const ecoScene = new THREE.Scene();
+
+      const width = container.clientWidth || 640;
+      const height = container.clientHeight || 440;
+
+      const ecoCamera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
+      ecoCamera.position.set(0, 0, 7.5);
+
+      let ecoRenderer;
+      try {
+        ecoRenderer = new THREE.WebGLRenderer({
+          canvas,
+          alpha: true,
+          antialias: true,
+          powerPreference: isMobile ? 'low-power' : 'high-performance'
+        });
+      } catch (err) {
+        console.warn('Ecosystem 3D canvas unavailable', err);
+        return;
+      }
+
+      ecoRenderer.setSize(width, height);
+      ecoRenderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobile ? 1.25 : 2));
+
+      const ecoGroup = new THREE.Group();
+      ecoScene.add(ecoGroup);
+
+      // Central Energy Nexus Rings
+      const innerRingGeo = new THREE.RingGeometry(0.5, 0.58, 48);
+      const innerRingMat = new THREE.MeshBasicMaterial({
+        color: 0xa855f7,
+        side: THREE.DoubleSide,
+        transparent: true,
+        opacity: 0.8
+      });
+      const innerRing = new THREE.Mesh(innerRingGeo, innerRingMat);
+      ecoGroup.add(innerRing);
+
+      const outerRingGeo = new THREE.RingGeometry(0.75, 0.82, 48);
+      const outerRingMat = new THREE.MeshBasicMaterial({
+        color: 0x00f2fe,
+        side: THREE.DoubleSide,
+        transparent: true,
+        opacity: 0.55
+      });
+      const outerRing = new THREE.Mesh(outerRingGeo, outerRingMat);
+      ecoGroup.add(outerRing);
+
+      const coreGlowGeo = new THREE.CircleGeometry(0.3, 32);
+      const coreGlowMat = new THREE.MeshBasicMaterial({
+        color: 0xede8d0,
+        transparent: true,
+        opacity: 0.85
+      });
+      const coreGlow = new THREE.Mesh(coreGlowGeo, coreGlowMat);
+      ecoGroup.add(coreGlow);
+
+      // 4 Optical Fiber Curves to 4 isometric rooms
+      const nodeCoords = {
+        curenest: new THREE.Vector3(0, 2.1, 0.3),
+        panacea: new THREE.Vector3(-2.6, 0.3, 0.2),
+        labonix: new THREE.Vector3(2.6, 0.3, 0.2),
+        pharmixo: new THREE.Vector3(1.5, -2.0, 0.25)
+      };
+
+      const cableCurves = [];
+      const packetObjects = [];
+
+      Object.entries(nodeCoords).forEach(([key, endPt]) => {
+        const midPt = new THREE.Vector3(
+          endPt.x * 0.5 + (key === 'curenest' ? 0.3 : key === 'pharmixo' ? -0.2 : 0),
+          endPt.y * 0.5 + 0.2,
+          0.15
+        );
+        const curve = new THREE.QuadraticBezierCurve3(
+          new THREE.Vector3(0, 0, 0),
+          midPt,
+          endPt
+        );
+        cableCurves.push({ key, curve });
+
+        const pts = curve.getPoints(32);
+        const lineGeo = new THREE.BufferGeometry().setFromPoints(pts);
+        const lineMat = new THREE.LineBasicMaterial({
+          color: 0xa855f7,
+          transparent: true,
+          opacity: 0.5,
+          linewidth: 1.5
+        });
+        const line = new THREE.Line(lineGeo, lineMat);
+        ecoGroup.add(line);
+
+        for (let p = 0; p < 2; p++) {
+          const packetGeo = new THREE.SphereGeometry(0.08, 12, 12);
+          const packetMat = new THREE.MeshBasicMaterial({
+            color: p === 0 ? 0x00f2fe : 0xede8d0,
+            transparent: true,
+            opacity: 0.95
+          });
+          const packet = new THREE.Mesh(packetGeo, packetMat);
+          ecoGroup.add(packet);
+          packetObjects.push({
+            mesh: packet,
+            curve,
+            offset: p * 0.5,
+            speed: 0.007 + Math.random() * 0.005,
+            key
+          });
+        }
+      });
+
+      // 120 Floating 3D Bio-Data Particles
+      const particleCount = 120;
+      const partGeo = new THREE.BufferGeometry();
+      const posArray = new Float32Array(particleCount * 3);
+      for (let i = 0; i < particleCount * 3; i += 3) {
+        posArray[i] = (Math.random() - 0.5) * 8.0;
+        posArray[i + 1] = (Math.random() - 0.5) * 6.0;
+        posArray[i + 2] = (Math.random() - 0.5) * 2.5;
+      }
+      partGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+      const partMat = new THREE.PointsMaterial({
+        size: 0.055,
+        color: 0xa855f7,
+        transparent: true,
+        opacity: 0.6,
+        blending: THREE.AdditiveBlending
+      });
+      const particleField = new THREE.Points(partGeo, partMat);
+      ecoGroup.add(particleField);
+
+      // Interactive Mouse Tilt Parallax
+      let mouseX = 0, mouseY = 0;
+      let targetRotX = 0, targetRotY = 0;
+      container.addEventListener('mousemove', (e) => {
+        const rect = container.getBoundingClientRect();
+        mouseX = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+        mouseY = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
+        targetRotY = mouseX * 0.2;
+        targetRotX = -mouseY * 0.15;
+      }, { passive: true });
+
+      container.addEventListener('mouseleave', () => {
+        targetRotX = 0;
+        targetRotY = 0;
+      });
+
+      let ecoVisible = false;
+      const ecoObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          ecoVisible = entry.isIntersecting;
+        });
+      }, { rootMargin: '100px 0px' });
+      ecoObserver.observe(container);
+
+      let clock = new THREE.Clock();
+      function animateEcosystem() {
+        requestAnimationFrame(animateEcosystem);
+        if (!ecoVisible) return;
+
+        const time = clock.getElapsedTime();
+
+        innerRing.rotation.z += 0.015;
+        outerRing.rotation.z -= 0.01;
+
+        const coreScale = 1.0 + Math.sin(time * 3.5) * 0.15;
+        coreGlow.scale.set(coreScale, coreScale, 1);
+
+        packetObjects.forEach(item => {
+          item.offset += item.speed;
+          if (item.offset > 1.0) item.offset = 0.0;
+          const pt = item.curve.getPoint(item.offset);
+          item.mesh.position.copy(pt);
+          const edgeFade = Math.sin(item.offset * Math.PI);
+          item.mesh.scale.setScalar(0.7 + edgeFade * 0.5);
+        });
+
+        particleField.rotation.y = time * 0.025;
+        particleField.rotation.x = Math.sin(time * 0.02) * 0.04;
+
+        ecoGroup.rotation.y += (targetRotY - ecoGroup.rotation.y) * 0.08;
+        ecoGroup.rotation.x += (targetRotX - ecoGroup.rotation.x) * 0.08;
+
+        ecoRenderer.render(ecoScene, ecoCamera);
+      }
+      animateEcosystem();
+
+      window.addEventListener('resize', () => {
+        if (!container || !ecoCamera || !ecoRenderer) return;
+        const w = container.clientWidth || 640;
+        const h = container.clientHeight || 440;
+        ecoCamera.aspect = w / h;
+        ecoCamera.updateProjectionMatrix();
+        ecoRenderer.setSize(w, h);
+      });
+    }
+
+    function initArchitectureInteractions() {
+      // Platform Cards (bottom row of architecture showcase)
+      const platformCards = document.querySelectorAll('.ecosystem-platform-card');
+      platformCards.forEach(card => {
+        card.addEventListener('click', () => {
+          const filterTarget = card.getAttribute('data-filter-target') || 'all';
+          const moduleId = card.getAttribute('data-module-id');
+
+          platformCards.forEach(c => c.classList.remove('is-active'));
+          card.classList.add('is-active');
+
+          currentCategory = filterTarget;
+          document.querySelectorAll('.srv-cat-btn').forEach(b => {
+            const active = b.getAttribute('data-srv-cat') === filterTarget;
+            b.classList.toggle('is-active', active);
+            b.setAttribute('aria-selected', String(active));
+          });
+          render24Architecture();
+
+          if (moduleId) {
+            const found = ALL_24_SERVICES.find(s => s.id === moduleId);
+            if (found) {
+              const spotBadge = document.getElementById('spot-badge');
+              const spotIcon = document.getElementById('spot-icon');
+              const spotCat = document.getElementById('spot-cat-label');
+              const spotTitle = document.getElementById('spot-title');
+              const spotSub = document.getElementById('spot-sub');
+              const spotDesc = document.getElementById('spot-desc');
+
+              if (spotBadge) spotBadge.textContent = found.badge;
+              if (spotIcon) spotIcon.innerHTML = found.svg;
+              if (spotCat) spotCat.textContent = '· ' + found.catName;
+              if (spotTitle) spotTitle.textContent = found.title;
+              if (spotSub) spotSub.textContent = found.sub;
+              if (spotDesc) spotDesc.textContent = found.desc;
+            }
+          }
+
+          document.getElementById('services-24-matrix-anchor')?.scrollIntoView({ behavior: 'smooth' });
+        });
+      });
+
+      // Isometric Node Badges on Diagram
+      const nodeBadges = document.querySelectorAll('.architecture-node-badge');
+      nodeBadges.forEach(badge => {
+        badge.addEventListener('click', () => {
+          const target = badge.getAttribute('data-ecosystem-target');
+          let cardTarget;
+          if (target === 'panacea') cardTarget = document.querySelector('.ecosystem-platform-card[data-module-id="clinical-mode"]');
+          else if (target === 'labonix') cardTarget = document.querySelector('.ecosystem-platform-card[data-module-id="labonix"]');
+          else if (target === 'pharmixo') cardTarget = document.querySelector('.ecosystem-platform-card[data-module-id="pharmixo"]');
+          else if (target === 'curenest') cardTarget = document.querySelector('.ecosystem-platform-card[data-module-id="curenest"]');
+
+          if (cardTarget) cardTarget.click();
+        });
+      });
+    }
+
     function initViewportObservers() {
       if (!('IntersectionObserver' in window)) {
         networkVisible = true;
@@ -937,6 +1423,9 @@ export function initializeRbcurexiaExperience({ submitContact, subscribeNewslett
 
       initViewportObservers();
       initHeroWebGL();
+      initMissionDnaScene();
+      initEcosystemThreeScene();
+      initArchitectureInteractions();
       renderVectorQueue();
       render24Architecture();
       initSynapseConstellation();

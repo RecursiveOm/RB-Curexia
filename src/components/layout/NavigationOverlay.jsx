@@ -42,8 +42,8 @@ export default function NavigationOverlay({ isOpen, onClose }) {
       <div className="flex items-center justify-between border-b border-white/[0.08] pb-4">
         <div className="flex items-center gap-2.5">
           <img
-            src="/assets/embedded-90b24ba6af66.webp"
-            alt="RBCurexia Logo"
+            src="/assets/rbcurexia-monogram-4k.webp"
+            alt="RB"
             className="h-7 w-auto object-contain"
           />
           <span className="font-display text-[11px] tracking-[0.32em] text-champagne/75 uppercase">

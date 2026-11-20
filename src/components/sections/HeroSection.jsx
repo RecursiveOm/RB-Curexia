@@ -4,6 +4,23 @@ import HtmlFragment from '../HtmlFragment.jsx';
 
 export default function HeroSection() {
   useEffect(() => {
+    // 0. Ensure hero headline, subcopy & CTAs are immediately revealed and never stuck hidden
+    const heroHead = document.getElementById('hero-main-headline');
+    const heroSub = document.getElementById('hero-subcopy');
+    const heroCtas = document.getElementById('hero-ctas');
+    if (heroHead) {
+      heroHead.style.opacity = '1';
+      heroHead.style.transform = 'translateY(0)';
+    }
+    if (heroSub) {
+      heroSub.style.opacity = '1';
+      heroSub.style.transform = 'translateY(0)';
+    }
+    if (heroCtas) {
+      heroCtas.style.opacity = '1';
+      heroCtas.style.transform = 'translateY(0)';
+    }
+
     const video = document.getElementById('hero-bg-video');
     if (!video) return;
 

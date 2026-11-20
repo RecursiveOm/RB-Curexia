@@ -47,8 +47,8 @@ export default function GlobalFooter() {
           <div className="lg:col-span-4 space-y-5">
             <Link to="/overview" className="flex items-center gap-2.5">
               <img
-                src="/assets/embedded-90b24ba6af66.webp"
-                alt="RBCurexia Logo"
+                src="/assets/rbcurexia-monogram-4k.webp"
+                alt="RB"
                 className="h-8 w-auto object-contain"
               />
               <span className="font-display text-sm font-semibold tracking-[0.32em] text-champagne uppercase">

@@ -275,9 +275,9 @@ export function initializeRbcurexiaExperience({ submitContact, subscribeNewslett
     const manifestoEl = document.getElementById('mission-manifesto');
     if (manifestoEl && manifestoPhrases.length) {
       gsap.set(manifestoPhrases, {
-        color: 'rgba(235, 230, 248, 0.22)',
+        color: 'rgba(242, 238, 228, 0.52)',
         fontWeight: '300',
-        opacity: 0.35,
+        opacity: 0.75,
         textShadow: 'none'
       });
 
@@ -293,12 +293,12 @@ export function initializeRbcurexiaExperience({ submitContact, subscribeNewslett
       manifestoPhrases.forEach((phrase, idx) => {
         const isHighlight = phrase.classList.contains('manifesto-highlight');
         manifestoTl.to(phrase, {
-          color: isHighlight ? '#FFFFFF' : 'rgba(242, 238, 228, 0.85)',
-          fontWeight: '300',
+          color: isHighlight ? '#EDE8D0' : '#FFFFFF',
+          fontWeight: isHighlight ? '600' : '500',
           opacity: 1,
           textShadow: isHighlight
-            ? '0 0 16px rgba(255, 255, 255, 0.24)'
-            : 'none',
+            ? '0 0 14px rgba(237, 232, 208, 0.3)'
+            : '0 0 10px rgba(255, 255, 255, 0.18)',
           duration: 0.55,
           ease: 'power2.out'
         }, idx * 0.45);
@@ -451,6 +451,8 @@ export function initializeRbcurexiaExperience({ submitContact, subscribeNewslett
   let currentFeaturedId = 'labonix';
   let currentCategory = 'all';
   let currentSearchTerm = '';
+  let showAllArchitectureModules = false;
+  const MAJOR_MODULE_IDS = ['panacea', 'curenest', 'labonix', 'pharmixo', 'pad', 'locker', 'biometric', 'vault'];
 
   function updateFeaturedPanel(srv) {
     if (!srv) return;
@@ -520,8 +522,25 @@ export function initializeRbcurexiaExperience({ submitContact, subscribeNewslett
     }
 
     const categoryGroups = categories
-      .map((category) => ({ ...category, items: matching.filter((service) => service.cat === category.id) }))
+      .map((category) => {
+        let items = matching.filter((service) => service.cat === category.id);
+        if (!showAllArchitectureModules && !query && currentCategory === 'all') {
+          items = items.filter((service) => MAJOR_MODULE_IDS.includes(service.id));
+        }
+        return { ...category, items };
+      })
       .filter((category) => category.items.length > 0);
+
+    const toggleButtonHtml = (!query && currentCategory === 'all')
+      ? `<div class="col-span-full w-full flex flex-col items-center justify-center pt-6 pb-2">
+           <button type="button" class="px-8 py-3.5 rounded-full bg-purple-500/15 border border-purple-400/50 hover:border-champagne text-white hover:bg-purple-500/25 font-semibold text-xs tracking-wider uppercase transition-all duration-300 flex items-center gap-2 cursor-pointer shadow-lg shadow-purple-950/40" data-toggle-services-grid>
+             <span>${showAllArchitectureModules ? 'Show Major Services Only ↑' : 'View All 24 Services Matrix ↓'}</span>
+           </button>
+           <span class="text-[11px] font-mono text-[#b8accd]/70 mt-2">
+             ${showAllArchitectureModules ? 'Displaying all 24 connected platform services' : 'Displaying major flagship clinical services'}
+           </span>
+         </div>`
+      : '';
 
     grid.innerHTML = categoryGroups.map((category) => {
       const gridColsClass = category.id === 'support'
@@ -561,7 +580,12 @@ export function initializeRbcurexiaExperience({ submitContact, subscribeNewslett
           </div>
         </article>
       `;
-    }).join('');
+    }).join('') + toggleButtonHtml;
+
+    grid.querySelector('[data-toggle-services-grid]')?.addEventListener('click', () => {
+      showAllArchitectureModules = !showAllArchitectureModules;
+      render24Architecture();
+    });
 
     grid.querySelectorAll('[data-srv-id]').forEach((button) => {
       button.addEventListener('click', () => {
@@ -610,12 +634,20 @@ export function initializeRbcurexiaExperience({ submitContact, subscribeNewslett
     const pending = total - done;
     const pct = Math.min(100, Math.round((done / Math.max(1, total)) * 100));
 
-    document.getElementById('vq-total').textContent = String(total);
-    document.getElementById('vq-done').textContent = String(done);
-    document.getElementById('vq-pending').textContent = String(pending);
-    document.getElementById('vq-urgent').textContent = String(urgent);
-    document.getElementById('vector-clinic-bar').style.width = `${pct}%`;
-    document.getElementById('vector-clinic-pct').textContent = `${pct}%`;
+    const elTotal = document.getElementById('vq-total');
+    if (elTotal) elTotal.textContent = String(total);
+    const elDone = document.getElementById('vq-done');
+    if (elDone) elDone.textContent = String(done);
+    const elPending = document.getElementById('vq-pending');
+    if (elPending) elPending.textContent = String(pending);
+    const elUrgent = document.getElementById('vq-urgent');
+    if (elUrgent) elUrgent.textContent = String(urgent);
+    const elBar = document.getElementById('vector-clinic-bar');
+    if (elBar) elBar.style.width = `${pct}%`;
+    const elPct = document.getElementById('vector-clinic-pct');
+    if (elPct) elPct.textContent = `${pct}%`;
+    const elActive = document.getElementById('vq-active-count');
+    if (elActive) elActive.textContent = String(total - done);
 
     container.innerHTML = vectorQueue.map((p, idx) => {
       let badgeCls = 'bg-amber-500/15 text-amber-300 border-amber-400/35';

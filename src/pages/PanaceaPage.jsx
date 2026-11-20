@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import PageHero from '../components/ui/PageHero.jsx';
 import NextPageCta from '../components/ui/NextPageCta.jsx';
+import LivePatientQueueDemo from '../components/interactive/LivePatientQueueDemo.jsx';
 
 const PANACEA_MODULES = [
   {
@@ -138,6 +139,11 @@ export default function PanaceaPage() {
                 </div>
               </div>
             </div>
+          </div>
+
+          {/* Interactive Live OPD Patient Queue Simulator (Matching User Reference Image 2) */}
+          <div className="pt-8 max-w-[1320px] mx-auto">
+            <LivePatientQueueDemo />
           </div>
         </div>
       </section>

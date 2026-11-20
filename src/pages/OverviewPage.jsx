@@ -12,57 +12,6 @@ export default function OverviewPage() {
       {/* 1. Complete Original Hero Header with Faststart Ambient Video */}
       <HeroSection />
 
-      {/* Floating Dedicated Portals Quick Bar */}
-      <div className="relative z-20 w-full py-4 px-6 sm:px-12 lg:px-16 bg-[#070312]/90 border-y border-white/[0.08] backdrop-blur-xl">
-        <div className="w-full max-w-[1520px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2.5">
-            <span className="w-2 h-2 rounded-full bg-champagne animate-pulse" />
-            <span className="text-[10px] font-mono tracking-widest uppercase text-champagne">
-              DEDICATED PAGE WORKSPACES
-            </span>
-          </div>
-
-          <div className="flex flex-wrap items-center justify-center gap-2">
-            <Link
-              to="/mission"
-              className="px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/10 hover:border-purple-400 text-[11px] font-medium text-stone-300 hover:text-white transition-all"
-            >
-              02 Mission ↗
-            </Link>
-            <Link
-              to="/panacea"
-              className="px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/10 hover:border-purple-400 text-[11px] font-medium text-stone-300 hover:text-white transition-all"
-            >
-              03 Panacea OS ↗
-            </Link>
-            <Link
-              to="/architecture"
-              className="px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/10 hover:border-purple-400 text-[11px] font-medium text-stone-300 hover:text-white transition-all"
-            >
-              04 Architecture ↗
-            </Link>
-            <Link
-              to="/network"
-              className="px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/10 hover:border-purple-400 text-[11px] font-medium text-stone-300 hover:text-white transition-all"
-            >
-              05 Network ↗
-            </Link>
-            <Link
-              to="/concierge"
-              className="px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/10 hover:border-purple-400 text-[11px] font-medium text-stone-300 hover:text-white transition-all"
-            >
-              06 Concierge ↗
-            </Link>
-            <Link
-              to="/pulseport"
-              className="px-3.5 py-1.5 rounded-full bg-purple-950/60 border border-purple-500/40 text-[11px] font-mono text-purple-200 hover:bg-purple-900 transition-all"
-            >
-              PulsePort ↗
-            </Link>
-          </div>
-        </div>
-      </div>
-
       {/* 2. Complete Original Mission Section */}
       <MissionSection />
 
@@ -121,7 +70,7 @@ export default function OverviewPage() {
                 SPECIALIZED NODE WORKSPACES
               </span>
               <p className="text-sm font-light text-white">
-                Inspect dedicated deep-dive architecture pages for each of the four connected healthcare nodes.
+                Inspect dedicated deep-dive architecture pages for each connected healthcare node.
               </p>
             </div>
             <Link
@@ -160,6 +109,154 @@ export default function OverviewPage() {
           </div>
         </div>
       </div>
+
+      {/* ========================================================================= */}
+      {/* 4.C DEDICATED SPOTLIGHT: LABONIX (Pathology Diagnostics Gateway)           */}
+      {/* ========================================================================= */}
+      <section className="relative z-10 w-full py-24 px-6 sm:px-12 lg:px-16 border-t border-white/[0.08] bg-[#05020c]">
+        <div className="w-full max-w-[1520px] mx-auto space-y-12">
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-6 border-b border-white/[0.08]">
+            <div className="space-y-3">
+              <div className="flex items-center gap-3">
+                <span className="text-xs font-mono tracking-widest uppercase text-cyan-400 font-semibold">
+                  04.C · HIGH-THROUGHPUT PATHOLOGY
+                </span>
+                <span className="w-6 h-[1px] bg-white/15" />
+                <span className="text-[10px] font-mono tracking-widest uppercase text-champagne/80">
+                  RBCUREXIA ECOSYSTEM
+                </span>
+              </div>
+              <h2 className="satin-headline text-3xl sm:text-5xl font-light text-white">
+                Labonix: Automated Diagnostic <span className="satin-champagne font-normal">Routing &amp; Telemetry.</span>
+              </h2>
+              <p className="text-sm sm:text-base text-stonewarm max-w-2xl leading-relaxed text-[#b4a8c9]">
+                Eliminating diagnostic turnaround delays with bidirectional LIS integration, centrifuge carousel tracking, and instant panic value escalation directly to consultation desks.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-4">
+              <Link
+                to="/labonix"
+                className="px-6 py-3 rounded-full bg-champagne text-obsidian text-xs font-semibold uppercase tracking-wider hover:bg-white hover:scale-105 transition-all shadow-lg"
+              >
+                Inspect Dedicated Labonix Page ↗
+              </Link>
+              <Link
+                to="/concierge"
+                className="px-6 py-3 rounded-full bg-white/[0.06] border border-cyan-500/40 text-cyan-200 text-xs font-semibold uppercase tracking-wider hover:bg-white/10 transition-all"
+              >
+                Book LIS Integration Demo
+              </Link>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="p-7 rounded-3xl bg-[#090518] border border-cyan-500/20 space-y-4 hover:border-cyan-400/50 transition-all group">
+              <span className="text-xs font-mono text-cyan-400 uppercase font-semibold">CAPABILITY 01 · 42ms SYNC</span>
+              <h3 className="text-xl font-semibold text-white group-hover:text-cyan-200 transition-colors">
+                Bidirectional LIS Gateway
+              </h3>
+              <p className="text-xs sm:text-sm text-stonewarm leading-relaxed text-[#b4a8c9]">
+                High-throughput analyzer outputs populate patient charts chairsidely without manual transcription errors or paper report carriage.
+              </p>
+            </div>
+
+            <div className="p-7 rounded-3xl bg-[#090518] border border-purple-500/20 space-y-4 hover:border-purple-400/50 transition-all group">
+              <span className="text-xs font-mono text-purple-400 uppercase font-semibold">CAPABILITY 02 · MATRIX 2D</span>
+              <h3 className="text-xl font-semibold text-white group-hover:text-purple-200 transition-colors">
+                Specimen Barcode Tracking
+              </h3>
+              <p className="text-xs sm:text-sm text-stonewarm leading-relaxed text-[#b4a8c9]">
+                Every collection vial receives a cryptographically signed 2D barcode, verifying chain-of-custody from phlebotomy chair to analyzer rack.
+              </p>
+            </div>
+
+            <div className="p-7 rounded-3xl bg-[#090518] border border-rose-500/20 space-y-4 hover:border-rose-400/50 transition-all group">
+              <span className="text-xs font-mono text-rose-400 uppercase font-semibold">CAPABILITY 03 · ZERO DELAY</span>
+              <h3 className="text-xl font-semibold text-white group-hover:text-rose-200 transition-colors">
+                Critical Panic Value Alerts
+              </h3>
+              <p className="text-xs sm:text-sm text-stonewarm leading-relaxed text-[#b4a8c9]">
+                Severe metabolic, cardiac, or hematologic anomalies trigger automated priority notifications across doctor mobile and nursing consoles.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* 4.D DEDICATED SPOTLIGHT: PULSEPORT (Biometrics & Wearables)                */}
+      {/* ========================================================================= */}
+      <section className="relative z-10 w-full py-24 px-6 sm:px-12 lg:px-16 border-t border-white/[0.08] bg-[#070312]/80">
+        <div className="w-full max-w-[1520px] mx-auto space-y-12">
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-6 border-b border-white/[0.08]">
+            <div className="space-y-3">
+              <div className="flex items-center gap-3">
+                <span className="text-xs font-mono tracking-widest uppercase text-purple-400 font-semibold">
+                  04.D · BIOMETRICS &amp; WEARABLES
+                </span>
+                <span className="w-6 h-[1px] bg-white/15" />
+                <span className="text-[10px] font-mono tracking-widest uppercase text-champagne/80">
+                  RBCUREXIA ECOSYSTEM
+                </span>
+              </div>
+              <h2 className="satin-headline text-3xl sm:text-5xl font-light text-white">
+                PulsePort: Biometric Identity &amp; <span className="satin-champagne font-normal">Continuous Telemetry.</span>
+              </h2>
+              <p className="text-sm sm:text-base text-stonewarm max-w-2xl leading-relaxed text-[#b4a8c9]">
+                Patient biometric identification kiosks paired with Medicore smartwatch biosensor integration for 24/7 post-discharge ambulatory monitoring and touchless clinic check-in.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-4">
+              <Link
+                to="/pulseport"
+                className="px-6 py-3 rounded-full bg-champagne text-obsidian text-xs font-semibold uppercase tracking-wider hover:bg-white hover:scale-105 transition-all shadow-lg"
+              >
+                Inspect Dedicated PulsePort Page ↗
+              </Link>
+              <Link
+                to="/concierge"
+                className="px-6 py-3 rounded-full bg-white/[0.06] border border-purple-500/40 text-purple-200 text-xs font-semibold uppercase tracking-wider hover:bg-white/10 transition-all"
+              >
+                Deploy Biometric Terminals
+              </Link>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="p-7 rounded-3xl bg-[#0a051a] border border-purple-500/20 space-y-4 hover:border-purple-400/50 transition-all group">
+              <span className="text-xs font-mono text-purple-400 uppercase font-semibold">TERMINAL 01 · 0.8s ID</span>
+              <h3 className="text-xl font-semibold text-white group-hover:text-purple-200 transition-colors">
+                Touchless Biometric Check-In
+              </h3>
+              <p className="text-xs sm:text-sm text-stonewarm leading-relaxed text-[#b4a8c9]">
+                Patients look into the optical sensor at hospital entry gates. EHR records, past prescriptions, and queue slots are loaded instantly.
+              </p>
+            </div>
+
+            <div className="p-7 rounded-3xl bg-[#0a051a] border border-cyan-500/20 space-y-4 hover:border-cyan-400/50 transition-all group">
+              <span className="text-xs font-mono text-cyan-400 uppercase font-semibold">AMBULATORY · MEDICORE</span>
+              <h3 className="text-xl font-semibold text-white group-hover:text-cyan-200 transition-colors">
+                Continuous Post-Discharge Vitals
+              </h3>
+              <p className="text-xs sm:text-sm text-stonewarm leading-relaxed text-[#b4a8c9]">
+                Medical-grade smartwatches stream resting heart rate, SpO2 levels, and arrhythmia warnings directly to attending cardiologists.
+              </p>
+            </div>
+
+            <div className="p-7 rounded-3xl bg-[#0a051a] border border-emerald-500/20 space-y-4 hover:border-emerald-400/50 transition-all group">
+              <span className="text-xs font-mono text-emerald-400 uppercase font-semibold">RECOVERY · PROACTIVE</span>
+              <h3 className="text-xl font-semibold text-white group-hover:text-emerald-200 transition-colors">
+                Early Anomaly Detection
+              </h3>
+              <p className="text-xs sm:text-sm text-stonewarm leading-relaxed text-[#b4a8c9]">
+                Algorithmic baseline analysis alerts clinical teams of post-operative deterioration before acute re-admission becomes necessary.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* 5. Complete Original Network Section */}
       <NetworkSection />

@@ -4,10 +4,22 @@ import NextPageCta from '../components/ui/NextPageCta.jsx';
 import ArchitectureRooms3D from '../components/3d/ArchitectureRooms3D.jsx';
 import { ALL_24_SERVICES_DATA } from '../data/ecosystemData.js';
 
+const MAJOR_SERVICE_IDS = [
+  'panacea',
+  'curenest',
+  'labonix',
+  'pharmixo',
+  'pad',
+  'locker',
+  'biometric',
+  'vault'
+];
+
 export default function ArchitecturePage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedPillar, setSelectedPillar] = useState('all');
   const [activeService, setActiveService] = useState(ALL_24_SERVICES_DATA[0]);
+  const [showAllServices, setShowAllServices] = useState(false);
 
   const filteredServices = ALL_24_SERVICES_DATA.filter((s) => {
     const matchesSearch =
@@ -23,6 +35,12 @@ export default function ArchitecturePage() {
 
     return matchesSearch && matchesPillar;
   });
+
+  // If user hasn't searched or filtered, display only major flagship services unless expanded
+  const displayedServices =
+    !showAllServices && !searchQuery.trim() && selectedPillar === 'all'
+      ? filteredServices.filter((s) => MAJOR_SERVICE_IDS.includes(s.id))
+      : filteredServices;
 
   return (
     <div className="w-full relative z-10 flex flex-col" id="act-services">
@@ -59,19 +77,19 @@ export default function ArchitecturePage() {
         </div>
       </section>
 
-      {/* 3. Complete 24-Service Matrix Explorer */}
+      {/* 3. Streamlined Service Matrix Explorer (Major Services by default + Expand Option) */}
       <section className="relative z-10 w-full py-24 px-6 sm:px-12 lg:px-16 border-t border-white/[0.08] bg-[#070312]/60" id="services-24-matrix-anchor">
         <div className="w-full max-w-[1520px] mx-auto space-y-12">
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-6 border-b border-white/[0.08]">
             <div className="space-y-3">
               <span className="text-xs font-mono tracking-widest uppercase text-purple-400 block font-semibold">
-                SYSTEM CATALOG · 24 SERVICES
+                SYSTEM CATALOG · {showAllServices ? '24 SERVICES' : 'MAJOR SERVICES'}
               </span>
               <h2 className="satin-headline text-3xl sm:text-5xl font-light text-white">
-                Comprehensive <span className="satin-champagne font-normal">Service Matrix.</span>
+                Core Platform <span className="satin-champagne font-normal">Service Matrix.</span>
               </h2>
               <p className="text-sm text-stonewarm max-w-xl leading-relaxed text-[#b4a8c9]">
-                Explore every clinical tool, operational module, and core platform component powering the RBCurexia ecosystem.
+                Showing major flagship engines powering clinical care, inpatient telemetry, and automated pathology. Expand below to inspect all 24 ecosystem modules.
               </p>
             </div>
 
@@ -79,7 +97,7 @@ export default function ArchitecturePage() {
             <div className="flex flex-wrap items-center gap-2">
               <button
                 type="button"
-                onClick={() => setSelectedPillar('all')}
+                onClick={() => { setSelectedPillar('all'); setShowAllServices(true); }}
                 className={`px-4 py-2 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all ${
                   selectedPillar === 'all'
                     ? 'bg-purple-600 text-white'
@@ -90,7 +108,7 @@ export default function ArchitecturePage() {
               </button>
               <button
                 type="button"
-                onClick={() => setSelectedPillar('support')}
+                onClick={() => { setSelectedPillar('support'); setShowAllServices(true); }}
                 className={`px-4 py-2 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all ${
                   selectedPillar === 'support'
                     ? 'bg-purple-600 text-white'
@@ -101,7 +119,7 @@ export default function ArchitecturePage() {
               </button>
               <button
                 type="button"
-                onClick={() => setSelectedPillar('analytics')}
+                onClick={() => { setSelectedPillar('analytics'); setShowAllServices(true); }}
                 className={`px-4 py-2 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all ${
                   selectedPillar === 'analytics'
                     ? 'bg-purple-600 text-white'
@@ -112,7 +130,7 @@ export default function ArchitecturePage() {
               </button>
               <button
                 type="button"
-                onClick={() => setSelectedPillar('core')}
+                onClick={() => { setSelectedPillar('core'); setShowAllServices(true); }}
                 className={`px-4 py-2 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all ${
                   selectedPillar === 'core'
                     ? 'bg-purple-600 text-white'
@@ -130,7 +148,7 @@ export default function ArchitecturePage() {
               id="service-search-input"
               type="text"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => { setSearchQuery(e.target.value); if (e.target.value) setShowAllServices(true); }}
               placeholder="Search services (e.g. eRx, Ward, Drug Locker, OCR)..."
               className="w-full px-5 py-3 rounded-2xl bg-white/[0.04] border border-white/15 text-sm text-bone placeholder-stonewarm/50 focus:outline-none focus:border-champagne"
             />
@@ -157,9 +175,9 @@ export default function ArchitecturePage() {
             </p>
           </div>
 
-          {/* 24-Service Grid */}
+          {/* Services Grid (Shows 8 Major Flagships by default) */}
           <div id="services-24-grid" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {filteredServices.map((service) => {
+            {displayedServices.map((service) => {
               const isSelected = activeService.id === service.id;
               return (
                 <div
@@ -197,6 +215,23 @@ export default function ArchitecturePage() {
                 </div>
               );
             })}
+          </div>
+
+          {/* Show More / Show Less Toggle Button */}
+          <div className="flex flex-col items-center justify-center pt-6 gap-2">
+            <button
+              type="button"
+              onClick={() => setShowAllServices(!showAllServices)}
+              className="px-8 py-3.5 rounded-full bg-gradient-to-r from-purple-900/60 to-indigo-900/60 hover:from-purple-800 hover:to-indigo-800 border border-purple-400/40 hover:border-champagne text-white text-xs font-semibold tracking-wider uppercase transition-all duration-300 flex items-center gap-3 shadow-lg shadow-purple-900/30 hover:scale-105"
+            >
+              <span>{showAllServices ? 'Show Major Services Only ↑' : 'View All 24 Services Matrix ↓'}</span>
+              <span className="text-champagne font-mono text-sm">{showAllServices ? '▲' : '▼'}</span>
+            </button>
+            <span className="text-[11px] font-mono text-stonewarm/60">
+              {showAllServices
+                ? 'Showing all 24 connected platform services'
+                : 'Showing 8 major flagship engines (click above to view all)'}
+            </span>
           </div>
         </div>
       </section>

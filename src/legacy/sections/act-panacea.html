@@ -142,5 +142,32 @@
       </div>
     </div>
 
+    <!-- Part 2: Interactive Live Patient Queue Simulator (Matching User Reference Image 2) -->
+    <div class="cinema-surface rounded-3xl p-6 sm:p-8 border border-purple-500/30 max-w-[1320px] mx-auto space-y-6" id="interactive-queue-demo">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/[0.08]">
+        <div>
+          <span class="text-[10px] font-mono tracking-[0.22em] uppercase text-purple-400 font-semibold block mb-1">
+            INTERACTIVE CLINICAL DEMO
+          </span>
+          <h3 class="font-display text-2xl sm:text-3xl font-light text-white tracking-tight">
+            Live OPD Patient Queue Simulator
+          </h3>
+        </div>
+        <div class="flex items-center gap-3.5 flex-wrap">
+          <div class="flex items-center gap-2 text-xs font-mono text-purple-300">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span><span id="vq-active-count">2</span> patients in queue · Auto-sync active</span>
+          </div>
+          <button class="px-4 py-1.5 rounded-full bg-purple-900/40 border border-purple-400/40 hover:border-purple-300 hover:bg-purple-800/60 text-xs font-medium text-purple-200 transition-all shadow-lg shadow-purple-950/50 cursor-pointer active:scale-95" id="btn-vq-add" type="button">
+            + Sim Influx
+          </button>
+        </div>
+      </div>
+
+      <!-- Live Patient Queue Cards (Click any row to cycle status) -->
+      <div class="space-y-3" id="vector-queue-cards"></div>
+      <div class="hidden px-4 py-2.5 rounded-xl bg-purple-950/80 border border-purple-400/30 text-xs font-mono text-purple-200 shadow-xl" id="vq-toast"></div>
+    </div>
+
   </div>
 </section>

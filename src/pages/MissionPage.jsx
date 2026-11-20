@@ -1,8 +1,100 @@
+import { useEffect } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import PageHero from '../components/ui/PageHero.jsx';
 import NextPageCta from '../components/ui/NextPageCta.jsx';
 import { MISSION_PILLARS } from '../data/ecosystemData.js';
 
 export default function MissionPage() {
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const manifestoEl = document.getElementById('mission-manifesto');
+    const containerEl = document.getElementById('manifesto-scroll-pin');
+    const phrases = manifestoEl?.querySelectorAll('.manifesto-phrase');
+
+    if (!manifestoEl || !phrases || !phrases.length) return;
+
+    // Initial phrase state: clearly legible, soft luxury contrast (never pitch black!)
+    gsap.set(phrases, {
+      color: 'rgba(242, 238, 228, 0.52)',
+      fontWeight: '300',
+      opacity: 0.75,
+      textShadow: 'none'
+    });
+
+    // Scrubbed timeline: as user scrolls down, phrases bold and illuminate sequentially
+    const manifestoTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: containerEl || manifestoEl,
+        start: 'top 85%',
+        end: 'bottom 45%',
+        scrub: 0.35
+      }
+    });
+
+    phrases.forEach((phrase) => {
+      const isHighlight = phrase.classList.contains('manifesto-highlight');
+      manifestoTl.to(
+        phrase,
+        {
+          color: isHighlight ? '#EDE8D0' : '#FFFFFF',
+          fontWeight: isHighlight ? '600' : '500',
+          opacity: 1,
+          textShadow: isHighlight
+            ? '0 0 14px rgba(237, 232, 208, 0.3)'
+            : '0 0 10px rgba(255, 255, 255, 0.18)',
+          duration: 0.55,
+          ease: 'power2.out'
+        },
+        '+=0.08'
+      );
+    });
+
+    // Scroll listener fallback for smooth progressive bolding
+    const handleScrollCheck = () => {
+      const rect = manifestoEl.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      if (rect.top < windowHeight * 0.85) {
+        const progress = Math.min(1, Math.max(0, (windowHeight * 0.85 - rect.top) / (rect.height * 0.9)));
+        const phraseCount = phrases.length;
+        const activeIdx = Math.floor(progress * phraseCount);
+        
+        phrases.forEach((p, idx) => {
+          const isHighlight = p.classList.contains('manifesto-highlight');
+          if (idx <= activeIdx) {
+            p.style.color = isHighlight ? '#EDE8D0' : '#FFFFFF';
+            p.style.fontWeight = isHighlight ? '600' : '500';
+            p.style.opacity = '1';
+            p.style.textShadow = isHighlight
+              ? '0 0 14px rgba(237, 232, 208, 0.3)'
+              : '0 0 10px rgba(255, 255, 255, 0.18)';
+          } else {
+            p.style.color = isHighlight ? 'rgba(237, 232, 208, 0.58)' : 'rgba(242, 238, 228, 0.52)';
+            p.style.fontWeight = '300';
+            p.style.opacity = '0.75';
+            p.style.textShadow = 'none';
+          }
+        });
+      }
+    };
+
+    window.addEventListener('scroll', handleScrollCheck, { passive: true });
+    // Trigger initial check
+    handleScrollCheck();
+    ScrollTrigger.refresh();
+
+    return () => {
+      window.removeEventListener('scroll', handleScrollCheck);
+      manifestoTl.kill();
+      ScrollTrigger.getAll().forEach((st) => {
+        if (st.trigger === manifestoEl || st.trigger === containerEl) {
+          st.kill();
+        }
+      });
+    };
+  }, []);
+
   return (
     <div className="w-full relative z-10 flex flex-col" id="act-mission">
       {/* 1. Cinematic Hero */}
@@ -70,9 +162,9 @@ export default function MissionPage() {
         </div>
       </section>
 
-      {/* 3. The Core Manifesto Statement */}
-      <section className="relative z-10 w-full py-24 px-6 sm:px-12 lg:px-16 border-t border-white/[0.08]" id="manifesto-scroll-pin">
-        <div className="w-full max-w-5xl mx-auto space-y-6">
+      {/* 3. The Core Manifesto Statement with Scroll-Driven Sequential Bolding */}
+      <section className="relative z-10 w-full py-28 px-6 sm:px-12 lg:px-16 border-t border-white/[0.08]" id="manifesto-scroll-pin">
+        <div className="w-full max-w-5xl mx-auto space-y-8">
           <div className="flex items-center gap-3">
             <span className="font-display text-xs font-semibold tracking-[0.28em] uppercase text-purple-400">
               02.B · OUR MANIFESTO
@@ -83,15 +175,15 @@ export default function MissionPage() {
             </span>
           </div>
 
-          <h2 className="font-display font-light text-2xl sm:text-4xl lg:text-[44px] leading-[1.35] tracking-[-0.015em] text-white" id="mission-manifesto">
-            <span className="manifesto-phrase text-white/70">RBCurexia is dedicated to </span>
-            <span className="manifesto-phrase text-purple-300 font-normal">revolutionizing healthcare by making it entirely digital. </span>
-            <span className="manifesto-phrase text-white/70">Our mission is to achieve a landmark transformation in patient care </span>
-            <span className="manifesto-phrase text-champagne font-normal">by providing seamless, secure access to medical records </span>
-            <span className="manifesto-phrase text-purple-200 font-normal">and AI-driven health assessments </span>
-            <span className="manifesto-phrase text-white/70">for patients, medical practitioners, and pharmacists—</span>
-            <span className="manifesto-phrase text-cyan-300 font-normal">building a fully digitized healthcare ecosystem </span>
-            <span className="manifesto-phrase text-white/80">that enhances accessibility, clinical precision, and well-being.</span>
+          <h2 className="font-display font-light text-2xl sm:text-4xl lg:text-[46px] leading-[1.4] tracking-[-0.015em] text-white" id="mission-manifesto">
+            <span className="manifesto-phrase inline-block transition-all duration-500">RBCurexia is dedicated to </span>{' '}
+            <span className="manifesto-phrase manifesto-highlight inline-block transition-all duration-500">revolutionizing healthcare by making it entirely digital. </span>{' '}
+            <span className="manifesto-phrase inline-block transition-all duration-500">Our mission is to achieve a landmark transformation in patient care </span>{' '}
+            <span className="manifesto-phrase manifesto-highlight inline-block transition-all duration-500">by providing seamless, secure access to medical records </span>{' '}
+            <span className="manifesto-phrase manifesto-highlight inline-block transition-all duration-500">and AI-driven health assessments </span>{' '}
+            <span className="manifesto-phrase inline-block transition-all duration-500">for patients, medical practitioners, and pharmacists—</span>{' '}
+            <span className="manifesto-phrase manifesto-highlight inline-block transition-all duration-500">building a fully digitized healthcare ecosystem </span>{' '}
+            <span className="manifesto-phrase inline-block transition-all duration-500">that enhances accessibility, clinical precision, and well-being.</span>
           </h2>
         </div>
       </section>
@@ -148,124 +240,109 @@ export default function MissionPage() {
               <div className="mission-photo-frame rounded-3xl overflow-hidden border border-white/10 shadow-2xl aspect-[4/3] w-full relative group bg-[#090514]">
                 <img
                   src="/assets/doctor-consultation-blonde.webp"
-                  alt="Physician examining real-time patient diagnostics"
-                  className="photo-replacement w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                  alt="Doctor with digital consultation tools"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#06030e]/85 via-transparent to-transparent pointer-events-none z-10" />
-                <div className="absolute bottom-4 left-4 right-4 bg-[#0c071a]/90 backdrop-blur-md rounded-2xl p-4 border border-purple-500/25 shadow-xl z-20">
-                  <span className="text-[9px] font-semibold tracking-[0.22em] uppercase text-purple-300 block mb-1">
-                    BIOSENSOR TELEMETRY
+                <div className="absolute inset-0 bg-gradient-to-t from-[#06020f]/80 via-transparent to-transparent" />
+                <div className="absolute bottom-5 left-5 right-5 flex items-center justify-between">
+                  <span className="text-xs font-mono text-white/90 bg-obsidian/70 px-3 py-1.5 rounded-lg border border-white/10 backdrop-blur-md">
+                    OPD CONSULTATION · CHAIRSIDE AI
                   </span>
-                  <p className="font-display text-xs sm:text-sm font-medium text-white leading-snug">
-                    Continuous Smartwatch &amp; Medicore Wearable Vital Streams
-                  </p>
                 </div>
               </div>
             </div>
 
             <div className="space-y-6">
-              <span className="font-display text-xs tracking-[0.26em] uppercase text-purple-400 block font-medium">
-                SCENE I · POINT-OF-CARE INTELLIGENCE
+              <span className="text-xs font-mono tracking-widest uppercase text-purple-400 font-semibold">
+                SCENE 01 · CLINICAL EYE-CONTACT
               </span>
-              <h3 className="satin-headline font-light text-3xl sm:text-4xl lg:text-[44px] leading-tight text-white">
-                Clinical Clarity at Every Consultation.
+              <h3 className="satin-headline text-2xl sm:text-4xl font-light text-white leading-tight">
+                Restoring the Sacred Bond Between <span className="satin-champagne font-normal">Doctor and Patient.</span>
               </h3>
-              <p className="text-sm sm:text-base text-stonewarm leading-relaxed text-[#b4a9c6] max-w-xl">
-                When a physician sits across from a patient, technology should disappear into intuition. Our Electronic Health Record (EHR) framework unifies medical history, pathology test results, treatment logs, and live biosensor vitals into a single chairside view.
+              <p className="text-sm sm:text-base text-stonewarm leading-relaxed text-[#b6a9c8]">
+                Traditional Electronic Health Records forced clinicians to face glowing desktop monitors, typing billing metadata while patients spoke of their vulnerabilities. RBCurexia redesigns the interface with intelligent natural stylus input and real-time audio parsing, returning eye-contact to the medical examination room.
               </p>
-              <div className="pt-2 flex flex-wrap gap-3">
-                <span className="px-4 py-2 rounded-full bg-white/[0.04] border border-white/10 text-xs text-white/90 font-medium">
-                  Smartwatch Biosensor Sync
-                </span>
-                <span className="px-4 py-2 rounded-full bg-white/[0.04] border border-white/10 text-xs text-white/90 font-medium">
-                  AI-Assisted Prescription Checks
+              <div className="pt-2 flex items-center gap-4">
+                <span className="text-3xl font-display text-champagne font-light">68%</span>
+                <span className="text-xs text-stonewarm max-w-xs leading-tight">
+                  Reduction in clinical keyboard typing time reported by practicing general physicians.
                 </span>
               </div>
             </div>
           </div>
 
-          {/* Scene 02: Multidisciplinary Collaboration (Image Right) */}
+          {/* Scene 02: Inpatient Critical Telemetry */}
           <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-12 lg:gap-16">
-            <div className="space-y-6 order-2 lg:order-1">
-              <span className="font-display text-xs tracking-[0.26em] uppercase text-champagne block font-medium">
-                SCENE II · MULTIDISCIPLINARY COLLABORATION
+            <div className="order-2 lg:order-1 space-y-6">
+              <span className="text-xs font-mono tracking-widest uppercase text-cyan-400 font-semibold">
+                SCENE 02 · REAL-TIME BIOSENSORS
               </span>
-              <h3 className="satin-headline font-light text-3xl sm:text-4xl lg:text-[44px] leading-tight text-white">
-                Coordinated Care Across Specialists &amp; Wards.
+              <h3 className="satin-headline text-2xl sm:text-4xl font-light text-white leading-tight">
+                Continuous Telemetry Beyond <span className="satin-champagne font-normal">Ward Checkpoints.</span>
               </h3>
-              <p className="text-sm sm:text-base text-stonewarm leading-relaxed text-[#b4a9c6] max-w-xl">
-                Complex diagnoses require seamless teamwork across departments. From AI-integrated diagnostic imaging review to multi-phase surgical treatment planning, clinical teams share structured case records and real-time observations without fragmented paperwork.
+              <p className="text-sm sm:text-base text-stonewarm leading-relaxed text-[#b6a9c8]">
+                Inpatient recovery should never depend on periodic manual vital chart checks every four hours. Through CureNEST integration, pulse oximetry, cardiac rhythm, and physiological trends stream wirelessly to duty station consoles, warning of clinical deterioration hours before emergency intervention is required.
               </p>
-              <div className="pt-2 flex flex-wrap gap-3">
-                <span className="px-4 py-2 rounded-full bg-white/[0.04] border border-white/10 text-xs text-white/90 font-medium">
-                  AI-Integrated Diagnostics
-                </span>
-                <span className="px-4 py-2 rounded-full bg-white/[0.04] border border-white/10 text-xs text-white/90 font-medium">
-                  Multi-Phase Care Pathways
+              <div className="pt-2 flex items-center gap-4">
+                <span className="text-3xl font-display text-cyan-300 font-light">&lt; 0.8s</span>
+                <span className="text-xs text-stonewarm max-w-xs leading-tight">
+                  Wireless telemetry propagation delay from patient biosensor to central nursing console.
                 </span>
               </div>
             </div>
 
-            <div className="relative w-full max-w-[620px] order-1 lg:order-2">
+            <div className="order-1 lg:order-2 relative w-full max-w-[620px]">
               <div className="mission-photo-frame rounded-3xl overflow-hidden border border-white/10 shadow-2xl aspect-[4/3] w-full relative group bg-[#090514]">
                 <img
-                  src="/assets/doctors-hospital-hallway-scrubs.webp"
-                  alt="Multidisciplinary surgical and hospital medical team collaborating in hallway"
-                  className="photo-replacement w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                  src="/assets/nurse-ipad-station.webp"
+                  alt="Nurse station with wireless tablet telemetry"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#06030e]/85 via-transparent to-transparent pointer-events-none z-10" />
-                <div className="absolute bottom-4 left-4 right-4 bg-[#0c071a]/90 backdrop-blur-md rounded-2xl p-4 border border-purple-500/25 shadow-xl z-20">
-                  <span className="text-[9px] font-semibold tracking-[0.22em] uppercase text-purple-300 block mb-1">
-                    SHARED CLINICAL BOARDS
+                <div className="absolute inset-0 bg-gradient-to-t from-[#06020f]/80 via-transparent to-transparent" />
+                <div className="absolute bottom-5 left-5 right-5 flex items-center justify-between">
+                  <span className="text-xs font-mono text-cyan-200 bg-obsidian/70 px-3 py-1.5 rounded-lg border border-cyan-400/20 backdrop-blur-md">
+                    CURENEST WARD OS · REAL-TIME TELEMETRY
                   </span>
-                  <p className="font-display text-xs sm:text-sm font-medium text-white leading-snug">
-                    Synchronized Pathology, Radiology &amp; Case Histories
-                  </p>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Scene 03: Longitudinal Records & Patient Dignity */}
+          {/* Scene 03: Unified Pharmacy & Diagnostic Pipeline */}
           <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-12 lg:gap-16">
             <div className="relative w-full max-w-[620px]">
               <div className="mission-photo-frame rounded-3xl overflow-hidden border border-white/10 shadow-2xl aspect-[4/3] w-full relative group bg-[#090514]">
                 <img
-                  src="/assets/doctors-collaboration-specialists.webp"
-                  alt="Medical practitioners reviewing patient treatment trajectory"
-                  className="photo-replacement w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                  src="/assets/doctor-with-patient-elderly.webp"
+                  alt="Doctor with elderly patient discussing continuous care"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#06030e]/85 via-transparent to-transparent pointer-events-none z-10" />
-                <div className="absolute bottom-4 left-4 right-4 bg-[#0c071a]/90 backdrop-blur-md rounded-2xl p-4 border border-purple-500/25 shadow-xl z-20">
-                  <span className="text-[9px] font-semibold tracking-[0.22em] uppercase text-purple-300 block mb-1">
-                    LONGITUDINAL EHR
+                <div className="absolute inset-0 bg-gradient-to-t from-[#06020f]/80 via-transparent to-transparent" />
+                <div className="absolute bottom-5 left-5 right-5 flex items-center justify-between">
+                  <span className="text-xs font-mono text-champagne bg-obsidian/70 px-3 py-1.5 rounded-lg border border-champagne/20 backdrop-blur-md">
+                    CONTINUOUS CARE · ZERO PAPER LOSS
                   </span>
-                  <p className="font-display text-xs sm:text-sm font-medium text-white leading-snug">
-                    Complete Patient Lifetime Records &amp; Diagnostic Context
-                  </p>
                 </div>
               </div>
             </div>
 
             <div className="space-y-6">
-              <span className="font-display text-xs tracking-[0.26em] uppercase text-purple-400 block font-medium">
-                SCENE III · LIFELONG CONTINUITY
+              <span className="text-xs font-mono tracking-widest uppercase text-champagne font-semibold">
+                SCENE 03 · LIFELONG MEDICAL MEMORY
               </span>
-              <h3 className="satin-headline font-light text-3xl sm:text-4xl lg:text-[44px] leading-tight text-white">
-                Dignity Through Continuous Understanding.
+              <h3 className="satin-headline text-2xl sm:text-4xl font-light text-white leading-tight">
+                No Record Forgotten. <span className="satin-champagne font-normal">No Prescription Misplaced.</span>
               </h3>
-              <p className="text-sm sm:text-base text-stonewarm leading-relaxed text-[#b4a9c6] max-w-xl">
-                A patient is not a collection of isolated billing episodes. They are human beings whose past treatments, chronic conditions, and allergic reactions must be respected across every clinic door they open. RBCurexia ensures their story is never lost.
+              <p className="text-sm sm:text-base text-stonewarm leading-relaxed text-[#b6a9c8]">
+                From childhood immunizations to chronic geriatric management, RBCurexia secures a patient&apos;s complete clinical journey within an encrypted, tamper-evident repository. When visiting a specialist across town, clinical history precedes the consultation, eliminating dangerous prescription amnesia.
               </p>
-              <div className="pt-2 flex flex-wrap gap-3">
-                <span className="px-4 py-2 rounded-full bg-white/[0.04] border border-white/10 text-xs text-white/90 font-medium">
-                  Lifelong Cryptographic Patient ID
-                </span>
-                <span className="px-4 py-2 rounded-full bg-white/[0.04] border border-white/10 text-xs text-white/90 font-medium">
-                  Patient Consent Governed Access
+              <div className="pt-2 flex items-center gap-4">
+                <span className="text-3xl font-display text-champagne font-light">100%</span>
+                <span className="text-xs text-stonewarm max-w-xs leading-tight">
+                  Cryptographically verified e-Prescription audit trail connecting clinics to dispensing counters.
                 </span>
               </div>
             </div>
@@ -278,8 +355,8 @@ export default function MissionPage() {
       <NextPageCta
         nextNum="03"
         nextLabel="Panacea"
-        title="Panacea Clinical Operating System"
-        description="Inspect the flagship chairside cockpit with natural handwriting OCR, live queue coordination, and adverse drug screening."
+        title="Panacea OS · Clinical Workstation"
+        description="Experience the next-generation operating system engineered for outpatient consultation, digital pen prescriptions, and algorithmic patient queues."
         link="/panacea"
       />
     </div>

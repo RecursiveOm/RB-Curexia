@@ -18,22 +18,12 @@ export default function MainHeader({ onOpenMenu }) {
   const currentPath = location.pathname;
 
   const handleNavClick = (e, item) => {
-    if (currentPath === '/overview' || currentPath === '/') {
-      const sectionMap = {
-        '01': 'act-hero',
-        '02': 'act-mission',
-        '03': 'act-panacea',
-        '04': 'act-services',
-        '05': 'act-network',
-        '06': 'act-concierge'
-      };
-      const targetId = sectionMap[item.num];
-      const targetEl = document.getElementById(targetId);
-      if (targetEl) {
-        e.preventDefault();
-        targetEl.scrollIntoView({ behavior: 'smooth' });
-      }
+    if (item.path === '/overview' && (currentPath === '/overview' || currentPath === '/')) {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+    // For all other numbered items (02 Mission, 03 Panacea, 04 Architecture, etc.),
+    // standard Link navigation triggers, opening the dedicated page directly as requested.
   };
 
   return (
@@ -45,11 +35,11 @@ export default function MainHeader({ onOpenMenu }) {
           : 'bg-transparent'
       }`}
     >
-      {/* Left: 4K Logo + Brand Typography */}
+      {/* Left: 4K Monogram + CUREXIA Brand Typography */}
       <Link to="/overview" className="flex items-center gap-2.5 group">
         <img
-          src="/assets/embedded-90b24ba6af66.webp"
-          alt="RBCurexia Logo"
+          src="/assets/rbcurexia-monogram-4k.webp"
+          alt="RB"
           className="h-8 w-auto object-contain transition-transform duration-500 group-hover:scale-105"
         />
         <span className="font-display text-xs font-semibold tracking-[0.34em] text-champagne uppercase">

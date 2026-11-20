@@ -190,7 +190,7 @@ export default function ConciergePage() {
             <div className="p-7 rounded-3xl bg-[#090416] border border-champagne/30 flex items-center gap-5 shadow-2xl">
               <div className="w-16 h-16 rounded-2xl bg-[#0e0720] border border-champagne/40 flex items-center justify-center shrink-0">
                 <img
-                  src="/assets/embedded-90b24ba6af66.webp"
+                  src="/assets/rbcurexia-logo-4k.webp"
                   alt="RBCurexia Official Crest"
                   className="w-12 h-auto object-contain"
                 />

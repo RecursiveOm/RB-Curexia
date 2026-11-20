@@ -275,33 +275,39 @@ body {
   color: #ede8d0;
 }
 
-/* Mission Manifesto Sequential Scroll Illumination */
+/* Mission Manifesto Sequential Scroll Illumination (Clean, Legible & Bolds Smoothly on Scroll) */
 .manifesto-phrase {
   display: inline;
-  color: rgba(246, 244, 240, 0.22);
-  opacity: 0.35;
+  color: rgba(242, 238, 228, 0.52);
+  opacity: 0.75;
+  font-weight: 300;
+  transition: color 0.4s ease, opacity 0.4s ease, font-weight 0.3s ease, text-shadow 0.4s ease;
   will-change: color, opacity, text-shadow;
 }
 
 .manifesto-phrase.is-illuminated {
   color: #FFFFFF;
   opacity: 1;
+  font-weight: 500;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.18);
 }
 
 .manifesto-phrase.manifesto-highlight {
-  color: rgba(246, 244, 240, 0.22);
-  opacity: 0.35;
+  color: rgba(237, 232, 208, 0.58);
+  opacity: 0.8;
+  font-weight: 300;
 }
 
 .manifesto-phrase.manifesto-highlight.is-illuminated,
 .manifesto-highlight.illuminated {
-  color: #FFFFFF;
+  color: #EDE8D0;
   opacity: 1;
-  text-shadow: 0 0 16px rgba(255, 255, 255, 0.25);
+  font-weight: 600;
+  text-shadow: 0 0 14px rgba(237, 232, 208, 0.3);
 }
 
 .manifesto-dim {
-  color: rgba(246, 244, 240, 0.35);
+  color: rgba(246, 244, 240, 0.5);
 }
 
 /* Architecture Ecosystem 3D Stage Styles */

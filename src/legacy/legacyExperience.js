@@ -454,13 +454,20 @@ export function initializeRbcurexiaExperience({ submitContact, subscribeNewslett
 
   function updateFeaturedPanel(srv) {
     if (!srv) return;
+    const spotIcon = document.getElementById('spot-icon');
+    if (!spotIcon) return;
     currentFeaturedId = srv.id;
-    document.getElementById('spot-icon').innerHTML = srv.svg;
-    document.getElementById('spot-title').textContent = srv.title;
-    document.getElementById('spot-sub').textContent = srv.sub;
-    document.getElementById('spot-badge').textContent = srv.badge;
-    document.getElementById('spot-cat-label').textContent = `· ${srv.catName}`;
-    document.getElementById('spot-desc').textContent = srv.desc;
+    spotIcon.innerHTML = srv.svg;
+    const title = document.getElementById('spot-title');
+    if (title) title.textContent = srv.title;
+    const sub = document.getElementById('spot-sub');
+    if (sub) sub.textContent = srv.sub;
+    const badge = document.getElementById('spot-badge');
+    if (badge) badge.textContent = srv.badge;
+    const cat = document.getElementById('spot-cat-label');
+    if (cat) cat.textContent = `· ${srv.catName}`;
+    const desc = document.getElementById('spot-desc');
+    if (desc) desc.textContent = srv.desc;
   }
 
   function render24Architecture() {

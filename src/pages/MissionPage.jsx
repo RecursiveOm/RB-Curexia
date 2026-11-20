@@ -16,6 +16,7 @@ export default function MissionPage() {
         primaryCtaLink="/panacea"
         secondaryCtaText="Explore System Architecture"
         secondaryCtaLink="/architecture"
+        pageId="mission"
       />
 
       {/* 2. The Fragmentation Problem Section */}

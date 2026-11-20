@@ -17,6 +17,25 @@ export default function MainHeader({ onOpenMenu }) {
 
   const currentPath = location.pathname;
 
+  const handleNavClick = (e, item) => {
+    if (currentPath === '/overview' || currentPath === '/') {
+      const sectionMap = {
+        '01': 'act-hero',
+        '02': 'act-mission',
+        '03': 'act-panacea',
+        '04': 'act-services',
+        '05': 'act-network',
+        '06': 'act-concierge'
+      };
+      const targetId = sectionMap[item.num];
+      const targetEl = document.getElementById(targetId);
+      if (targetEl) {
+        e.preventDefault();
+        targetEl.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
+
   return (
     <header
       id="main-header"
@@ -52,6 +71,7 @@ export default function MainHeader({ onOpenMenu }) {
             <Link
               key={item.num}
               to={item.path}
+              onClick={(e) => handleNavClick(e, item)}
               className={`header-nav-link hover:text-bone transition-colors relative py-1 ${
                 isActive ? 'active-sec text-bone font-semibold' : ''
               }`}

@@ -16,6 +16,7 @@ export default function NetworkPage() {
         primaryCtaLink="#network-topology"
         secondaryCtaText="Join Verified Network"
         secondaryCtaLink="/concierge"
+        pageId="network"
       />
 
       {/* 2. Interactive Network Topology */}

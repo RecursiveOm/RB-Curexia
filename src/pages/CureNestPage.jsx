@@ -14,6 +14,7 @@ export default function CureNestPage() {
         primaryCtaLink="/architecture"
         secondaryCtaText="Book a Hospital Walkthrough"
         secondaryCtaLink="/concierge"
+        pageId="curenest"
       />
 
       {/* Inpatient Capabilities Breakdown */}

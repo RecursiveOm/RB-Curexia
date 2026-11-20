@@ -81,6 +81,7 @@ export default function PanaceaPage() {
         primaryCtaLink="/architecture"
         secondaryCtaText="Book a Hospital Demo"
         secondaryCtaLink="/concierge"
+        pageId="panacea"
       />
 
       {/* 2. 3D Floating Monitor Chassis with Real UI */}

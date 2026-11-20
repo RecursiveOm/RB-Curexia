@@ -14,6 +14,7 @@ export default function PulsePortPage() {
         primaryCtaLink="/architecture"
         secondaryCtaText="Deploy Biometric Terminals"
         secondaryCtaLink="/concierge"
+        pageId="pulseport"
       />
 
       <section className="relative z-10 w-full py-20 px-6 sm:px-12 lg:px-16 border-t border-white/[0.08] bg-[#06030e]/80">

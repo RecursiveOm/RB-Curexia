@@ -14,6 +14,7 @@ export default function PharmixoPage() {
         primaryCtaLink="/architecture"
         secondaryCtaText="Connect In-House Pharmacy"
         secondaryCtaLink="/concierge"
+        pageId="pharmixo"
       />
 
       <section className="relative z-10 w-full py-20 px-6 sm:px-12 lg:px-16 border-t border-white/[0.08] bg-[#06030e]/80">

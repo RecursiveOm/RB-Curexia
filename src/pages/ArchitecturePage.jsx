@@ -37,6 +37,7 @@ export default function ArchitecturePage() {
         primaryCtaLink="#interactive-nodes"
         secondaryCtaText="Book Architecture Briefing"
         secondaryCtaLink="/concierge"
+        pageId="architecture"
       />
 
       {/* 2. Interactive 3D Room-Based Architecture */}

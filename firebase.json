@@ -19,7 +19,7 @@
     "cleanUrls": true,
     "headers": [
       {
-        "source": "**/*.@(js|css|woff2|webp|png|jpg)",
+        "source": "**/*.@(js|css|woff2|webp|png|jpg|mp4|webm)",
         "headers": [
           {
             "key": "Cache-Control",

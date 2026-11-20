@@ -1,28 +1,17 @@
 <section
-  class="relative w-full h-screen min-h-[700px] flex flex-col justify-between px-6 sm:px-12 lg:px-16 pt-28 pb-10 overflow-hidden"
+  class="relative z-10 w-full h-screen min-h-[700px] flex flex-col justify-between px-6 sm:px-12 lg:px-16 pt-28 pb-10 overflow-hidden"
   id="act-hero">
-  <!-- Ambient Video Background -->
-  <video id="hero-bg-video" class="hero-video-bg" autoplay muted loop playsinline webkit-playsinline preload="auto"
-    tabindex="-1" aria-hidden="true" src="/hero_video.mp4?v=2">
-    <source src="/hero_video.mp4?v=2" type="video/mp4" />
+  <!-- Ambient Video Background (VP9 WebM + Faststart MP4 for instant 60fps playback) -->
+  <video id="hero-bg-video" class="hero-video-bg" autoplay muted loop playsinline webkit-playsinline preload="metadata"
+    tabindex="-1" aria-hidden="true">
+    <source src="/hero_video.webm" type="video/webm" />
+    <source src="/hero_video.mp4" type="video/mp4" />
   </video>
   <!-- 3D WebGL Canvas (hidden) -->
   <div class="absolute inset-0 z-0 w-full h-full" id="hero-canvas-stage" style="display: none;"></div>
-  <div class="hero-orbit-layer" aria-hidden="true">
-    <span class="hero-orbit-chip">Clinical intelligence</span>
-    <span class="hero-orbit-chip">Connected hospital workflows</span>
-    <span class="hero-orbit-chip">Continuity of patient care</span>
-  </div>
   <div class="hero-vignette"></div>
-  <!-- Top Spacer -->
-  <div class="relative z-20 flex items-center justify-center pointer-events-none mt-2">
-    <span
-      class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/[0.03] border border-white/10 backdrop-blur-md text-[10px] font-medium tracking-[0.28em] uppercase text-champagne/90 opacity-0"
-      id="hero-eyebrow">
-      <span class="w-1.5 h-1.5 rounded-full bg-champagne"></span>
-      RBCUREXIA CLINICAL ECOSYSTEM
-    </span>
-  </div>
+  <!-- Hidden eyebrow anchor for timeline compatibility -->
+  <div id="hero-eyebrow" class="hidden" aria-hidden="true"></div>
   <!-- Lower-Center Focused Editorial Composition — Single Strong Headline -->
   <div class="relative z-20 w-full max-w-4xl mx-auto text-center flex flex-col items-center mt-auto mb-6"
     id="hero-copy-container">

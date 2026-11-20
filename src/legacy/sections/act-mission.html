@@ -27,8 +27,8 @@
       <div class="grid grid-cols-1 lg:grid-cols-2 items-center gap-10 lg:gap-16 scene-card">
         <!-- Left: Image Card with Integrated In-Frame Telemetry Badge -->
         <div class="relative w-full max-w-[620px]">
-          <div class="clip-reveal-mask mission-photo-frame rounded-3xl overflow-hidden border border-white/10 shadow-2xl aspect-[4/3] w-full relative group bg-[#090514]">
-            <img alt="Physician examining real-time patient diagnostics" class="parallax-img photo-replacement w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105" decoding="async" loading="lazy" src="/assets/embedded-48f0a2b838aa.webp" data-fallback="/assets/embedded-48f0a2b838aa.webp"/>
+          <div class="clip-reveal-mask center-image-sweep mission-photo-frame rounded-3xl overflow-hidden border border-white/10 shadow-2xl aspect-[4/3] w-full relative group bg-[#090514]">
+            <img alt="Physician examining real-time patient diagnostics" class="parallax-img photo-replacement w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105" decoding="async" loading="lazy" src="/assets/doctor-consultation-blonde.webp" data-fallback="/assets/doctor-consultation-blonde.webp"/>
             <div class="absolute inset-0 bg-gradient-to-t from-[#06030e]/85 via-transparent to-transparent pointer-events-none z-10"></div>
             <!-- In-Frame Glass Telemetry Badge (Seamless, Never Hanging in Empty Space) -->
             <div class="parallax-badge absolute bottom-4 left-4 right-4 sm:right-auto sm:max-w-sm bg-[#0c071a]/90 backdrop-blur-md rounded-2xl p-4 border border-purple-500/25 shadow-xl z-20">
@@ -53,23 +53,10 @@
         </div>
       </div>
 
-      <!-- Scene 02: Multidisciplinary Collaboration (Matching Screenshot 3) -->
+      <!-- Scene 02: Multidisciplinary Collaboration (Matching User Request: Image on Right) -->
       <div class="grid grid-cols-1 lg:grid-cols-2 items-center gap-10 lg:gap-16 scene-card">
-        <!-- Left: Image Card with 3D DNA Helix Stage & Integrated In-Frame Badge -->
-        <div class="relative w-full max-w-[620px]">
-          <div class="clip-reveal-mask mission-photo-frame rounded-3xl overflow-hidden border border-white/10 shadow-2xl aspect-[4/3] w-full relative group bg-[#090514]">
-            <canvas id="mission-3d-dna-stage" class="absolute inset-0 w-full h-full z-15 pointer-events-none opacity-90"></canvas>
-            <img alt="Medical specialists collaborating around high-resolution diagnostic imaging" class="parallax-img photo-replacement w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105" decoding="async" loading="lazy" src="/assets/embedded-48ca36177458.webp" data-fallback="/assets/embedded-48ca36177458.webp"/>
-            <div class="absolute inset-0 bg-gradient-to-t from-[#06030e]/85 via-[#06030e]/30 to-transparent pointer-events-none z-10"></div>
-            <!-- In-Frame Glass Shared Boards Badge -->
-            <div class="parallax-badge absolute bottom-4 left-4 right-4 sm:right-auto sm:max-w-sm bg-[#0c071a]/90 backdrop-blur-md rounded-2xl p-4 border border-purple-500/25 shadow-xl z-20">
-              <span class="text-[9px] font-semibold tracking-[0.22em] uppercase text-purple-300 block mb-1">SHARED CLINICAL BOARDS</span>
-              <p class="font-display text-xs sm:text-sm font-medium text-white/95 leading-snug">Synchronized Pathology, Radiology &amp; Case Histories</p>
-            </div>
-          </div>
-        </div>
-        <!-- Right: Text Content -->
-        <div class="space-y-6">
+        <!-- Left on Desktop: Text Content -->
+        <div class="space-y-6 order-2 lg:order-1">
           <span class="font-display text-xs tracking-[0.26em] uppercase text-champagne block font-medium">SCENE II · MULTIDISCIPLINARY COLLABORATION</span>
           <h3 class="satin-headline font-light text-3xl sm:text-4xl lg:text-[44px] leading-tight text-white">
             Coordinated Care Across Specialists &amp; Wards.
@@ -82,14 +69,28 @@
             <span class="px-4 py-2 rounded-full bg-white/[0.04] border border-white/10 text-xs text-white/90 font-medium">Multi-Phase Care Pathways</span>
           </div>
         </div>
+
+        <!-- Right on Desktop: Image Card with 3D DNA Helix Stage & Integrated In-Frame Badge -->
+        <div class="relative w-full max-w-[620px] order-1 lg:order-2 lg:ml-auto">
+          <div class="clip-reveal-mask center-image-sweep mission-photo-frame rounded-3xl overflow-hidden border border-white/10 shadow-2xl aspect-[4/3] w-full relative group bg-[#090514]">
+            <canvas id="mission-3d-dna-stage" class="absolute inset-0 w-full h-full z-15 pointer-events-none opacity-90"></canvas>
+            <img alt="Medical specialists collaborating around high-resolution diagnostic imaging" class="parallax-img photo-replacement w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105" decoding="async" loading="lazy" src="/assets/doctors-collaboration-specialists.webp" data-fallback="/assets/doctors-collaboration-specialists.webp"/>
+            <div class="absolute inset-0 bg-gradient-to-t from-[#06030e]/85 via-[#06030e]/30 to-transparent pointer-events-none z-10"></div>
+            <!-- In-Frame Glass Shared Boards Badge -->
+            <div class="parallax-badge absolute bottom-4 left-4 right-4 sm:right-auto sm:max-w-sm bg-[#0c071a]/90 backdrop-blur-md rounded-2xl p-4 border border-purple-500/25 shadow-xl z-20">
+              <span class="text-[9px] font-semibold tracking-[0.22em] uppercase text-purple-300 block mb-1">SHARED CLINICAL BOARDS</span>
+              <p class="font-display text-xs sm:text-sm font-medium text-white/95 leading-snug">Synchronized Pathology, Radiology &amp; Case Histories</p>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Scene 03: Connected Hospital Infrastructure -->
       <div class="grid grid-cols-1 lg:grid-cols-2 items-center gap-10 lg:gap-16 scene-card">
         <!-- Left: Image Card with Integrated In-Frame Connected Hospital OS Badge -->
         <div class="relative w-full max-w-[620px]">
-          <div class="clip-reveal-mask mission-photo-frame rounded-3xl overflow-hidden border border-white/10 shadow-2xl aspect-[4/3] w-full relative group bg-[#090514]">
-            <img alt="Doctors in a modern connected hospital environment" class="parallax-img photo-replacement w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105" decoding="async" loading="lazy" src="/assets/embedded-e24a6c0e27b3.webp" data-fallback="/assets/embedded-e24a6c0e27b3.webp"/>
+          <div class="clip-reveal-mask center-image-sweep mission-photo-frame rounded-3xl overflow-hidden border border-white/10 shadow-2xl aspect-[4/3] w-full relative group bg-[#090514]">
+            <img alt="Doctors in a modern connected hospital environment" class="parallax-img photo-replacement w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105" decoding="async" loading="lazy" src="/assets/doctors-hospital-hallway-scrubs.webp" data-fallback="/assets/doctors-hospital-hallway-scrubs.webp"/>
             <div class="absolute inset-0 bg-gradient-to-t from-[#06030e]/85 via-transparent to-transparent pointer-events-none z-10"></div>
             <!-- In-Frame Glass Hospital OS Badge -->
             <div class="parallax-badge absolute bottom-4 left-4 right-4 sm:right-auto sm:max-w-sm bg-[#0c071a]/90 backdrop-blur-md rounded-2xl p-4 border border-purple-500/25 shadow-xl z-20">

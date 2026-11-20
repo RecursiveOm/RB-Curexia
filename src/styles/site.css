@@ -86,7 +86,7 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
-/* Controlled 35mm Studio Film Grain */
+/* Controlled 35mm Studio Film Grain — GPU Composited to prevent repaint stalls */
 .film-grain {
   position: fixed;
   inset: 0;
@@ -94,6 +94,10 @@ body {
   z-index: 90;
   opacity: 0.016;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: transform;
 }
 
 /* Hero Vignette seamlessly blending into Section 02 */
@@ -107,17 +111,25 @@ body {
     linear-gradient(180deg, rgba(4, 2, 8, 0.68) 0%, rgba(4, 2, 8, 0) 18%, rgba(4, 2, 8, 0) 64%, #070310 100%);
 }
 
-/* Floating Header Transition */
+/* Floating Header Transition — Hardware-Accelerated & Layout-Stable */
 #main-header {
-  transition: background-color 0.45s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.45s ease, padding 0.45s ease, backdrop-filter 0.45s ease;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  will-change: background-color, border-color, box-shadow;
+  transition: background-color 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.28s ease,
+              box-shadow 0.28s ease;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid transparent;
 }
 
 #main-header.header-scrolled {
-  background-color: rgba(6, 3, 14, 0.82);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-  padding-top: 0.9rem;
-  padding-bottom: 0.9rem;
+  background-color: rgba(6, 3, 14, 0.88);
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
 }
 
 /* Navigation Link Active Indicator */
@@ -283,9 +295,9 @@ body {
 
 .manifesto-phrase.manifesto-highlight.is-illuminated,
 .manifesto-highlight.illuminated {
-  color: #ede8d0;
+  color: #FFFFFF;
   opacity: 1;
-  text-shadow: 0 0 28px rgba(237, 232, 208, 0.5), 0 0 50px rgba(168, 85, 247, 0.25);
+  text-shadow: 0 0 16px rgba(255, 255, 255, 0.25);
 }
 
 .manifesto-dim {
@@ -441,15 +453,26 @@ textarea {
   body {
     width: 100%;
     overflow-x: clip;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  select,
+  textarea {
+    font-size: 16px !important; /* Prevents iOS Safari from zooming into the viewport on focus */
   }
 
   #main-header {
     padding-left: 1rem;
     padding-right: 1rem;
+    padding-top: 0.85rem;
+    padding-bottom: 0.85rem;
   }
 
   #act-hero {
-    min-height: max(680px, 100svh);
+    min-height: 560px;
+    height: 100svh;
   }
 
   #hero-copy-container {
@@ -535,14 +558,52 @@ textarea {
 
 html {
   background: var(--rx-ink);
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* Cosmic Night Sky Starfield Canvas */
+#cosmic-starfield-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0; /* Kept star-free on the hero header video; smoothly reveals on subsequent sections */
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 body.cinema-atmosphere {
   background:
-    radial-gradient(ellipse 58% 32% at 84% 8%, rgba(86, 55, 172, .19), transparent 72%),
-    radial-gradient(ellipse 52% 30% at 5% 38%, rgba(35, 116, 128, .095), transparent 75%),
-    radial-gradient(ellipse 70% 38% at 72% 76%, rgba(91, 54, 160, .12), transparent 72%),
-    linear-gradient(180deg, #050710 0%, #08091a 34%, #080a18 62%, #050710 100%);
+    radial-gradient(ellipse 75% 42% at 50% 0%, rgba(125, 65, 230, .14), transparent 70%),
+    radial-gradient(ellipse 65% 35% at 85% 18%, rgba(95, 52, 185, .15), transparent 72%),
+    radial-gradient(ellipse 55% 30% at 8% 46%, rgba(35, 125, 145, .11), transparent 75%),
+    radial-gradient(ellipse 70% 38% at 75% 72%, rgba(105, 58, 185, .14), transparent 72%),
+    radial-gradient(ellipse 60% 30% at 28% 90%, rgba(75, 38, 145, .12), transparent 70%),
+    linear-gradient(180deg, #04020a 0%, #070414 22%, #0b051c 45%, #080316 68%, #05020c 100%);
+  background-attachment: fixed;
 }
 
 ::selection {
@@ -551,16 +612,10 @@ body.cinema-atmosphere {
 }
 
 #main-header {
-  padding-left: clamp(1rem, 4vw, 4.25rem);
-  padding-right: clamp(1rem, 4vw, 4.25rem);
-  padding-top: 1.1rem;
-  padding-bottom: 1.1rem;
-}
-
-#main-header.header-scrolled {
-  background: rgba(5, 7, 16, .78);
-  border-bottom-color: rgba(203, 194, 255, .13);
-  box-shadow: 0 12px 36px rgba(0, 0, 0, .18);
+  padding-left: clamp(1rem, 3.5vw, 4.25rem);
+  padding-right: clamp(1rem, 3.5vw, 4.25rem);
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 
 #act-hero {
@@ -568,16 +623,17 @@ body.cinema-atmosphere {
   height: 100svh;
   isolation: isolate;
   background: #050710;
+  position: relative;
+  z-index: 2;
 }
 
 #act-hero::before {
   content: "";
   position: absolute;
   z-index: 2;
-  inset: 8% 10% 21%;
+  inset: 5% 5% 15%;
   pointer-events: none;
-  background: radial-gradient(ellipse at 50% 48%, rgba(130, 99, 224, .14), transparent 59%);
-  filter: blur(28px);
+  background: radial-gradient(ellipse at 50% 48%, rgba(130, 99, 224, .12) 0%, rgba(130, 99, 224, .04) 45%, transparent 72%);
 }
 
 #hero-canvas-stage {
@@ -588,7 +644,7 @@ body.cinema-atmosphere {
   filter: saturate(1.12) contrast(1.04);
 }
 
-/* Hero background video */
+/* Hero background video — Hardware-Accelerated & Layer-Isolated */
 #hero-bg-video,
 .hero-video-bg,
 #act-hero>video {
@@ -597,9 +653,14 @@ body.cinema-atmosphere {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.35;
+  opacity: 0.38;
   z-index: 0;
   pointer-events: none;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  will-change: transform;
 }
 
 #hero-bg-video::-webkit-media-controls,
@@ -635,10 +696,7 @@ body.cinema-atmosphere {
 }
 
 .hero-orbit-layer {
-  position: absolute;
-  inset: 15% 4% 23%;
-  z-index: 8;
-  pointer-events: none;
+  display: none !important;
 }
 
 .hero-orbit-chip {
@@ -844,6 +902,14 @@ body.cinema-atmosphere {
 
 #panacea-3d-monolith img {
   filter: saturate(.92) contrast(1.02);
+}
+
+#panacea-hud-alert,
+#panacea-hud-qr {
+  position: relative !important;
+  box-sizing: border-box;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
 #interactive-queue-demo {
@@ -1272,11 +1338,12 @@ body.cinema-atmosphere {
 
 .service-featured-panel {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  min-height: 390px;
-  padding: clamp(1.35rem, 3vw, 2.2rem);
+  display: grid !important;
+  grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
+  align-items: center !important;
+  gap: 2rem !important;
+  min-height: 340px;
+  padding: clamp(1.5rem, 3vw, 2.4rem);
   border-radius: 1.65rem;
   overflow: hidden;
 }
@@ -1589,20 +1656,20 @@ body.cinema-atmosphere {
 }
 
 .service-module-copy strong {
-  overflow: hidden;
-  color: rgba(241, 239, 251, .9);
-  font-size: .66rem;
-  font-weight: 650;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  color: rgba(241, 239, 251, .95);
+  font-size: .88rem;
+  font-weight: 500;
+  line-height: 1.3;
+  white-space: normal;
+  word-break: break-word;
 }
 
 .service-module-copy small {
-  overflow: hidden;
-  color: rgba(173, 171, 195, .55);
-  font-size: .56rem;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  color: rgba(184, 172, 205, .75);
+  font-size: .72rem;
+  line-height: 1.4;
+  white-space: normal;
+  word-break: break-word;
 }
 
 .service-module-arrow {
@@ -1700,9 +1767,9 @@ body.cinema-atmosphere {
 
 @media (max-width: 700px) {
   #act-hero {
-    height: auto;
-    min-height: max(760px, 100svh);
-    padding-top: 7.5rem;
+    height: 100svh;
+    min-height: 560px;
+    padding-top: 5.5rem;
     padding-bottom: 1.6rem;
   }
 
@@ -1839,7 +1906,13 @@ body.cinema-atmosphere {
   }
 
   .service-featured-panel {
-    min-height: 330px;
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+    min-height: auto;
+  }
+
+  .service-featured-panel > div {
+    grid-column: 1 / -1 !important;
   }
 
   .service-clusters-heading {
@@ -1904,5 +1977,89 @@ body.cinema-atmosphere {
   .service-module-link,
   .mission-photo-frame img {
     transition: none !important;
+  }
+}
+
+/* =========================================================================
+   SYMMETRICAL ARCHITECTURE ECOSYSTEM & 24 MODULE MATRIX ENHANCEMENTS
+   ========================================================================= */
+
+/* Gyroscopic Telemetry Rings Animation */
+.hub-telemetry-ring-outer {
+  transform-origin: 500px 340px;
+  animation: rx-rotate-cw 32s linear infinite;
+}
+
+.hub-telemetry-ring-mid {
+  transform-origin: 500px 340px;
+  animation: rx-rotate-ccw 24s linear infinite;
+}
+
+@keyframes rx-rotate-cw {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes rx-rotate-ccw {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
+
+.hub-nexus-core-glow {
+  transform-origin: 500px 340px;
+  animation: rx-pulse-core 3s ease-in-out infinite alternate;
+}
+
+@keyframes rx-pulse-core {
+  0% { transform: scale(0.92); opacity: 0.8; }
+  100% { transform: scale(1.08); opacity: 1; }
+}
+
+/* Symmetrical Full-Width Service Cluster Pillar */
+#services-24-grid {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 2.25rem !important;
+  width: 100% !important;
+}
+
+.service-cluster.is-single-pillar,
+.service-cluster.is-pillar-shelf {
+  grid-column: 1 / -1 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.center-image-sweep {
+  will-change: clip-path, transform, opacity;
+}
+
+/* Symmetrical Interactive Module Cards */
+.symmetrical-card {
+  position: relative;
+  background: rgba(12, 7, 29, 0.88);
+  border: 1px solid rgba(192, 180, 242, 0.14);
+  backdrop-filter: blur(12px);
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.symmetrical-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(192, 132, 252, 0.45);
+  background: rgba(22, 12, 51, 0.95);
+  box-shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.7), 0 0 20px rgba(168, 85, 247, 0.2);
+}
+
+.symmetrical-card.is-selected {
+  border-color: rgba(220, 207, 168, 0.65) !important;
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.25), rgba(224, 207, 154, 0.12)) !important;
+  box-shadow: 0 0 25px rgba(168, 85, 247, 0.3), inset 0 0 15px rgba(220, 207, 168, 0.08) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hub-telemetry-ring-outer,
+  .hub-telemetry-ring-mid,
+  .hub-nexus-core-glow {
+    animation: none !important;
   }
 }

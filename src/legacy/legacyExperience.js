@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Lenis from 'lenis';
 
 export function initializeRbcurexiaExperience({ submitContact, subscribeNewsletter }) {
   if (window.__RBCUREXIA_EXPERIENCE_INITIALIZED__) return;
@@ -105,11 +106,26 @@ export function initializeRbcurexiaExperience({ submitContact, subscribeNewslett
       if (heroSub) { heroSub.style.opacity = '1'; heroSub.style.transform = 'none'; }
       if (heroCtas) { heroCtas.style.opacity = '1'; heroCtas.style.transform = 'none'; }
 
-      // Start hero background video as soon as curtain lifts
+      // Start hero background video as soon as curtain lifts + auto-pause when out of view (saves massive CPU/GPU)
       const bgVideo = document.getElementById('hero-bg-video');
-      if (bgVideo && bgVideo.paused) {
+      const heroSection = document.getElementById('act-hero');
+      if (bgVideo) {
         bgVideo.muted = true;
-        bgVideo.play().catch(() => { });
+        if (bgVideo.paused) bgVideo.play().catch(() => { });
+
+        if (heroSection && 'IntersectionObserver' in window && !window.__HERO_VIDEO_OBS_ATTACHED__) {
+          window.__HERO_VIDEO_OBS_ATTACHED__ = true;
+          const heroVideoObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                if (bgVideo.paused) bgVideo.play().catch(() => { });
+              } else {
+                if (!bgVideo.paused) bgVideo.pause();
+              }
+            });
+          }, { threshold: 0.05 });
+          heroVideoObserver.observe(heroSection);
+        }
       }
     };
 
@@ -143,15 +159,66 @@ export function initializeRbcurexiaExperience({ submitContact, subscribeNewslett
   }
 
   function initScrollMotionSystem() {
-    // Floating Header Solidification on Scroll
-    const header = document.getElementById('main-header');
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 40) {
-        header.classList.add('header-scrolled');
-      } else {
-        header.classList.remove('header-scrolled');
+    // Lenis Inertial Smooth Scrolling (Calibrated for desktop fluid glide + mobile 120Hz responsiveness)
+    let lenis = null;
+    if (!prefersReducedMotion) {
+      try {
+        const isMobileDevice = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
+        lenis = new Lenis({
+          duration: isMobileDevice ? 1.05 : 1.18,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          orientation: 'vertical',
+          gestureOrientation: 'vertical',
+          smoothWheel: true,
+          wheelMultiplier: 0.95,
+          syncTouch: false, // Allows native mobile hardware momentum without input lag
+          touchMultiplier: isMobileDevice ? 1.0 : 1.2,
+        });
+
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add((time) => {
+          lenis.raf(time * 1000);
+        });
+        gsap.ticker.lagSmoothing(500, 33);
+        window.__LENIS__ = lenis;
+
+        // Buttery smooth anchor link scrolling
+        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+          anchor.addEventListener('click', (e) => {
+            const href = anchor.getAttribute('href');
+            if (!href || href === '#' || href === '#!') return;
+            const target = document.querySelector(href);
+            if (target) {
+              e.preventDefault();
+              lenis.scrollTo(target, { offset: -60, duration: 1.15 });
+            }
+          });
+        });
+      } catch (lenisErr) {
+        console.warn('Lenis smooth scroll fallback:', lenisErr);
       }
-    }, { passive: true });
+    }
+
+    // Floating Header Solidification on Scroll — Throttled & State-Cached (Zero Layout Lag)
+    const header = document.getElementById('main-header');
+    if (header) {
+      let isHeaderScrolled = false;
+      const updateHeaderScroll = (yVal) => {
+        const y = typeof yVal === 'number' ? yVal : (window.scrollY || window.pageYOffset || 0);
+        const shouldBeScrolled = y > 28;
+        if (shouldBeScrolled !== isHeaderScrolled) {
+          isHeaderScrolled = shouldBeScrolled;
+          header.classList.toggle('header-scrolled', isHeaderScrolled);
+        }
+      };
+
+      if (lenis) {
+        lenis.on('scroll', (e) => updateHeaderScroll(e.scroll));
+      } else {
+        window.addEventListener('scroll', () => updateHeaderScroll(), { passive: true });
+      }
+      updateHeaderScroll();
+    }
 
     // Active Section Highlighting in Header & Overlay
     const sections = ['act-hero', 'act-mission', 'act-panacea', 'act-services', 'act-network', 'act-concierge'];
@@ -176,7 +243,7 @@ export function initializeRbcurexiaExperience({ submitContact, subscribeNewslett
     });
 
     if (prefersReducedMotion) {
-      document.querySelectorAll('.manifesto-phrase').forEach(el => el.classList.add('is-illuminated', 'illuminated'));
+      document.querySelectorAll('.manifesto-word').forEach(el => { el.style.color = '#FFFFFF'; el.style.opacity = '1'; el.style.fontWeight = '500'; });
       return;
     }
 
@@ -203,38 +270,59 @@ export function initializeRbcurexiaExperience({ submitContact, subscribeNewslett
       }
     });
 
-    // Mission Manifesto — Strict Sequential One-By-One Illumination on Scroll
-    const pinTrigger = document.getElementById('manifesto-scroll-pin');
+    // Mission Manifesto — Smooth, Elegant Sequential Editorial Illumination on Scroll
     const manifestoPhrases = document.querySelectorAll('#mission-manifesto .manifesto-phrase');
-    if (pinTrigger && manifestoPhrases.length) {
+    const manifestoEl = document.getElementById('mission-manifesto');
+    if (manifestoEl && manifestoPhrases.length) {
       gsap.set(manifestoPhrases, {
-        color: 'rgba(246, 244, 240, 0.22)',
+        color: 'rgba(235, 230, 248, 0.22)',
+        fontWeight: '300',
         opacity: 0.35,
         textShadow: 'none'
       });
 
       const manifestoTl = gsap.timeline({
         scrollTrigger: {
-          trigger: pinTrigger,
-          start: 'top 22%',
-          end: '+=900',
-          pin: true,
-          scrub: 0.5,
-          anticipatePin: 1
+          trigger: manifestoEl,
+          start: 'top 92%',
+          end: 'bottom 45%',
+          scrub: 0.35
         }
       });
 
       manifestoPhrases.forEach((phrase, idx) => {
         const isHighlight = phrase.classList.contains('manifesto-highlight');
         manifestoTl.to(phrase, {
-          color: isHighlight ? '#EDE8D0' : '#FFFFFF',
+          color: isHighlight ? '#FFFFFF' : 'rgba(242, 238, 228, 0.85)',
+          fontWeight: '300',
           opacity: 1,
-          textShadow: isHighlight ? '0 0 24px rgba(237,232,208,0.5), 0 0 45px rgba(168,85,247,0.3)' : '0 0 16px rgba(255,255,255,0.3)',
-          duration: 1.0,
-          ease: 'power2.inOut'
-        }, idx * 1.0);
+          textShadow: isHighlight
+            ? '0 0 16px rgba(255, 255, 255, 0.24)'
+            : 'none',
+          duration: 0.55,
+          ease: 'power2.out'
+        }, idx * 0.45);
       });
     }
+
+    // Center Image Sweep from Left to Right
+    document.querySelectorAll('.center-image-sweep').forEach((mask) => {
+      gsap.fromTo(mask,
+        { clipPath: 'inset(0% 100% 0% 0% round 24px)', x: -35, opacity: 0.15 },
+        {
+          clipPath: 'inset(0% 0% 0% 0% round 24px)',
+          x: 0,
+          opacity: 1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: mask,
+            start: 'top 85%',
+            end: 'top 35%',
+            scrub: 0.8
+          }
+        }
+      );
+    });
 
     // Mission 3 Scenes — Smooth Clip-Path Mask Reveals & Layered Image Parallax
     document.querySelectorAll('.clip-reveal-mask').forEach((mask) => {
@@ -408,7 +496,7 @@ export function initializeRbcurexiaExperience({ submitContact, subscribeNewslett
     }
 
     if (!matching.length) {
-      grid.innerHTML = `<div class="service-empty-state"><span>⌕</span><strong>No modules found</strong><p>Try another term, or clear the active category filter.</p><button type="button" class="service-reset-search" data-reset-services>Show all 24 modules</button></div>`;
+      grid.innerHTML = `<div class="service-empty-state col-span-full w-full py-12 text-center"><span>⌕</span><strong>No modules found</strong><p>Try another term, or clear the active category filter.</p><button type="button" class="service-reset-search mt-4 px-6 py-2 rounded-xl bg-purple-500/20 border border-purple-400/40 text-purple-200 text-xs" data-reset-services>Show all 24 modules</button></div>`;
       grid.querySelector('[data-reset-services]')?.addEventListener('click', () => {
         currentSearchTerm = '';
         currentCategory = 'all';
@@ -428,28 +516,45 @@ export function initializeRbcurexiaExperience({ submitContact, subscribeNewslett
       .map((category) => ({ ...category, items: matching.filter((service) => service.cat === category.id) }))
       .filter((category) => category.items.length > 0);
 
-    grid.innerHTML = categoryGroups.map((category) => `
-        <article class="service-cluster service-cluster-${category.id}">
-          <div class="service-cluster-head">
-            <div class="service-cluster-symbol" aria-hidden="true">${category.icon}</div>
-            <div class="service-cluster-heading-copy">
-              <span class="service-cluster-index">PILLAR ${category.index}</span>
-              <h4>${category.title}</h4>
+    grid.innerHTML = categoryGroups.map((category) => {
+      const gridColsClass = category.id === 'support'
+        ? 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
+        : category.id === 'analytics'
+          ? 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5'
+          : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3';
+
+      return `
+        <article class="service-cluster service-cluster-${category.id} is-pillar-shelf w-full col-span-full mb-8 last:mb-0">
+          <div class="service-cluster-head flex items-center justify-between pb-3.5 border-b border-white/[0.08]">
+            <div class="flex items-center gap-3">
+              <div class="service-cluster-symbol" aria-hidden="true">${category.icon}</div>
+              <div class="service-cluster-heading-copy">
+                <span class="service-cluster-index">PILLAR ${category.index}</span>
+                <h4>${category.title}</h4>
+              </div>
             </div>
-            <span class="service-cluster-count">${String(category.items.length).padStart(2, '0')} <small>/${String(category.id === 'support' ? 8 : category.id === 'analytics' ? 10 : 6).padStart(2, '0')}</small></span>
+            <span class="service-cluster-count font-mono text-sm px-3.5 py-1 rounded-full bg-white/[0.04] border border-white/10 text-white/90">
+              ${String(category.items.length).padStart(2, '0')} <small class="text-white/40">/${String(category.id === 'support' ? 8 : category.id === 'analytics' ? 10 : 6).padStart(2, '0')}</small>
+            </span>
           </div>
-          <p class="service-cluster-description">${category.descriptor}</p>
-          <div class="service-module-list">
+          <p class="service-cluster-description py-2 text-xs text-[#b8accd] max-w-2xl">${category.descriptor}</p>
+          <div class="grid ${gridColsClass} gap-3.5 pt-2">
             ${category.items.map((service) => `
-              <button type="button" class="service-module-link ${service.id === currentFeaturedId ? 'is-selected' : ''}" data-srv-id="${service.id}" aria-pressed="${service.id === currentFeaturedId}">
-                <span class="service-module-icon">${service.svg}</span>
-                <span class="service-module-copy"><strong>${service.title}</strong><small>${service.sub}</small></span>
-                <span class="service-module-arrow" aria-hidden="true">↗</span>
+              <button type="button" class="service-module-link symmetrical-card p-4 rounded-xl flex flex-col justify-between items-start gap-3 bg-[#0a0518]/90 border border-white/10 hover:border-purple-400/50 hover:bg-[#150a2b] transition-all text-left group min-h-[114px] ${service.id === currentFeaturedId ? 'is-selected border-purple-400/70 bg-[#160c33] shadow-[0_0_20px_rgba(168,85,247,0.3)]' : ''}" data-srv-id="${service.id}" aria-pressed="${service.id === currentFeaturedId}">
+                <div class="w-full flex items-center justify-between">
+                  <span class="service-module-icon w-8 h-8 rounded-lg bg-purple-500/15 border border-purple-400/25 flex items-center justify-center text-purple-300 group-hover:scale-105 transition-transform">${service.svg}</span>
+                  <span class="service-module-arrow text-xs text-white/40 group-hover:text-purple-300 transition-colors" aria-hidden="true">↗</span>
+                </div>
+                <div class="service-module-copy space-y-0.5 w-full">
+                  <strong class="font-display font-medium text-white text-sm block leading-snug">${service.title}</strong>
+                  <small class="text-[11px] text-[#9b8eb6] block leading-snug">${service.sub}</small>
+                </div>
               </button>
             `).join('')}
           </div>
         </article>
-      `).join('');
+      `;
+    }).join('');
 
     grid.querySelectorAll('[data-srv-id]').forEach((button) => {
       button.addEventListener('click', () => {
@@ -721,205 +826,120 @@ export function initializeRbcurexiaExperience({ submitContact, subscribeNewslett
 
   function initHeroWebGL() {
     const container = document.getElementById('hero-canvas-stage');
-    if (!container || container.style.display === 'none') return;
+    if (!container) return;
+    // Performance guard: Since the ambient hero video is active, skip creating the hidden WebGL context
+    // This frees 100% of GPU compute and memory for butter-smooth video playback and navigation
+    if (container.style.display === 'none' || window.getComputedStyle(container).display === 'none') {
+      return;
+    }
 
     scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x040208);
 
-    camera = new THREE.PerspectiveCamera(32, window.innerWidth / window.innerHeight, 0.1, 50);
-    camera.position.set(0, -0.06, 2.52);
+    camera = new THREE.PerspectiveCamera(36, window.innerWidth / window.innerHeight, 0.1, 50);
+    camera.position.set(0, 0, 3.2);
 
     const isSmallScreen = window.matchMedia('(max-width: 640px)').matches;
     try {
-      renderer = new THREE.WebGLRenderer({ antialias: !isSmallScreen, powerPreference: isSmallScreen ? 'low-power' : 'high-performance' });
+      renderer = new THREE.WebGLRenderer({
+        alpha: true,
+        antialias: !isSmallScreen,
+        powerPreference: isSmallScreen ? 'low-power' : 'high-performance'
+      });
     } catch (error) {
-      console.warn('RBCurexia 3D scene unavailable; keeping the static visual fallback.', error);
-      container.classList.add('webgl-unavailable');
+      console.warn('RBCurexia 3D hero overlay unavailable.', error);
       return;
     }
+
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isSmallScreen ? 1.35 : 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isSmallScreen ? 1.25 : 1.75));
+    renderer.setClearColor(0x000000, 0); // Completely transparent over video
+    container.innerHTML = '';
     container.appendChild(renderer.domElement);
 
-    const maxAniso = renderer.capabilities.getMaxAnisotropy();
-    const loader = new THREE.TextureLoader();
-    const albedoTex = loader.load(HEART_ALBEDO_URI);
-    const mapsTex = loader.load(HEART_MAPS_URI);
-    albedoTex.anisotropy = maxAniso;
-    albedoTex.minFilter = THREE.LinearFilter;
-    albedoTex.magFilter = THREE.LinearFilter;
-
-    const heartGeo = new THREE.PlaneGeometry(1.52, 1.52, isSmallScreen ? 76 : 112, isSmallScreen ? 76 : 112);
-    heartMaterial = new THREE.ShaderMaterial({
-      vertexShader: heartVertexShader,
-      fragmentShader: heartFragmentShader,
-      transparent: true,
-      uniforms: {
-        uAlbedo: { value: albedoTex },
-        uMaps: { value: mapsTex },
-        uTime: { value: 0.0 },
-        uIntroLight: { value: 0.0 },
-        uAtrialKick: { value: 0.0 },
-        uVentricularSystole: { value: 0.0 },
-        uAorticPulse: { value: 0.0 },
-        uImpactWaveTime: { value: -1.0 },
-        uTrailProgress: { value: 0.0 },
-        uVesselGlow: { value: 0.0 },
-        uMouse: { value: new THREE.Vector2(0, 0) },
-        uImpactUV: { value: new THREE.Vector2(0.535, 0.725) }
-      }
-    });
-
-    heartMesh = new THREE.Mesh(heartGeo, heartMaterial);
-    heartMesh.position.y = 0.12;
-    scene.add(heartMesh);
-
-    // Subtle Atmospheric Medical Depth Particles Around the Heart
-    const particleCount = 65;
-    const pGeo = new THREE.BufferGeometry();
-    const pPositions = new Float32Array(particleCount * 3);
-    for (let i = 0; i < particleCount; i++) {
-      pPositions[i * 3] = (Math.random() - 0.5) * 2.8;
-      pPositions[i * 3 + 1] = (Math.random() - 0.5) * 1.9;
-      pPositions[i * 3 + 2] = (Math.random() - 0.5) * 1.2 - 0.2;
-    }
-    pGeo.setAttribute('position', new THREE.BufferAttribute(pPositions, 3));
-    const pMat = new THREE.PointsMaterial({
-      color: 0xede8d0,
-      size: 0.012,
-      transparent: true,
-      opacity: 0.35
-    });
-    particleSystem = new THREE.Points(pGeo, pMat);
-    scene.add(particleSystem);
-
-    // 3D Concentric Telemetry Orbit Rings (like labonix biotech cybernetics)
+    // 1. Floating 3D Holographic Gyro Ring 1 (Cyan/Ice)
     const orbitRingGroup = new THREE.Group();
     scene.add(orbitRingGroup);
 
-    const r1Geo = new THREE.TorusGeometry(1.08, 0.0035, 16, 96);
-    const r1Mat = new THREE.MeshBasicMaterial({ color: 0xede8d0, transparent: true, opacity: 0.35 });
+    const r1Geo = new THREE.TorusGeometry(1.35, 0.0055, 16, 120);
+    const r1Mat = new THREE.MeshBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.45 });
     orbitRing1 = new THREE.Mesh(r1Geo, r1Mat);
-    orbitRing1.rotation.x = Math.PI * 0.38;
-    orbitRing1.rotation.y = Math.PI * 0.12;
+    orbitRing1.rotation.x = Math.PI * 0.35;
+    orbitRing1.rotation.y = Math.PI * 0.15;
     orbitRingGroup.add(orbitRing1);
 
-    const r2Geo = new THREE.TorusGeometry(1.28, 0.0038, 16, 96);
-    const r2Mat = new THREE.MeshBasicMaterial({ color: 0xa855f7, transparent: true, opacity: 0.42 });
+    // 2. Floating 3D Holographic Gyro Ring 2 (Purple/Neon)
+    const r2Geo = new THREE.TorusGeometry(1.6, 0.006, 16, 120);
+    const r2Mat = new THREE.MeshBasicMaterial({ color: 0xc084fc, transparent: true, opacity: 0.42 });
     orbitRing2 = new THREE.Mesh(r2Geo, r2Mat);
-    orbitRing2.rotation.x = -Math.PI * 0.32;
-    orbitRing2.rotation.y = -Math.PI * 0.28;
+    orbitRing2.rotation.x = -Math.PI * 0.3;
+    orbitRing2.rotation.y = -Math.PI * 0.25;
     orbitRingGroup.add(orbitRing2);
 
-    const pSphereGeo = new THREE.SphereGeometry(0.022, 12, 12);
+    // 3. Orbiting Data Beacon Spheres
+    const pSphereGeo = new THREE.SphereGeometry(0.035, 16, 16);
     orbitP1 = new THREE.Mesh(pSphereGeo, new THREE.MeshBasicMaterial({ color: 0xede8d0, transparent: true, opacity: 0.95 }));
     orbitP2 = new THREE.Mesh(pSphereGeo, new THREE.MeshBasicMaterial({ color: 0x00f2fe, transparent: true, opacity: 0.95 }));
     orbitRing1.add(orbitP1);
     orbitRing2.add(orbitP2);
 
-    const dropletGeo = new THREE.SphereGeometry(0.032, 36, 36);
-    dropletMaterial = new THREE.ShaderMaterial({
-      vertexShader: dropletVertexShader,
-      fragmentShader: dropletFragmentShader,
+    // 4. Center Holographic Bio-Icosahedron (Wireframe)
+    const icoGeo = new THREE.IcosahedronGeometry(0.48, 1);
+    const icoMat = new THREE.MeshBasicMaterial({ color: 0xa855f7, wireframe: true, transparent: true, opacity: 0.32 });
+    const centerIco = new THREE.Mesh(icoGeo, icoMat);
+    orbitRingGroup.add(centerIco);
+
+    // 5. Bioluminescent Floating Stardust Particles over Video
+    const particleCount = isSmallScreen ? 70 : 160;
+    const pGeo = new THREE.BufferGeometry();
+    const pPositions = new Float32Array(particleCount * 3);
+    for (let i = 0; i < particleCount; i++) {
+      pPositions[i * 3] = (Math.random() - 0.5) * 5.5;
+      pPositions[i * 3 + 1] = (Math.random() - 0.5) * 3.5;
+      pPositions[i * 3 + 2] = (Math.random() - 0.5) * 2.5;
+    }
+    pGeo.setAttribute('position', new THREE.BufferAttribute(pPositions, 3));
+    const pMat = new THREE.PointsMaterial({
+      color: 0x38bdf8,
+      size: 0.024,
       transparent: true,
-      depthWrite: false,
-      uniforms: { uDeform: { value: 0.0 }, uStretch: { value: 0.0 }, uOpacity: { value: 0.0 } }
+      opacity: 0.55
     });
-    dropletMesh = new THREE.Mesh(dropletGeo, dropletMaterial);
-    scene.add(dropletMesh);
+    particleSystem = new THREE.Points(pGeo, pMat);
+    scene.add(particleSystem);
 
     sequenceStart = performance.now() * 0.001;
-    animateHeroLoop();
+
+    window.addEventListener('resize', () => {
+      if (!camera || !renderer) return;
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    }, { passive: true });
   }
 
   function animateHeroLoop() {
+    if (!renderer || !scene || !camera) return;
     requestAnimationFrame(animateHeroLoop);
-    /* Pause heavy WebGL rendering when Hero section is not visible in viewport */
-    if (!heroVisible || !renderer) return;
-
     const now = performance.now() * 0.001;
     const elapsed = now - sequenceStart;
-    const dropTime = (elapsed > 1.2) ? ((elapsed - 1.2) % 8.5) : -1.0;
-
-    mouseCurrent.x += (mouseTarget.x - mouseCurrent.x) * 0.05;
-    mouseCurrent.y += (mouseTarget.y - mouseCurrent.y) * 0.05;
-
-    const introLight = Math.min(1.0, Math.pow(Math.max(0.0, elapsed / 2.0), 1.2));
-
-    const period = 0.92;
-    const phase = (now % period) / period;
-    const amp = (prefersReducedMotion ? 0.2 : (dropTime > 2.45 ? 0.95 : 0.72)) * introLight;
-
-    const atrialKick = Math.exp(-Math.pow((phase - 0.08) / 0.035, 2.0)) * amp;
-    const ventricularSystole = (Math.exp(-Math.pow((phase - 0.19) / 0.055, 2.0)) + 0.42 * Math.exp(-Math.pow((phase - 0.32) / 0.045, 2.0))) * amp;
-    const aorticPulse = Math.exp(-Math.pow((phase - 0.27) / 0.065, 2.0)) * amp;
-
-    const startY = 0.92, slowMoY = 0.54, impactY = 0.44;
-
-    if (dropTime < 0.0 || prefersReducedMotion) {
-      dropletMaterial.uniforms.uOpacity.value = 0.0;
-    } else if (dropTime < 0.75) {
-      const f = dropTime / 0.75;
-      dropletMaterial.uniforms.uOpacity.value = Math.min(1.0, f * 1.4);
-      dropletMaterial.uniforms.uStretch.value = Math.sin(f * Math.PI) * 0.35;
-      dropletMaterial.uniforms.uDeform.value = 0.0;
-      dropletMesh.scale.setScalar(0.35 + 0.65 * Math.pow(f, 0.75));
-      dropletMesh.position.set(0.048, startY - 0.02 * f * f, 0.25);
-    } else if (dropTime < 1.70) {
-      const f = (dropTime - 0.75) / 0.95;
-      dropletMesh.position.set(0.048, startY - 0.02 - (startY - 0.02 - slowMoY) * (f * f), 0.25);
-      dropletMesh.scale.setScalar(1.0);
-      dropletMaterial.uniforms.uOpacity.value = 1.0;
-      dropletMaterial.uniforms.uStretch.value = 0.25 + 0.65 * f;
-    } else if (dropTime < 2.45) {
-      const f = (dropTime - 1.70) / 0.75;
-      dropletMesh.position.set(0.048, slowMoY - (slowMoY - impactY) * (0.72 * f + 0.28 * f * f), 0.25);
-      dropletMaterial.uniforms.uOpacity.value = 1.0;
-      dropletMaterial.uniforms.uStretch.value = 0.85 - 0.35 * f;
-    } else {
-      const postImpact = dropTime - 2.45;
-      if (postImpact < 0.22) {
-        const c = postImpact / 0.22;
-        dropletMesh.position.set(0.048, impactY - c * 0.016, 0.25);
-        dropletMaterial.uniforms.uDeform.value = c;
-        dropletMaterial.uniforms.uOpacity.value = 1.0 - c * c;
-      } else {
-        dropletMaterial.uniforms.uOpacity.value = 0.0;
-      }
-      heartMaterial.uniforms.uImpactWaveTime.value = postImpact;
-      heartMaterial.uniforms.uVesselGlow.value = Math.min(1.0, Math.max(0.0, (postImpact - 0.15) / 1.8));
-    }
-
-    /* Slow camera movement closer to the heart as the user scrolls */
-    const introDolly = Math.min(0.14, elapsed * 0.025);
-    const targetZ = 2.52 - introDolly - heroScrollDolly * 0.55;
-    camera.position.z += (targetZ - camera.position.z) * 0.08;
-    camera.position.x += (mouseCurrent.x * 0.09 - camera.position.x) * 0.06;
-    camera.position.y += (-0.06 + mouseCurrent.y * 0.06 - camera.position.y) * 0.06;
-    camera.lookAt(0, 0.04, 0);
-
-    heartMesh.rotation.y = mouseCurrent.x * 0.12 - heroScrollDolly * 0.15 + Math.sin(now * 0.3) * 0.018;
-    heartMesh.rotation.x = -mouseCurrent.y * 0.08 + heroScrollDolly * 0.06;
-
-    if (particleSystem) {
-      particleSystem.rotation.y = now * 0.018;
-    }
 
     if (orbitRing1 && orbitRing2) {
-      orbitRing1.rotation.z = now * 0.45;
-      orbitRing2.rotation.z = -now * 0.38;
-      orbitP1.position.set(Math.cos(now * 1.5) * 1.08, Math.sin(now * 1.5) * 1.08, 0);
-      orbitP2.position.set(Math.cos(-now * 1.25) * 1.28, Math.sin(-now * 1.25) * 1.28, 0);
+      orbitRing1.rotation.z = elapsed * 0.18;
+      orbitRing2.rotation.z = -elapsed * 0.14;
+      orbitRing1.rotation.y = Math.PI * 0.15 + Math.sin(elapsed * 0.4) * 0.12;
+      orbitRing2.rotation.x = -Math.PI * 0.3 + Math.cos(elapsed * 0.35) * 0.12;
+      orbitP1.position.set(Math.cos(elapsed * 1.5) * 1.35, Math.sin(elapsed * 1.5) * 1.35, 0);
+      orbitP2.position.set(Math.cos(-elapsed * 1.25) * 1.6, Math.sin(-elapsed * 1.25) * 1.6, 0);
     }
 
-    heartMaterial.uniforms.uTime.value = now;
-    heartMaterial.uniforms.uIntroLight.value = introLight;
-    heartMaterial.uniforms.uAtrialKick.value = atrialKick;
-    heartMaterial.uniforms.uVentricularSystole.value = ventricularSystole;
-    heartMaterial.uniforms.uAorticPulse.value = aorticPulse;
-    heartMaterial.uniforms.uMouse.value.set(mouseCurrent.x, mouseCurrent.y);
+    if (particleSystem) {
+      particleSystem.rotation.y = elapsed * 0.03;
+      particleSystem.rotation.x = Math.sin(elapsed * 0.02) * 0.05;
+    }
 
-    renderer.render(scene, camera);
+    if (renderer && scene && camera) {
+      renderer.render(scene, camera);
+    }
   }
 
   // =========================================================================
@@ -1134,6 +1154,201 @@ export function initializeRbcurexiaExperience({ submitContact, subscribeNewslett
     renderSynapses();
   }
 
+
+  function initGlobalAmbientThreeScene() {
+    const canvas = document.getElementById('global-ambient-canvas');
+    if (!canvas) return;
+
+    const isMobile = window.innerWidth < 640;
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 60;
+
+    let renderer;
+    try {
+      renderer = new THREE.WebGLRenderer({
+        canvas,
+        alpha: true,
+        antialias: false,
+        powerPreference: 'low-power'
+      });
+    } catch {
+      return;
+    }
+
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+
+    // Circular Glow Particle Texture (Soft Bioluminescent Stardust)
+    function createGlowSprite() {
+      const c = document.createElement('canvas');
+      c.width = 64;
+      c.height = 64;
+      const ctx = c.getContext('2d');
+      const grad = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+      grad.addColorStop(0, 'rgba(255, 255, 255, 1)');
+      grad.addColorStop(0.25, 'rgba(192, 132, 252, 0.85)');
+      grad.addColorStop(0.55, 'rgba(56, 189, 248, 0.35)');
+      grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(32, 32, 32, 0, Math.PI * 2);
+      ctx.fill();
+      return new THREE.CanvasTexture(c);
+    }
+
+    // 1. Floating Bioluminescent Healthcare Telemetry Particles
+    const particleCount = isMobile ? 300 : 700;
+    const geometry = new THREE.BufferGeometry();
+    const positions = new Float32Array(particleCount * 3);
+    const colors = new Float32Array(particleCount * 3);
+
+    const palette = [
+      new THREE.Color(0xa855f7),
+      new THREE.Color(0x38bdf8),
+      new THREE.Color(0x818cf8),
+      new THREE.Color(0xede8d0)
+    ];
+
+    for (let i = 0; i < particleCount; i++) {
+      positions[i * 3] = (Math.random() - 0.5) * 180;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 180;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 90;
+
+      const c = palette[Math.floor(Math.random() * palette.length)];
+      colors[i * 3] = c.r;
+      colors[i * 3 + 1] = c.g;
+      colors[i * 3 + 2] = c.b;
+    }
+
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+    const material = new THREE.PointsMaterial({
+      size: isMobile ? 1.6 : 2.4,
+      map: createGlowSprite(),
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.52,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false
+    });
+
+    const particles = new THREE.Points(geometry, material);
+    scene.add(particles);
+
+    // 2. Floating 3D Wireframe Cyber-Biotech Structures in Outer Margins
+    const objectsGroup = new THREE.Group();
+    scene.add(objectsGroup);
+
+    // Object A: Icosahedron Cyber Node (Far Left)
+    const icoGeo = new THREE.IcosahedronGeometry(8, 1);
+    const wireMatPurple = new THREE.MeshBasicMaterial({
+      color: 0xc084fc,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.16
+    });
+    const icoMesh = new THREE.Mesh(icoGeo, wireMatPurple);
+    icoMesh.position.set(-52, 28, -25);
+    objectsGroup.add(icoMesh);
+
+    // Object B: Octahedron Telemetry Crystal (Far Right)
+    const octGeo = new THREE.OctahedronGeometry(7, 0);
+    const wireMatCyan = new THREE.MeshBasicMaterial({
+      color: 0x38bdf8,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.15
+    });
+    const octMesh = new THREE.Mesh(octGeo, wireMatCyan);
+    octMesh.position.set(54, 18, -30);
+    objectsGroup.add(octMesh);
+
+    // Object C: Torus Gyro Ring (Lower Left Margin)
+    const torGeo = new THREE.TorusGeometry(10, 0.45, 16, 64);
+    const wireMatChampagne = new THREE.MeshBasicMaterial({
+      color: 0xede8d0,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.14
+    });
+    const torMesh = new THREE.Mesh(torGeo, wireMatChampagne);
+    torMesh.position.set(-48, -38, -20);
+    torMesh.rotation.x = Math.PI / 3;
+    objectsGroup.add(torMesh);
+
+    // Object D: Second Icosahedron (Lower Right Margin)
+    const ico2Geo = new THREE.IcosahedronGeometry(10, 1);
+    const ico2Mesh = new THREE.Mesh(ico2Geo, wireMatCyan);
+    ico2Mesh.position.set(50, -48, -25);
+    objectsGroup.add(ico2Mesh);
+
+    // Smooth Scroll & Cursor Interpolation
+    let scrollY = window.scrollY;
+    let targetScrollY = scrollY;
+    let mouseX = 0;
+    let mouseY = 0;
+
+    window.addEventListener('scroll', () => {
+      targetScrollY = window.scrollY;
+    }, { passive: true });
+
+    window.addEventListener('mousemove', (e) => {
+      mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+      mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+    }, { passive: true });
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    }, { passive: true });
+
+    let clock = new THREE.Clock();
+    let isEcosystemVisible = false;
+    const ecoTarget = document.getElementById('act-services') || canvas;
+    if (ecoTarget && 'IntersectionObserver' in window) {
+      const ecoObserver = new IntersectionObserver((entries) => {
+        entries.forEach((e) => { isEcosystemVisible = e.isIntersecting; });
+      }, { rootMargin: '120px 0px' });
+      ecoObserver.observe(ecoTarget);
+    } else {
+      isEcosystemVisible = true;
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      if (!isEcosystemVisible) return;
+      const delta = clock.getDelta();
+      const time = clock.getElapsedTime();
+
+      scrollY += (targetScrollY - scrollY) * 0.05;
+
+      particles.rotation.y = time * 0.02 + mouseX * 0.03;
+      particles.rotation.x = time * 0.01 + mouseY * 0.03;
+      particles.position.y = (scrollY * 0.025) % 40;
+
+      icoMesh.rotation.x += delta * 0.2;
+      icoMesh.rotation.y += delta * 0.28;
+      icoMesh.position.y = 28 + Math.sin(time * 0.7) * 2.5 - (scrollY * 0.015);
+
+      octMesh.rotation.y += delta * 0.24;
+      octMesh.rotation.z += delta * 0.18;
+      octMesh.position.y = 18 + Math.cos(time * 0.6) * 2 - (scrollY * 0.015);
+
+      torMesh.rotation.z += delta * 0.18;
+      torMesh.position.y = -38 + Math.sin(time * 0.55) * 2.5 - (scrollY * 0.015);
+
+      ico2Mesh.rotation.x += delta * 0.18;
+      ico2Mesh.rotation.y += delta * 0.22;
+      ico2Mesh.position.y = -48 + Math.cos(time * 0.65) * 2.5 - (scrollY * 0.015);
+
+      renderer.render(scene, camera);
+    }
+
+    animate();
+  }
   function initEcosystemThreeScene() {
     const canvas = document.getElementById('ecosystem-3d-stage');
     const container = document.getElementById('ecosystem-isometric-container');
@@ -1202,7 +1417,7 @@ export function initializeRbcurexiaExperience({ submitContact, subscribeNewslett
       curenest: new THREE.Vector3(0, 2.1, 0.3),
       panacea: new THREE.Vector3(-2.6, 0.3, 0.2),
       labonix: new THREE.Vector3(2.6, 0.3, 0.2),
-      pharmixo: new THREE.Vector3(1.5, -2.0, 0.25)
+      pharmixo: new THREE.Vector3(0, -2.1, 0.25)
     };
 
     const cableCurves = [];
@@ -1418,6 +1633,168 @@ export function initializeRbcurexiaExperience({ submitContact, subscribeNewslett
   }
 
   // =========================================================================
+  // 5.9 COSMIC SKY STARFIELD (Delicate Twinkling Starlight & Nocturnal Stardust)
+  // =========================================================================
+  function initCosmicSkyStarfield() {
+    const canvas = document.getElementById('cosmic-starfield-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
+
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+    ctx.scale(dpr, dpr);
+
+    // Controlled star count: elegant, delicate, non-distracting
+    const starCount = Math.floor(Math.min(160, Math.max(80, (width * height) / 12000)));
+    const stars = [];
+
+    const starPalettes = [
+      { r: 255, g: 255, b: 255 },       // Crisp pure starlight
+      { r: 237, g: 232, b: 208 },       // Warm champagne
+      { r: 216, g: 180, b: 254 },       // Soft lavender/purple
+      { r: 147, g: 197, b: 253 },       // Subtle cyan
+      { r: 192, g: 132, b: 252 },       // Gentle violet
+    ];
+
+    for (let i = 0; i < starCount; i++) {
+      const palette = starPalettes[Math.floor(Math.random() * starPalettes.length)];
+      stars.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        baseRadius: Math.random() < 0.78 ? Math.random() * 0.65 + 0.35 : Math.random() * 0.75 + 0.85,
+        baseAlpha: Math.random() * 0.42 + 0.22,
+        twinkleSpeed: Math.random() * 0.0022 + 0.001,
+        twinklePhase: Math.random() * Math.PI * 2,
+        driftY: (Math.random() * 0.06 + 0.02) * (Math.random() < 0.5 ? 1 : -1),
+        driftX: (Math.random() * 0.03 + 0.01) * (Math.random() < 0.5 ? 1 : -1),
+        color: palette,
+        hasHalo: Math.random() < 0.16
+      });
+    }
+
+    let animationId = null;
+    let isRunning = false;
+    let lastTime = performance.now();
+
+    function renderStarfield(currentTime) {
+      // If starfield is hidden on hero video, pause the rAF loop completely to save 100% GPU/CPU for video playback
+      const opacity = parseFloat(canvas.style.opacity || '0');
+      if (opacity <= 0.005) {
+        ctx.clearRect(0, 0, width, height);
+        isRunning = false;
+        animationId = null;
+        return;
+      }
+
+      isRunning = true;
+      const delta = currentTime - lastTime;
+      lastTime = currentTime;
+
+      ctx.clearRect(0, 0, width, height);
+
+      for (let i = 0; i < stars.length; i++) {
+        const star = stars[i];
+
+        // Extremely slow, peaceful cosmic drift
+        star.y += star.driftY * (delta * 0.05);
+        star.x += star.driftX * (delta * 0.05);
+
+        if (star.y < 0) star.y = height;
+        else if (star.y > height) star.y = 0;
+        if (star.x < 0) star.x = width;
+        else if (star.x > width) star.x = 0;
+
+        // Subtle twinkling shimmer
+        const twinkle = Math.sin(currentTime * star.twinkleSpeed + star.twinklePhase);
+        const currentAlpha = Math.max(0.08, Math.min(0.92, star.baseAlpha + twinkle * 0.28));
+        const currentRadius = Math.max(0.3, star.baseRadius + twinkle * 0.12);
+
+        // Soft atmospheric starlight glow
+        if (star.hasHalo && currentAlpha > 0.35) {
+          ctx.beginPath();
+          ctx.arc(star.x, star.y, currentRadius * 3.2, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${star.color.r}, ${star.color.g}, ${star.color.b}, ${currentAlpha * 0.16})`;
+          ctx.fill();
+        }
+
+        // Crisp starlight core
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, currentRadius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${star.color.r}, ${star.color.g}, ${star.color.b}, ${currentAlpha})`;
+        ctx.fill();
+      }
+
+      animationId = requestAnimationFrame(renderStarfield);
+    }
+
+    function wakeStarfield() {
+      const opacity = parseFloat(canvas.style.opacity || '0');
+      if (opacity > 0.005 && !isRunning) {
+        isRunning = true;
+        lastTime = performance.now();
+        animationId = requestAnimationFrame(renderStarfield);
+      }
+    }
+
+    function onResize() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      ctx.scale(dpr, dpr);
+    }
+
+    window.addEventListener('resize', onResize, { passive: true });
+
+    // Fade starfield in only when scrolling past the hero header video.
+    // Keeps the hero header video completely clean and star-free,
+    // then smoothly reveals the twinkling cosmic sky as the user transitions into Section 02 (Our Mission)
+    // and keeps it active across all subsequent sections.
+    function updateStarfieldVisibility() {
+      const scrollY = window.scrollY || window.pageYOffset || 0;
+      const heroEl = document.getElementById('act-hero');
+      const heroHeight = heroEl ? heroEl.offsetHeight : window.innerHeight;
+
+      if (scrollY <= 24) {
+        canvas.style.opacity = '0';
+        return;
+      }
+
+      if (scrollY >= heroHeight * 0.72) {
+        canvas.style.opacity = '0.82';
+        wakeStarfield();
+        return;
+      }
+
+      const factor = Math.max(0, Math.min(1, (scrollY - heroHeight * 0.15) / (heroHeight * 0.55)));
+      canvas.style.opacity = (factor * 0.82).toFixed(3);
+      if (factor > 0.01) wakeStarfield();
+    }
+
+    if (typeof ScrollTrigger !== 'undefined') {
+      ScrollTrigger.create({
+        trigger: '#act-hero',
+        start: 'top top',
+        end: 'bottom 20%',
+        scrub: true,
+        onUpdate: (self) => {
+          const progress = Math.max(0, Math.min(1, (self.progress - 0.2) / 0.55));
+          canvas.style.opacity = (progress * 0.82).toFixed(3);
+          if (progress > 0.01) wakeStarfield();
+        }
+      });
+    }
+
+    window.addEventListener('scroll', updateStarfieldVisibility, { passive: true });
+    updateStarfieldVisibility();
+  }
+
+  // =========================================================================
   // 6. INITIALIZE ALL LISTENERS & INTERACTIONS
   // =========================================================================
 
@@ -1433,6 +1810,7 @@ export function initializeRbcurexiaExperience({ submitContact, subscribeNewslett
   initViewportObservers();
   initHeroWebGL();
   initMissionDnaScene();
+  initGlobalAmbientThreeScene();
   initEcosystemThreeScene();
   initArchitectureInteractions();
   renderVectorQueue();
@@ -1440,6 +1818,7 @@ export function initializeRbcurexiaExperience({ submitContact, subscribeNewslett
   initSynapseConstellation();
   runOpeningChoreography();
   initScrollMotionSystem();
+  initCosmicSkyStarfield();
 
   // Full-Screen Navigation Overlay with Smooth Masking & Staggered Entrance
   const menuOverlay = document.getElementById('editorial-menu-overlay');
@@ -1639,6 +2018,118 @@ export function initializeRbcurexiaExperience({ submitContact, subscribeNewslett
       if (submitButton) { submitButton.disabled = false; submitButton.textContent = submitButton.dataset.originalText || 'Join'; }
     }
   });
+
+  // =========================================================================
+  // 5.10 EXECUTIVE CONCIERGE PATHWAY SWITCHER (Demo / Seminars / Internships)
+  // =========================================================================
+  const CONCIERGE_PATHWAYS = {
+    demo: {
+      mode: 'Hospital & Clinic Demo',
+      title: 'Hospital & Clinic Deployment Briefing',
+      desc: 'Schedule a private architectural walkthrough of Panacea’s Dashboard, CureNEST Ward OS, Digital Pad e-Rx, and cryptographic EHR integration.',
+      orgLabel: 'Hospital / Institution / University',
+      orgPlaceholder: 'Evershine Multi-Specialty Hospital, Mumbai',
+      selectLabel: 'Select Clinical Architecture / Program *',
+      options: [
+        'Full Panacea OS + CureNEST Hospital & Ward Suite',
+        'Clinical Mode, Digital Pad e-Rx & Labonix Gateway',
+        'Biometric ID Scanners, Wristbands & 24/7 Medicore Wearables',
+        'Pharmixo GPS Pharmacy Dispatch & Plugins Social Network'
+      ],
+      submitText: 'Request Private Briefing'
+    },
+    seminar: {
+      mode: 'Healthcare Seminars',
+      title: 'Healthcare Technology & AI Seminars (Free Registration)',
+      desc: 'Register for upcoming expert-led sessions on AI in clinical workflows, cryptographic EHR standards, smart ward IoT monitors, and modern hospital management.',
+      orgLabel: 'Hospital / Medical College / Healthcare Institute',
+      orgPlaceholder: 'e.g., KEM Hospital, Grant Medical College, Mumbai',
+      selectLabel: 'Select Seminar Session / Topic Focus *',
+      options: [
+        'AI-Driven Clinical Decision Support & EHR Modernization (Free Seminar)',
+        'Smart Ward Automation: CureNEST & Wearable Telemetry Deployment',
+        'Cryptographic Health Data Security & DISHA/HIPAA Compliance',
+        'Virtual Clinic Integration & Remote Specialist Consultation'
+      ],
+      submitText: 'Reserve Free Seminar Seat'
+    },
+    intern: {
+      mode: 'Internship Applications',
+      title: 'RBCurexia Healthcare Innovation Internship Program',
+      desc: 'Apply for structured research and engineering internships across our four core segments: Clinical Software, Biotech Diagnostics, Biomedical Hardware, and Healthcare Operations.',
+      orgLabel: 'College / University / Degree & Year',
+      orgPlaceholder: 'e.g., VIT, IIT Bombay, K.J. Somaiya — Final Year B.Tech / MBBS',
+      selectLabel: 'Select Internship Track / Segment *',
+      options: [
+        'Track 1: Full-Stack Clinical Web & Mobile Engineering (Panacea OS)',
+        'Track 2: AI & Clinical Intelligence Algorithms (Diagnostic ML)',
+        'Track 3: Biomedical IoT Firmware & Wearable Sensor Integration',
+        'Track 4: Hospital Operations, Clinical Outreach & Field Deployment'
+      ],
+      submitText: 'Submit Internship Application'
+    }
+  };
+
+  function initConciergeTabs() {
+    const tabBtns = document.querySelectorAll('.concierge-tab-btn');
+    if (!tabBtns.length) return;
+
+    const modeInput = document.getElementById('concierge-mode');
+    const titleEl = document.getElementById('concierge-mode-title');
+    const descEl = document.getElementById('concierge-desc');
+    const orgLabel = document.getElementById('c-org-label');
+    const orgInput = document.getElementById('c-org');
+    const selectLabel = document.getElementById('c-select-label');
+    const selectEl = document.getElementById('c-select');
+    const submitLabel = document.getElementById('c-submit-text');
+    const feedbackEl = document.getElementById('concierge-feedback');
+
+    function switchPathway(key) {
+      const pathway = CONCIERGE_PATHWAYS[key] || CONCIERGE_PATHWAYS.demo;
+
+      tabBtns.forEach((btn) => {
+        const isMatch = btn.getAttribute('data-concierge-tab') === key;
+        if (isMatch) {
+          btn.className = 'concierge-tab-btn py-2.5 px-4 rounded-xl text-[11px] font-semibold tracking-[0.1em] uppercase bg-champagne text-obsidian shadow transition-all';
+          btn.setAttribute('aria-selected', 'true');
+        } else {
+          btn.className = 'concierge-tab-btn py-2.5 px-4 rounded-xl text-[11px] font-medium tracking-[0.1em] uppercase text-stonewarm hover:text-white transition-all';
+          btn.setAttribute('aria-selected', 'false');
+        }
+      });
+
+      if (modeInput) modeInput.value = pathway.mode;
+      if (titleEl) titleEl.textContent = pathway.title;
+      if (descEl) descEl.textContent = pathway.desc;
+      if (orgLabel) orgLabel.textContent = pathway.orgLabel;
+      if (orgInput) orgInput.placeholder = pathway.orgPlaceholder;
+      if (selectLabel) selectLabel.textContent = pathway.selectLabel;
+      if (submitLabel) submitLabel.textContent = pathway.submitText;
+
+      if (selectEl) {
+        selectEl.innerHTML = '';
+        pathway.options.forEach((optText) => {
+          const opt = document.createElement('option');
+          opt.value = optText;
+          opt.textContent = optText;
+          selectEl.appendChild(opt);
+        });
+      }
+
+      if (feedbackEl) {
+        feedbackEl.classList.add('hidden');
+      }
+    }
+
+    tabBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const key = btn.getAttribute('data-concierge-tab');
+        if (key) switchPathway(key);
+      });
+    });
+  }
+
+  initConciergeTabs();
 
   // Executive Concierge submission: save first, then report the actual email-delivery state.
   const conciergeForm = document.getElementById('concierge-form');

@@ -1,5 +1,6 @@
 import { getApp, getApps, initializeApp } from 'firebase/app';
 import { connectFunctionsEmulator, getFunctions } from 'firebase/functions';
+import { getFirestore } from 'firebase/firestore';
 import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
 
 const firebaseConfig = {
@@ -38,6 +39,10 @@ if (firebaseApp && isAppCheckConfigured && typeof window !== 'undefined') {
 
 export const firebaseFunctions = firebaseApp
   ? getFunctions(firebaseApp, import.meta.env.VITE_FIREBASE_FUNCTIONS_REGION || 'asia-south1')
+  : null;
+
+export const firebaseFirestore = firebaseApp
+  ? getFirestore(firebaseApp)
   : null;
 
 if (firebaseFunctions && import.meta.env.VITE_USE_FIREBASE_EMULATOR === 'true') {

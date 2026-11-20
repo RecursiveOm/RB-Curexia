@@ -1,11 +1,37 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Public visitors submit only through callable Cloud Functions (Admin SDK).
-    // No direct client reads or writes are permitted for these private collections.
-    match /contactInquiries/{document=**} { allow read, write: if false; }
-    match /newsletterSubscribers/{document=**} { allow read, write: if false; }
-    match /_rateLimits/{document=**} { allow read, write: if false; }
-    match /{document=**} { allow read, write: if false; }
+    // 1. Executive Concierge & Contact Us submissions
+    match /contactInquiries/{docId} {
+      allow create: if request.resource.data.name is string
+                    && request.resource.data.contact is string
+                    && request.resource.data.name.size() > 0
+                    && request.resource.data.name.size() <= 200;
+      allow read, update, delete: if false;
+    }
+
+    // 2. Real-time website visitor analytics & session telemetry
+    match /visitorLogs/{docId} {
+      allow create: if request.resource.data.path is string;
+      allow read, update, delete: if false;
+    }
+
+    // 3. Clinical community newsletter subscriptions
+    match /newsletterSubscribers/{docId} {
+      allow create: if request.resource.data.email is string
+                    && request.resource.data.email.size() > 0
+                    && request.resource.data.email.size() <= 200;
+      allow read, update, delete: if false;
+    }
+
+    // Rate limits internal collection
+    match /_rateLimits/{document=**} {
+      allow read, write: if false;
+    }
+
+    // Default strict deny for all other collections and operations
+    match /{document=**} {
+      allow read, write: if false;
+    }
   }
 }

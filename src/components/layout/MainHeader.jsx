@@ -18,12 +18,13 @@ export default function MainHeader({ onOpenMenu }) {
   const currentPath = location.pathname;
 
   const handleNavClick = (e, item) => {
-    if (item.path === '/overview' && (currentPath === '/overview' || currentPath === '/')) {
+    if (
+      currentPath === item.path ||
+      (item.path === '/overview' && currentPath === '/')
+    ) {
       e.preventDefault();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
     }
-    // For all other numbered items (02 Mission, 03 Panacea, 04 Architecture, etc.),
-    // standard Link navigation triggers, opening the dedicated page directly as requested.
   };
 
   return (

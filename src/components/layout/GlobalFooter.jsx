@@ -43,7 +43,7 @@ export default function GlobalFooter() {
       <div className="w-full max-w-[1520px] mx-auto space-y-16 relative z-10">
         {/* Top 4-Column Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8">
-          {/* Column 1: Brand & Purpose (4 cols) */}
+          {/* Column 1: Brand & Purpose & Corporate Address (4 cols) */}
           <div className="lg:col-span-4 space-y-5">
             <Link to="/overview" className="flex items-center gap-2.5">
               <img
@@ -58,8 +58,24 @@ export default function GlobalFooter() {
             <p className="text-xs sm:text-sm text-[#a89cb8] leading-relaxed max-w-sm">
               An integrated healthcare ecosystem connecting clinical intelligence, hospital operations, pathology diagnostics, pharmacy fulfillment, and continuous patient telemetry.
             </p>
-            <div className="pt-2 text-xs font-mono text-purple-300">
-              MUMBAI · MAHARASHTRA · INDIA
+
+            {/* Registered Corporate Office Address */}
+            <div className="pt-3 border-t border-white/[0.08] space-y-2 text-xs text-[#a89cb8]">
+              <div className="flex items-center gap-2 text-purple-300 font-mono text-[11px] tracking-wider uppercase font-semibold">
+                <span className="w-1.5 h-1.5 rounded-full bg-champagne" />
+                <span>MUMBAI REGISTERED OFFICE &amp; HQ</span>
+              </div>
+              <div className="space-y-1.5 leading-relaxed text-[11px] text-bone/85">
+                <p>
+                  <strong className="text-champagne font-medium">Campus I:</strong> Unit No. 5, Sarita Apt, Rustomjee Irani Marg, Jaywant Sawant Marg, Dahisar West, Mumbai, Maharashtra 400068, India
+                </p>
+                <p>
+                  <strong className="text-champagne font-medium">Campus II:</strong> 803/A Wing, Jayram Heights, New Link Road, Dahisar West, Mumbai, Maharashtra 400068, India
+                </p>
+              </div>
+              <div className="pt-1 text-[10px] font-mono text-purple-300/80">
+                MUMBAI · MAHARASHTRA · INDIA
+              </div>
             </div>
           </div>
 
@@ -91,17 +107,31 @@ export default function GlobalFooter() {
             <ul className="space-y-2.5 text-xs">
               {SPECIALIZED_PRODUCTS.map((prod) => (
                 <li key={prod.id}>
-                  <Link
-                    to={prod.path}
-                    className="hover:text-champagne transition-colors flex flex-col text-bone/80 group"
-                  >
-                    <span className="group-hover:text-champagne transition-colors font-medium">
-                      {prod.name}
-                    </span>
+                  <div className="flex flex-col text-bone/80 group">
+                    <div className="flex items-center justify-between gap-2">
+                      <Link
+                        to={prod.path}
+                        className="group-hover:text-champagne transition-colors font-medium"
+                      >
+                        {prod.name}
+                      </Link>
+                      {prod.liveUrl && (
+                        <a
+                          href={prod.liveUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[9px] font-mono text-purple-300 hover:text-champagne bg-purple-900/30 px-1.5 py-0.5 rounded border border-purple-500/30 inline-flex items-center gap-0.5 hover:border-champagne transition-all shrink-0"
+                          title={`Open ${prod.liveUrl}`}
+                        >
+                          <span>{prod.liveUrl.replace('https://', '').replace('/', '')}</span>
+                          <span className="text-[8px]">↗</span>
+                        </a>
+                      )}
+                    </div>
                     <span className="text-[10px] text-stonewarm/60 font-mono">
                       {prod.badge}
                     </span>
-                  </Link>
+                  </div>
                 </li>
               ))}
             </ul>

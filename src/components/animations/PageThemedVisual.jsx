@@ -625,56 +625,48 @@ export default function PageThemedVisual({ pageId = 'pulseport' }) {
             <g transform="translate(215, 35)" className="cursor-pointer">
               <g>
                 <animateTransform attributeName="transform" type="translate" values="0 0; 0 -6; 0 0" dur="6s" repeatCount="indefinite" />
-                <rect x="0" y="0" width="110" height="78" rx="14" fill="#0c051e" stroke="#8b5cf6" strokeWidth="2" filter="url(#hub-glow)" />
-                <image href="/assets/rbcurexia-logo-4k.webp" x="25" y="14" width="60" height="50" preserveAspectRatio="xMidYMid meet" />
+                <rect x="0" y="0" width="110" height="88" rx="14" fill="#0c051e" stroke="#8b5cf6" strokeWidth="2" filter="url(#hub-glow)" />
+                <image href="/assets/rbcurexia-logo-4k.webp" x="25" y="10" width="60" height="48" preserveAspectRatio="xMidYMid meet" />
+                <text x="55" y="66" fill="#ffffff" fontSize="10" fontWeight="bold" textAnchor="middle">CureNEST</text>
+                <text x="55" y="78" fill="#818cf8" fontSize="8" textAnchor="middle">for hospitals</text>
               </g>
-              <text x="55" y="98" fill="#c084fc" fontSize="9" fontFamily="monospace" textAnchor="middle" fontWeight="bold">CURENEST (IPD)</text>
+              <text x="55" y="112" fill="#c084fc" fontSize="9" fontFamily="monospace" textAnchor="middle" fontWeight="bold">CURENEST (IPD)</text>
             </g>
 
-            {/* NODE 2: LEFT - PANACEA (OPD) */}
+            {/* NODE 2: LEFT - PANACEA (OPD) - Real Brand Logo from User */}
             <g transform="translate(45, 175)" className="cursor-pointer">
               <g>
                 <animateTransform attributeName="transform" type="translate" values="0 0; 0 -6; 0 0" dur="6.5s" repeatCount="indefinite" />
                 <rect x="0" y="0" width="110" height="88" rx="14" fill="#0d0624" stroke="#a855f7" strokeWidth="2" filter="url(#hub-glow)" />
-                <g transform="translate(55, 30)">
-                  <path d="M -8 -12 H 4 C 10 -12, 10 0, 4 0 H -8 Z" fill="#c084fc" />
-                  <path d="M -8 -12 V 12" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" />
-                </g>
-                <text x="55" y="58" fill="#ffffff" fontSize="10" fontWeight="bold" textAnchor="middle">Panacea</text>
-                <text x="55" y="70" fill="#9ca3af" fontSize="8" textAnchor="middle">for clinics</text>
+                <image href="/assets/brand-panacea.png" x="25" y="10" width="60" height="48" preserveAspectRatio="xMidYMid meet" />
+                <text x="55" y="66" fill="#ffffff" fontSize="10" fontWeight="bold" textAnchor="middle">Panacea</text>
+                <text x="55" y="78" fill="#c084fc" fontSize="8" textAnchor="middle">for clinics</text>
               </g>
               <text x="55" y="112" fill="#c084fc" fontSize="9" fontFamily="monospace" textAnchor="middle" fontWeight="bold">PANACEA (OPD)</text>
             </g>
 
-            {/* NODE 3: RIGHT - PHARMIXO (SUPPLY) */}
+            {/* NODE 3: RIGHT - PHARMIXO (SUPPLY) - Real Brand Logo from User */}
             <g transform="translate(385, 175)" className="cursor-pointer">
               <g>
                 <animateTransform attributeName="transform" type="translate" values="0 0; 0 -6; 0 0" dur="7s" repeatCount="indefinite" />
                 <rect x="0" y="0" width="110" height="88" rx="14" fill="#081028" stroke="#38bdf8" strokeWidth="2" filter="url(#hub-glow)" />
-                <g transform="translate(55, 30)">
-                  <path d="M -9 -10 H 2 C 7 -10, 7 0, 2 0 H -9 Z" fill="#38bdf8" />
-                  <path d="M -9 -10 V 10" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" />
-                  <line x1="2" y1="0" x2="10" y2="10" stroke="#38bdf8" strokeWidth="2.5" strokeLinecap="round" />
-                </g>
-                <text x="55" y="58" fill="#ffffff" fontSize="10" fontWeight="bold" textAnchor="middle">PharmixO</text>
-                <text x="55" y="70" fill="#9ca3af" fontSize="8" textAnchor="middle">for pharmacies</text>
+                <image href="/assets/brand-pharmixo.png" x="25" y="10" width="60" height="48" preserveAspectRatio="xMidYMid meet" />
+                <text x="55" y="66" fill="#ffffff" fontSize="10" fontWeight="bold" textAnchor="middle">PharmixO</text>
+                <text x="55" y="78" fill="#38bdf8" fontSize="8" textAnchor="middle">for pharmacies</text>
               </g>
               <text x="55" y="112" fill="#38bdf8" fontSize="9" fontFamily="monospace" textAnchor="middle" fontWeight="bold">PHARMIXO (SUPPLY)</text>
             </g>
 
-            {/* NODE 4: BOTTOM - LABONIX (LABS) */}
+            {/* NODE 4: BOTTOM - LABONIX (LABS) - Real Brand Logo from User */}
             <g transform="translate(215, 305)" className="cursor-pointer">
               <g>
                 <animateTransform attributeName="transform" type="translate" values="0 0; 0 -6; 0 0" dur="6s" repeatCount="indefinite" />
-                <rect x="0" y="0" width="110" height="78" rx="14" fill="#07122a" stroke="#38bdf8" strokeWidth="2" filter="url(#hub-glow)" />
-                <g transform="translate(55, 26)">
-                  <path d="M -22 0 Q -11 -10 0 0 T 22 0" fill="none" stroke="#38bdf8" strokeWidth="2.2" />
-                  <path d="M -22 0 Q -11 10 0 0 T 22 0" fill="none" stroke="#f472b6" strokeWidth="2.2" />
-                </g>
-                <text x="55" y="50" fill="#ffffff" fontSize="10" fontWeight="bold" textAnchor="middle">LABONIX</text>
-                <text x="55" y="62" fill="#9ca3af" fontSize="8" textAnchor="middle">for labs</text>
+                <rect x="0" y="0" width="110" height="88" rx="14" fill="#07122a" stroke="#38bdf8" strokeWidth="2" filter="url(#hub-glow)" />
+                <image href="/assets/brand-labonix.png" x="25" y="8" width="60" height="50" preserveAspectRatio="xMidYMid meet" />
+                <text x="55" y="66" fill="#ffffff" fontSize="9.5" fontWeight="bold" textAnchor="middle">LABONIX</text>
+                <text x="55" y="78" fill="#38bdf8" fontSize="8" textAnchor="middle">for labs</text>
               </g>
-              <text x="55" y="104" fill="#38bdf8" fontSize="9" fontFamily="monospace" textAnchor="middle" fontWeight="bold">LABONIX (LABS)</text>
+              <text x="55" y="112" fill="#38bdf8" fontSize="9" fontFamily="monospace" textAnchor="middle" fontWeight="bold">LABONIX (LABS)</text>
             </g>
           </svg>
         </div>

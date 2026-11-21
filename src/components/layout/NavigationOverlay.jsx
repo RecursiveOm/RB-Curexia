@@ -110,19 +110,30 @@ export default function NavigationOverlay({ isOpen, onClose }) {
             </span>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
               {SPECIALIZED_PRODUCTS.map((prod) => (
-                <Link
+                <div
                   key={prod.id}
-                  to={prod.path}
-                  onClick={onClose}
-                  className="p-3 rounded-xl bg-white/[0.03] border border-white/10 hover:border-purple-400/50 hover:bg-white/[0.06] transition-all group"
+                  className="p-3 rounded-xl bg-white/[0.03] border border-white/10 hover:border-purple-400/50 hover:bg-white/[0.06] transition-all group flex flex-col justify-between gap-1.5"
                 >
-                  <span className="text-[9px] font-mono block text-purple-300 mb-0.5">
-                    {prod.badge}
-                  </span>
-                  <span className="text-xs font-semibold text-white group-hover:text-champagne transition-colors block">
-                    {prod.name}
-                  </span>
-                </Link>
+                  <Link to={prod.path} onClick={onClose} className="block">
+                    <span className="text-[9px] font-mono block text-purple-300 mb-0.5">
+                      {prod.badge}
+                    </span>
+                    <span className="text-xs font-semibold text-white group-hover:text-champagne transition-colors block">
+                      {prod.name}
+                    </span>
+                  </Link>
+                  {prod.liveUrl && (
+                    <a
+                      href={prod.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[9px] font-mono text-purple-300/90 hover:text-champagne flex items-center gap-1 self-start"
+                    >
+                      <span>Launch {prod.liveUrl.replace('https://', '').replace('/', '')}</span>
+                      <span>↗</span>
+                    </a>
+                  )}
+                </div>
               ))}
             </div>
           </div>

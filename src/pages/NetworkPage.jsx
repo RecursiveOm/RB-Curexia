@@ -11,11 +11,11 @@ export default function NetworkPage() {
         eyebrowText="CLINICIAN ECOSYSTEM"
         title="A Connected Ecosystem of"
         highlight="Doctors & Hospitals."
-        description="RBCurexia goes beyond standalone clinic software—connecting verified specialists, surgeons, and partner hospitals to collaborate on complex cases, publish clinical articles, and coordinate inter-departmental referrals."
-        primaryCtaText="Explore Network Radar"
-        primaryCtaLink="#network-topology"
-        secondaryCtaText="Join Verified Network"
-        secondaryCtaLink="/concierge"
+        description="RBCurexia goes beyond standalone clinic software—connecting verified specialists, surgeons, and partner hospitals on Plugins Social to collaborate on complex cases, publish clinical articles, and coordinate inter-departmental referrals."
+        primaryCtaText="Explore plugins.social"
+        primaryCtaLink="https://plugins.social/"
+        secondaryCtaText="Inspect Network Radar"
+        secondaryCtaLink="#network-topology"
         pageId="network"
       />
 

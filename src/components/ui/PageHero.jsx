@@ -53,17 +53,42 @@ export default function PageHero({
             {/* CTA Row */}
             <div className="flex flex-wrap items-center gap-4 pt-2">
               {primaryCtaText && primaryCtaLink && (
-                <Link to={primaryCtaLink} className="btn-primary-cinema group">
-                  <span>{primaryCtaText}</span>
-                  <svg className="w-3.5 h-3.5 ml-2.5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path d="M17 8l4 4m0 0l-4 4m4-4H3" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" />
-                  </svg>
-                </Link>
+                primaryCtaLink.startsWith('http') ? (
+                  <a
+                    href={primaryCtaLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-primary-cinema group"
+                  >
+                    <span>{primaryCtaText}</span>
+                    <svg className="w-3.5 h-3.5 ml-2.5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" />
+                    </svg>
+                  </a>
+                ) : (
+                  <Link to={primaryCtaLink} className="btn-primary-cinema group">
+                    <span>{primaryCtaText}</span>
+                    <svg className="w-3.5 h-3.5 ml-2.5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path d="M17 8l4 4m0 0l-4 4m4-4H3" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" />
+                    </svg>
+                  </Link>
+                )
               )}
               {secondaryCtaText && secondaryCtaLink && (
-                <Link to={secondaryCtaLink} className="btn-secondary-cinema">
-                  <span>{secondaryCtaText}</span>
-                </Link>
+                secondaryCtaLink.startsWith('http') ? (
+                  <a
+                    href={secondaryCtaLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-secondary-cinema"
+                  >
+                    <span>{secondaryCtaText}</span>
+                  </a>
+                ) : (
+                  <Link to={secondaryCtaLink} className="btn-secondary-cinema">
+                    <span>{secondaryCtaText}</span>
+                  </Link>
+                )
               )}
             </div>
           </div>

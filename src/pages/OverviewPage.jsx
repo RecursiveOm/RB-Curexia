@@ -217,17 +217,20 @@ export default function OverviewPage() {
             </div>
 
             <div className="flex flex-wrap items-center gap-4">
+              <a
+                href="https://labonix.in"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-6 py-3 rounded-full bg-champagne text-obsidian text-xs font-semibold uppercase tracking-wider hover:bg-white hover:scale-105 transition-all shadow-lg flex items-center gap-2"
+              >
+                <span>Launch labonix.in</span>
+                <span>↗</span>
+              </a>
               <Link
                 to="/labonix"
-                className="px-6 py-3 rounded-full bg-champagne text-obsidian text-xs font-semibold uppercase tracking-wider hover:bg-white hover:scale-105 transition-all shadow-lg"
-              >
-                Inspect Dedicated Labonix Page ↗
-              </Link>
-              <Link
-                to="/concierge"
                 className="px-6 py-3 rounded-full bg-white/[0.06] border border-cyan-500/40 text-cyan-200 text-xs font-semibold uppercase tracking-wider hover:bg-white/10 transition-all"
               >
-                Book LIS Integration Demo
+                Inspect Dedicated Labonix Page ↗
               </Link>
             </div>
           </div>
@@ -291,17 +294,20 @@ export default function OverviewPage() {
             </div>
 
             <div className="flex flex-wrap items-center gap-4">
+              <a
+                href="https://pulseport.in"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-6 py-3 rounded-full bg-champagne text-obsidian text-xs font-semibold uppercase tracking-wider hover:bg-white hover:scale-105 transition-all shadow-lg flex items-center gap-2"
+              >
+                <span>Launch pulseport.in</span>
+                <span>↗</span>
+              </a>
               <Link
                 to="/pulseport"
-                className="px-6 py-3 rounded-full bg-champagne text-obsidian text-xs font-semibold uppercase tracking-wider hover:bg-white hover:scale-105 transition-all shadow-lg"
-              >
-                Inspect Dedicated PulsePort Page ↗
-              </Link>
-              <Link
-                to="/concierge"
                 className="px-6 py-3 rounded-full bg-white/[0.06] border border-purple-500/40 text-purple-200 text-xs font-semibold uppercase tracking-wider hover:bg-white/10 transition-all"
               >
-                Deploy Biometric Terminals
+                Inspect Dedicated PulsePort Page ↗
               </Link>
             </div>
           </div>

@@ -96,11 +96,12 @@ export const SPECIALIZED_PRODUCTS = [
   },
   {
     id: 'labonix',
-    num: '04.B',
+    num: '04',
     name: 'Labonix Gateway',
     tagline: 'Pathology Diagnostics & Automated Reagent Ops',
     badge: 'DIAGNOSTIC LABS',
     path: '/labonix',
+    liveUrl: 'https://labonix.in',
     accent: '#38bdf8',
     icon: 'flask',
     description: 'High-throughput laboratory information gateway connecting hospital doctors directly to automated analyzers, barcode specimen tracking, and critical value alerting.'
@@ -118,14 +119,27 @@ export const SPECIALIZED_PRODUCTS = [
   },
   {
     id: 'pulseport',
-    num: '04.D',
+    num: '05',
     name: 'PulsePort Telemetry',
     tagline: 'Biometric Identity & Continuous Wearable Streams',
     badge: 'WEARABLES & VITALS',
     path: '/pulseport',
+    liveUrl: 'https://pulseport.in',
     accent: '#a855f7',
     icon: 'bio',
     description: 'Patient biometric identification terminals paired with Medicore wearable biosensor integration for 24/7 post-discharge ambulatory monitoring and vital anomaly alarms.'
+  },
+  {
+    id: 'network',
+    num: '07',
+    name: 'Plugins Social',
+    tagline: 'Verified Specialist Social & Clinical Network',
+    badge: 'PLUGINS.SOCIAL',
+    path: '/network',
+    liveUrl: 'https://plugins.social/',
+    accent: '#c084fc',
+    icon: 'network',
+    description: 'Verified clinical knowledge-sharing community connecting medical practitioners, inter-departmental referrals, and clinical clan exchanges.'
   }
 ];
 

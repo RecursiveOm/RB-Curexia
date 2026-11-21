@@ -10,10 +10,10 @@ export default function PulsePortPage() {
         title="PulsePort: Biometric Identity &"
         highlight="Continuous Telemetry."
         description="Patient biometric identification kiosks paired with Medicore smartwatch biosensor integration for 24/7 post-discharge ambulatory monitoring, physiological anomaly alarms, and touchless clinic check-in."
-        primaryCtaText="Inspect Architecture"
-        primaryCtaLink="/architecture"
-        secondaryCtaText="Deploy Biometric Terminals"
-        secondaryCtaLink="/concierge"
+        primaryCtaText="Open Live App: pulseport.in"
+        primaryCtaLink="https://pulseport.in"
+        secondaryCtaText="Inspect Architecture"
+        secondaryCtaLink="/architecture"
         pageId="pulseport"
       />
 

@@ -10,10 +10,10 @@ export default function LabonixPage() {
         title="Labonix: Automated Pathology &"
         highlight="Reagent Intelligence."
         description="High-throughput diagnostic pathology and genomics gateway. Connecting doctor consultation desks and hospital wards directly to automated chemistry analyzers, specimen barcode tracking, and panic value escalation."
-        primaryCtaText="Inspect Architecture"
-        primaryCtaLink="/architecture"
-        secondaryCtaText="Deploy Labonix Bridge"
-        secondaryCtaLink="/concierge"
+        primaryCtaText="Open Live App: labonix.in"
+        primaryCtaLink="https://labonix.in"
+        secondaryCtaText="Inspect Architecture"
+        secondaryCtaLink="/architecture"
         pageId="labonix"
       />
 

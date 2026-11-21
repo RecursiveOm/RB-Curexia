@@ -5,7 +5,7 @@ export default function LabonixPage() {
   return (
     <div className="w-full relative z-10 flex flex-col">
       <PageHero
-        eyebrowNum="04.B"
+        eyebrowNum="04"
         eyebrowText="DIAGNOSTIC PATHOLOGY"
         title="Labonix: Automated Pathology &"
         highlight="Reagent Intelligence."
@@ -72,11 +72,11 @@ export default function LabonixPage() {
       </section>
 
       <NextPageCta
-        nextNum="04.C"
-        nextLabel="Pharmixo"
-        title="Pharmixo Pharmacy Management Portal"
-        description="Explore GPS-coordinated verified prescription fulfillment and hospital inventory monitoring."
-        link="/pharmixo"
+        nextNum="05"
+        nextLabel="PulsePort"
+        title="PulsePort Biometric & Continuous Telemetry"
+        description="Explore touchless facial identification check-in kiosks paired with 24/7 continuous Medicore wearable vital monitoring."
+        link="/pulseport"
       />
     </div>
   );

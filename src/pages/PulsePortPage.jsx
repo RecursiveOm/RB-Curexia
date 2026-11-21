@@ -5,7 +5,7 @@ export default function PulsePortPage() {
   return (
     <div className="w-full relative z-10 flex flex-col">
       <PageHero
-        eyebrowNum="04.D"
+        eyebrowNum="05"
         eyebrowText="BIOMETRICS &amp; WEARABLES"
         title="PulsePort: Biometric Identity &"
         highlight="Continuous Telemetry."
@@ -72,11 +72,11 @@ export default function PulsePortPage() {
       </section>
 
       <NextPageCta
-        nextNum="05"
-        nextLabel="Network"
-        title="Plugins Social · Clinician Network"
-        description="Discover how doctors and hospitals collaborate on multi-specialty clinical boards."
-        link="/network"
+        nextNum="06"
+        nextLabel="Architecture"
+        title="Complete 24-Service System Architecture"
+        description="Inspect the cryptographic data vault, local Dexie cache, and four connected ecosystem nodes."
+        link="/architecture"
       />
     </div>
   );

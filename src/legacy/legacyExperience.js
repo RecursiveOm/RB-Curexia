@@ -275,9 +275,9 @@ export function initializeRbcurexiaExperience({ submitContact, subscribeNewslett
     const manifestoEl = document.getElementById('mission-manifesto');
     if (manifestoEl && manifestoPhrases.length) {
       gsap.set(manifestoPhrases, {
-        color: 'rgba(242, 238, 228, 0.52)',
+        color: 'rgba(246, 244, 240, 0.28)',
         fontWeight: '300',
-        opacity: 0.75,
+        opacity: 0.7,
         textShadow: 'none'
       });
 
@@ -296,9 +296,7 @@ export function initializeRbcurexiaExperience({ submitContact, subscribeNewslett
           color: isHighlight ? '#EDE8D0' : '#FFFFFF',
           fontWeight: isHighlight ? '600' : '500',
           opacity: 1,
-          textShadow: isHighlight
-            ? '0 0 14px rgba(237, 232, 208, 0.3)'
-            : '0 0 10px rgba(255, 255, 255, 0.18)',
+          textShadow: 'none',
           duration: 0.55,
           ease: 'power2.out'
         }, idx * 0.45);

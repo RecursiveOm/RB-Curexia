@@ -1,4 +1,7 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import HeroSection from '../components/sections/HeroSection.jsx';
 import MissionSection from '../components/sections/MissionSection.jsx';
 import PanaceaSection from '../components/sections/PanaceaSection.jsx';
@@ -7,6 +10,85 @@ import NetworkSection from '../components/sections/NetworkSection.jsx';
 import ConciergeSection from '../components/sections/ConciergeSection.jsx';
 
 export default function OverviewPage() {
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const manifestoEl = document.getElementById('mission-manifesto');
+    const containerEl = document.getElementById('manifesto-scroll-pin');
+    const phrases = manifestoEl?.querySelectorAll('.manifesto-phrase');
+
+    if (!manifestoEl || !phrases || !phrases.length) return;
+
+    // Initial phrase state: clean subtle contrast matching original homepage
+    gsap.set(phrases, {
+      color: 'rgba(246, 244, 240, 0.28)',
+      fontWeight: '300',
+      opacity: 0.7,
+      textShadow: 'none'
+    });
+
+    // Scrubbed timeline: as user scrolls down, phrases bold and illuminate sequentially without blinding blur
+    const manifestoTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: containerEl || manifestoEl,
+        start: 'top 85%',
+        end: 'bottom 45%',
+        scrub: 0.35
+      }
+    });
+
+    phrases.forEach((phrase) => {
+      const isHighlight = phrase.classList.contains('manifesto-highlight');
+      manifestoTl.to(
+        phrase,
+        {
+          color: isHighlight ? '#EDE8D0' : '#FFFFFF',
+          fontWeight: isHighlight ? '600' : '500',
+          opacity: 1,
+          textShadow: 'none',
+          duration: 0.55,
+          ease: 'power2.out'
+        },
+        '+=0.08'
+      );
+    });
+
+    // Native scroll listener fallback to guarantee bolding & illumination on overview page
+    const handleScrollCheck = () => {
+      const rect = manifestoEl.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      if (rect.top < windowHeight * 0.85) {
+        const progress = Math.min(1, Math.max(0, (windowHeight * 0.85 - rect.top) / (rect.height * 0.9)));
+        const phraseCount = phrases.length;
+        const activeIdx = Math.floor(progress * phraseCount);
+
+        phrases.forEach((p, idx) => {
+          const isHighlight = p.classList.contains('manifesto-highlight');
+          if (idx <= activeIdx) {
+            p.style.color = isHighlight ? '#EDE8D0' : '#FFFFFF';
+            p.style.fontWeight = isHighlight ? '600' : '500';
+            p.style.opacity = '1';
+            p.style.textShadow = 'none';
+          } else {
+            p.style.color = isHighlight ? 'rgba(237, 232, 208, 0.32)' : 'rgba(246, 244, 240, 0.28)';
+            p.style.fontWeight = '300';
+            p.style.opacity = '0.7';
+            p.style.textShadow = 'none';
+          }
+        });
+      }
+    };
+
+    window.addEventListener('scroll', handleScrollCheck, { passive: true });
+    handleScrollCheck();
+    ScrollTrigger.refresh();
+
+    return () => {
+      window.removeEventListener('scroll', handleScrollCheck);
+      manifestoTl.kill();
+    };
+  }, []);
+
   return (
     <div className="w-full relative z-10 flex flex-col">
       {/* 1. Complete Original Hero Header with Faststart Ambient Video */}

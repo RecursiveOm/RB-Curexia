@@ -7,7 +7,7 @@ export default function NetworkPage() {
     <div className="w-full relative z-10 flex flex-col" id="act-network">
       {/* 1. Network Hero */}
       <PageHero
-        eyebrowNum="05"
+        eyebrowNum="07"
         eyebrowText="CLINICIAN ECOSYSTEM"
         title="A Connected Ecosystem of"
         highlight="Doctors & Hospitals."
@@ -83,7 +83,7 @@ export default function NetworkPage() {
 
       {/* 4. Next Page CTA */}
       <NextPageCta
-        nextNum="06"
+        nextNum="08"
         nextLabel="Concierge"
         title="Executive Concierge & Mumbai HQ"
         description="Schedule a private hospital deployment walkthrough, apply for internships, or sign up for free institutional healthcare tech seminars."

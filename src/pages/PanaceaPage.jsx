@@ -287,10 +287,10 @@ export default function PanaceaPage() {
       {/* 5. Next Page CTA */}
       <NextPageCta
         nextNum="04"
-        nextLabel="Architecture"
-        title="Complete 24-Service System Architecture"
-        description="Explore the technical foundation, cryptographic data vault, and 4 connected healthcare nodes."
-        link="/architecture"
+        nextLabel="Labonix"
+        title="Labonix Pathology Diagnostic Gateway"
+        description="Explore automated biochemistry interfacing, reagent supply AI, and 42ms specimen tracking."
+        link="/labonix"
       />
     </div>
   );

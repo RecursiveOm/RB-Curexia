@@ -168,7 +168,7 @@ export default function ConciergePage() {
     <div className="w-full relative z-10 flex flex-col" id="act-concierge">
       {/* 1. Hero */}
       <PageHero
-        eyebrowNum="06"
+        eyebrowNum="08"
         eyebrowText="EXECUTIVE CONCIERGE"
         title="Let's Build the Future of"
         highlight="Healthcare Together."

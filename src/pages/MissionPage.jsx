@@ -15,15 +15,15 @@ export default function MissionPage() {
 
     if (!manifestoEl || !phrases || !phrases.length) return;
 
-    // Initial phrase state: clearly legible, soft luxury contrast (never pitch black!)
+    // Initial phrase state: clean subtle contrast matching original homepage
     gsap.set(phrases, {
-      color: 'rgba(242, 238, 228, 0.52)',
+      color: 'rgba(246, 244, 240, 0.28)',
       fontWeight: '300',
-      opacity: 0.75,
+      opacity: 0.7,
       textShadow: 'none'
     });
 
-    // Scrubbed timeline: as user scrolls down, phrases bold and illuminate sequentially
+    // Scrubbed timeline: as user scrolls down, phrases bold and illuminate sequentially without blinding blur
     const manifestoTl = gsap.timeline({
       scrollTrigger: {
         trigger: containerEl || manifestoEl,
@@ -41,9 +41,7 @@ export default function MissionPage() {
           color: isHighlight ? '#EDE8D0' : '#FFFFFF',
           fontWeight: isHighlight ? '600' : '500',
           opacity: 1,
-          textShadow: isHighlight
-            ? '0 0 14px rgba(237, 232, 208, 0.3)'
-            : '0 0 10px rgba(255, 255, 255, 0.18)',
+          textShadow: 'none',
           duration: 0.55,
           ease: 'power2.out'
         },
@@ -66,13 +64,11 @@ export default function MissionPage() {
             p.style.color = isHighlight ? '#EDE8D0' : '#FFFFFF';
             p.style.fontWeight = isHighlight ? '600' : '500';
             p.style.opacity = '1';
-            p.style.textShadow = isHighlight
-              ? '0 0 14px rgba(237, 232, 208, 0.3)'
-              : '0 0 10px rgba(255, 255, 255, 0.18)';
+            p.style.textShadow = 'none';
           } else {
-            p.style.color = isHighlight ? 'rgba(237, 232, 208, 0.58)' : 'rgba(242, 238, 228, 0.52)';
+            p.style.color = isHighlight ? 'rgba(237, 232, 208, 0.32)' : 'rgba(246, 244, 240, 0.28)';
             p.style.fontWeight = '300';
-            p.style.opacity = '0.75';
+            p.style.opacity = '0.7';
             p.style.textShadow = 'none';
           }
         });
@@ -295,7 +291,7 @@ export default function MissionPage() {
             <div className="order-1 lg:order-2 relative w-full max-w-[620px]">
               <div className="mission-photo-frame rounded-3xl overflow-hidden border border-white/10 shadow-2xl aspect-[4/3] w-full relative group bg-[#090514]">
                 <img
-                  src="/assets/nurse-ipad-station.webp"
+                  src="/assets/doctors-collaboration-specialists.webp"
                   alt="Nurse station with wireless tablet telemetry"
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   loading="lazy"
@@ -315,7 +311,7 @@ export default function MissionPage() {
             <div className="relative w-full max-w-[620px]">
               <div className="mission-photo-frame rounded-3xl overflow-hidden border border-white/10 shadow-2xl aspect-[4/3] w-full relative group bg-[#090514]">
                 <img
-                  src="/assets/doctor-with-patient-elderly.webp"
+                  src="/assets/doctors-hospital-hallway-scrubs.webp"
                   alt="Doctor with elderly patient discussing continuous care"
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   loading="lazy"

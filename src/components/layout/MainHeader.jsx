@@ -47,10 +47,10 @@ export default function MainHeader({ onOpenMenu }) {
         </span>
       </Link>
 
-      {/* Center: 6 Primary Numbered Navigation Links */}
+      {/* Center: 8 Primary Numbered Navigation Links */}
       <nav
         aria-label="Primary Navigation"
-        className="hidden xl:flex items-center gap-7 text-[11px] font-medium tracking-[0.14em] uppercase text-stonewarm"
+        className="hidden lg:flex items-center gap-3.5 xl:gap-5 2xl:gap-6 text-[10px] xl:text-[11px] font-medium tracking-[0.11em] 2xl:tracking-[0.14em] uppercase text-stonewarm"
       >
         {PRIMARY_NAV_ITEMS.map((item) => {
           const isActive =

@@ -46,7 +46,7 @@ export default function ArchitecturePage() {
     <div className="w-full relative z-10 flex flex-col" id="act-services">
       {/* 1. Architecture Hero */}
       <PageHero
-        eyebrowNum="04"
+        eyebrowNum="06"
         eyebrowText="PLATFORM ARCHITECTURE"
         title="One Connected Healthcare Ecosystem for"
         highlight="Modern Care."
@@ -281,7 +281,7 @@ export default function ArchitecturePage() {
 
       {/* 5. Next Page CTA */}
       <NextPageCta
-        nextNum="05"
+        nextNum="07"
         nextLabel="Network"
         title="Plugins Social · Clinician Network"
         description="Inspect the connected community of specialists, inter-departmental referrals, and clinical clans across Mumbai."

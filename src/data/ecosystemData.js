@@ -31,24 +31,40 @@ export const PRIMARY_NAV_ITEMS = [
   },
   {
     num: '04',
+    label: 'Labonix',
+    display: '04 Labonix',
+    path: '/labonix',
+    title: 'Labonix Pathology Diagnostic Gateway',
+    desc: 'Autonomous pathology laboratory telemetry, analyzer connectivity, and 42ms specimen tracking.'
+  },
+  {
+    num: '05',
+    label: 'PulsePort',
+    display: '05 PulsePort',
+    path: '/pulseport',
+    title: 'PulsePort Biometric & Wearables',
+    desc: 'Facial biometric check-in kiosks and 24/7 continuous Medicore wearable ambulatory vital monitoring.'
+  },
+  {
+    num: '06',
     label: 'Architecture',
-    display: '04 Architecture',
+    display: '06 Architecture',
     path: '/architecture',
     title: 'Complete 24-Service Architecture',
     desc: 'The 4 healthcare nodes (Clinics, Hospital, Labs, Pharmacies) and cryptographic data vault.'
   },
   {
-    num: '05',
+    num: '07',
     label: 'Network',
-    display: '05 Network',
+    display: '07 Network',
     path: '/network',
     title: 'Plugins Social · Clinician Network',
     desc: 'Verified specialist community, inter-departmental referrals, and clinical clan knowledge exchange.'
   },
   {
-    num: '06',
+    num: '08',
     label: 'Concierge',
-    display: '06 Concierge',
+    display: '08 Concierge',
     path: '/concierge',
     title: 'Executive Concierge & Mumbai HQ',
     desc: 'Hospital deployment briefings, healthcare tech seminars, and clinical technology internships.'

@@ -368,203 +368,209 @@ export default function PageThemedVisual({ pageId = 'pulseport' }) {
       {/* Adverse Drug Interaction Warning), Callout Pills and Tip Beacon           */}
       {/* Pure SVG <animateTransform> prevents any coordinate collapse!             */}
       {/* ========================================================================= */}
-      {pageId === 'panacea' && (
+            {pageId === 'panacea' && (
         <div className="relative w-full h-full flex items-center justify-center">
-          {/* Ambient Lighting Glows */}
-          <div className="absolute w-[380px] h-[380px] bg-blue-600/20 rounded-full blur-[100px] pointer-events-none" />
-          <div className="absolute w-[300px] h-[300px] bg-purple-600/20 rounded-full blur-[90px] pointer-events-none" />
-
-          <svg viewBox="0 0 540 440" className="w-full h-full max-w-[540px] overflow-visible drop-shadow-2xl">
+          <svg id="panacea-cockpit-svg" viewBox="0 0 540 380" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style={{ maxWidth: '560px', overflow: 'visible' }}>
             <defs>
-              <linearGradient id="pad-rim-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#38bdf8" />
-                <stop offset="50%" stopColor="#818cf8" />
-                <stop offset="100%" stopColor="#c084fc" />
+              <pattern id="pan-dot-grid" width="18" height="18" patternUnits="userSpaceOnUse">
+                <circle cx="1.5" cy="1.5" r="0.85" fill="#94A3B8" opacity="0.16" />
+              </pattern>
+              <radialGradient id="pan-aura" cx="46%" cy="50%" r="54%">
+                <stop offset="0%" stopColor="#A855F7" stopOpacity="0.18" />
+                <stop offset="50%" stopColor="#38BDF8" stopOpacity="0.08" />
+                <stop offset="100%" stopColor="#07060B" stopOpacity="0" />
+              </radialGradient>
+              <linearGradient id="pan-panel-bg" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#131020" stopOpacity="0.96" />
+                <stop offset="100%" stopColor="#0B0914" stopOpacity="0.98" />
               </linearGradient>
-
-              <filter id="card-glow" x="-20%" y="-20%" width="140%" height="140%">
-                <feGaussianBlur stdDeviation="3.5" result="blur" />
-                <feMerge>
-                  <feMergeNode in="blur" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
+              <linearGradient id="pan-cyan-card-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#0D1726" stopOpacity="0.95" />
+                <stop offset="100%" stopColor="#090D18" stopOpacity="0.98" />
+              </linearGradient>
+              <linearGradient id="pan-rose-card-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#1C0E17" stopOpacity="0.95" />
+                <stop offset="100%" stopColor="#0E0810" stopOpacity="0.98" />
+              </linearGradient>
+              <linearGradient id="pan-main-stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#A855F7" stopOpacity="0.85" />
+                <stop offset="52%" stopColor="#38BDF8" stopOpacity="0.6" />
+                <stop offset="100%" stopColor="#EAE1C8" stopOpacity="0.5" />
+              </linearGradient>
+              <linearGradient id="pan-cyan-stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#38BDF8" stopOpacity="0.9" />
+                <stop offset="100%" stopColor="#0284C7" stopOpacity="0.35" />
+              </linearGradient>
+              <linearGradient id="pan-rose-stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#FB7185" stopOpacity="0.9" />
+                <stop offset="55%" stopColor="#F59E0B" stopOpacity="0.65" />
+                <stop offset="100%" stopColor="#9F1239" stopOpacity="0.35" />
+              </linearGradient>
+              <linearGradient id="pan-rx-ink" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#EAE1C8" />
+                <stop offset="55%" stopColor="#C084FC" />
+                <stop offset="100%" stopColor="#38BDF8" />
+              </linearGradient>
+              <linearGradient id="pan-stylus-body" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#334155" />
+                <stop offset="50%" stopColor="#1E1B2E" />
+                <stop offset="100%" stopColor="#0F172A" />
+              </linearGradient>
+              <filter id="pan-soft-glow" x="-15%" y="-15%" width="130%" height="130%">
+                <feDropShadow dx="0" dy="8" stdDeviation="12" floodColor="#000000" floodOpacity="0.55" />
               </filter>
+              <filter id="pan-cyan-glow" x="-40%" y="-40%" width="180%" height="180%">
+                <feDropShadow dx="0" dy="0" stdDeviation="4" floodColor="#38BDF8" floodOpacity="0.85" />
+              </filter>
+              <filter id="pan-rose-glow" x="-40%" y="-40%" width="180%" height="180%">
+                <feDropShadow dx="0" dy="0" stdDeviation="3.5" floodColor="#FB7185" floodOpacity="0.85" />
+              </filter>
+              <path id="pan-wire-opd" d="M 332 114 C 346 114, 344 102, 358 102" fill="none" />
+              <path id="pan-wire-drug" d="M 332 272 C 346 272, 344 278, 358 278" fill="none" />
+              <style>{`
+                .pan-mono { font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; letter-spacing: 0.08em; }
+                .pan-sans { font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif; }
+                @keyframes panFloatTop { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-4px); } }
+                @keyframes panFloatBot { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(4px); } }
+                @keyframes panPulseDot { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.42; transform: scale(0.75); } }
+                @keyframes panDashFlow { to { stroke-dashoffset: -24; } }
+                @keyframes panDrawRx { 0% { stroke-dashoffset: 310; opacity: 0.35; } 10% { opacity: 1; } 68%, 88% { stroke-dashoffset: 0; opacity: 1; } 100% { stroke-dashoffset: 0; opacity: 0.2; } }
+                @keyframes panNibHalo { 0%, 100% { opacity: 0.85; transform: scale(1); } 50% { opacity: 0.25; transform: scale(1.65); } }
+                @keyframes panStylusHover { 0%, 100% { transform: translate(0px, 0px); } 50% { transform: translate(1.8px, -2px); } }
+                .pan-float-a { animation: panFloatTop 5.4s ease-in-out infinite; }
+                .pan-float-b { animation: panFloatBot 6.0s ease-in-out infinite; }
+                .pan-pulse { transform-box: fill-box; transform-origin: center; animation: panPulseDot 1.8s ease-in-out infinite; }
+                .pan-wire { stroke-dasharray: 4 4; animation: panDashFlow 1.5s linear infinite; }
+                .pan-rx-stroke { stroke-dasharray: 310; stroke-dashoffset: 310; animation: panDrawRx 4.6s cubic-bezier(0.35, 0, 0.2, 1) infinite; }
+                .pan-nib-ring { transform-box: fill-box; transform-origin: center; animation: panNibHalo 2.1s ease-in-out infinite; }
+                .pan-stylus-g { animation: panStylusHover 3.4s ease-in-out infinite; }
+              `}</style>
             </defs>
-
-            {/* CARD 1: Longitudinal EHR Dossiers (Top Left) */}
-            <g transform="translate(25, 40)">
+            <rect x="6" y="10" width="528" height="360" rx="20" fill="url(#pan-dot-grid)" />
+            <ellipse cx="260" cy="190" rx="250" ry="170" fill="url(#pan-aura)" />
+            <g fill="none" strokeWidth="1.4" strokeOpacity="0.72">
+              <use href="#pan-wire-opd" stroke="#38BDF8" className="pan-wire" />
+              <use href="#pan-wire-drug" stroke="#FB7185" className="pan-wire" />
+            </g>
+            <circle r="2.8" fill="#38BDF8" filter="url(#pan-cyan-glow)">
+              <animateMotion dur="2.1s" repeatCount="indefinite">
+                <mpath href="#pan-wire-opd" />
+              </animateMotion>
+            </circle>
+            <circle r="2.8" fill="#FB7185" filter="url(#pan-rose-glow)">
+              <animateMotion dur="2.4s" begin="0.5s" repeatCount="indefinite">
+                <mpath href="#pan-wire-drug" />
+              </animateMotion>
+            </circle>
+            <g filter="url(#pan-soft-glow)">
+              <rect x="16" y="22" width="316" height="336" rx="16" fill="url(#pan-panel-bg)" stroke="url(#pan-main-stroke)" strokeWidth="1.35" />
+              <circle cx="33" cy="40" r="2.8" fill="#FB7185" opacity="0.75" />
+              <circle cx="43" cy="40" r="2.8" fill="#FBBF24" opacity="0.75" />
+              <circle cx="53" cy="40" r="2.8" fill="#34D399" opacity="0.75" />
+              <text x="67" y="43" fill="#CBD5E1" fontSize="8.5" fontWeight="600" className="pan-mono">PANACEA CLINICAL OS</text>
+              <rect x="246" y="31" width="74" height="18" rx="9" fill="#064E3B" fillOpacity="0.45" stroke="#34D399" strokeWidth="0.85" strokeOpacity="0.75" />
+              <circle cx="257" cy="40" r="2.6" fill="#34D399" className="pan-pulse" />
+              <text x="265" y="42.8" fill="#6EE7B7" fontSize="7.2" fontWeight="700" className="pan-mono">EHR SYNC</text>
+              <line x1="16" y1="57" x2="332" y2="57" stroke="#FFFFFF" strokeOpacity="0.07" strokeWidth="1" />
+              <rect x="30" y="69" width="34" height="34" rx="10" fill="#18132B" stroke="#A855F7" strokeWidth="1" strokeOpacity="0.55" />
+              <circle cx="47" cy="81" r="4.5" fill="none" stroke="#EAE1C8" strokeWidth="1.3" />
+              <path d="M 39.5 94 C 40.5 89.2, 53.5 89.2, 54.5 94" fill="none" stroke="#C084FC" strokeWidth="1.3" strokeLinecap="round" />
+              <text x="74" y="82" fill="#F8FAFC" fontSize="11.5" fontWeight="700" className="pan-mono">PATIENT #4729</text>
+              <text x="74" y="97" fill="#94A3B8" fontSize="8.8" className="pan-sans">68 yrs · Female · Longitudinal Dossier</text>
               <g>
-                <animateTransform attributeName="transform" type="translate" values="0 0; 0 -6; 0 0" dur="6s" repeatCount="indefinite" />
-                
-                {/* Callout Pill at Top */}
-                <g transform="translate(15, -14)">
-                  <rect x="0" y="0" width="130" height="20" rx="10" fill="#14092b" stroke="#a855f7" strokeWidth="1" />
-                  <circle cx="12" cy="10" r="3" fill="#a855f7" />
-                  <text x="22" y="13" fill="#ede8d0" fontSize="7.5" fontFamily="sans-serif" fontWeight="bold">Longitudinal EHR Dossiers</text>
-                  <line x1="65" y1="20" x2="65" y2="28" stroke="#a855f7" strokeWidth="1" strokeDasharray="2 2" />
-                </g>
-
-                {/* Dossier Card Chassis */}
-                <rect x="0" y="28" width="180" height="135" rx="12" fill="#0a0518" stroke="#8b5cf6" strokeWidth="1.8" filter="url(#card-glow)" />
-                
-                {/* Patient Header */}
-                <circle cx="22" cy="48" r="8" fill="#1d0d38" stroke="#38bdf8" strokeWidth="1" />
-                <path d="M 18 53 C 18 49, 26 49, 26 53" fill="#38bdf8" />
-                <text x="36" y="47" fill="#ffffff" fontSize="9" fontWeight="bold">Patient #4729</text>
-                <text x="36" y="56" fill="#38bdf8" fontSize="7.5" fontFamily="monospace">68 yrs · F</text>
-
-                {/* Summary Checklist */}
-                <g transform="translate(14, 68)">
-                  <rect x="0" y="0" width="92" height="14" rx="4" fill="#170c30" />
-                  <text x="6" y="10" fill="#ede8d0" fontSize="7.5" fontWeight="bold">+ Clinical Summary</text>
-
-                  <g transform="translate(6, 22)">
-                    <text x="0" y="0" fill="#c084fc" fontSize="7">■ Investigations</text>
-                    <text x="0" y="11" fill="#c084fc" fontSize="7">■ Medications</text>
-                    <text x="0" y="22" fill="#c084fc" fontSize="7">■ Allergies</text>
-                    <text x="0" y="33" fill="#c084fc" fontSize="7">■ History</text>
-                  </g>
-                </g>
-
-                {/* Holographic 3D Human Anatomy Wireframe Body */}
-                <g transform="translate(142, 95)">
-                  <ellipse cx="0" cy="-28" rx="5" ry="6" fill="none" stroke="#38bdf8" strokeWidth="1.2" />
-                  <path d="M -8 -20 L 8 -20 L 6 0 L -6 0 Z" fill="none" stroke="#38bdf8" strokeWidth="1.2" />
-                  <line x1="-8" y1="-18" x2="-14" y2="4" stroke="#38bdf8" strokeWidth="1.2" />
-                  <line x1="8" y1="-18" x2="14" y2="4" stroke="#38bdf8" strokeWidth="1.2" />
-                  <line x1="-4" y1="0" x2="-5" y2="24" stroke="#38bdf8" strokeWidth="1.2" />
-                  <line x1="4" y1="0" x2="5" y2="24" stroke="#38bdf8" strokeWidth="1.2" />
-                  {/* Pulsing Red Heart Beacon */}
-                  <circle cx="1" cy="-14" r="3.5" fill="#f43f5e" filter="url(#card-glow)" className="animate-ping" />
-                  <circle cx="1" cy="-14" r="2.5" fill="#ffffff" />
-                </g>
+                <rect x="30" y="113" width="88" height="25" rx="7" fill="#0E1525" stroke="#1E293B" strokeWidth="1" />
+                <circle cx="41" cy="125.5" r="2.4" fill="#34D399" />
+                <text x="49" y="128.5" fill="#94A3B8" fontSize="7.5" className="pan-mono">HR</text>
+                <text x="67" y="128.5" fill="#F8FAFC" fontSize="8.8" fontWeight="700" className="pan-mono">76</text>
+                <rect x="125" y="113" width="98" height="25" rx="7" fill="#0E1525" stroke="#1E293B" strokeWidth="1" />
+                <circle cx="136" cy="125.5" r="2.4" fill="#38BDF8" />
+                <text x="144" y="128.5" fill="#94A3B8" fontSize="7.5" className="pan-mono">BP</text>
+                <text x="160" y="128.5" fill="#F8FAFC" fontSize="8.8" fontWeight="700" className="pan-mono">124/80</text>
+                <rect x="230" y="113" width="88" height="25" rx="7" fill="#0E1525" stroke="#1E293B" strokeWidth="1" />
+                <circle cx="241" cy="125.5" r="2.4" fill="#A855F7" />
+                <text x="249" y="128.5" fill="#94A3B8" fontSize="7.5" className="pan-mono">SpO2</text>
+                <text x="280" y="128.5" fill="#F8FAFC" fontSize="8.8" fontWeight="700" className="pan-mono">99%</text>
               </g>
-            </g>
-
-            {/* CARD 2: Smart OPD Queues (Top Right) */}
-            <g transform="translate(295, 28)">
               <g>
-                <animateTransform attributeName="transform" type="translate" values="0 0; 0 -7; 0 0" dur="6.5s" repeatCount="indefinite" />
-                
-                {/* Callout Pill at Top */}
-                <g transform="translate(25, -14)">
-                  <rect x="0" y="0" width="105" height="20" rx="10" fill="#08142c" stroke="#38bdf8" strokeWidth="1" />
-                  <circle cx="10" cy="10" r="3" fill="#38bdf8" />
-                  <text x="18" y="13" fill="#ede8d0" fontSize="7.5" fontFamily="sans-serif" fontWeight="bold">Smart OPD Queues</text>
-                  <line x1="50" y1="20" x2="50" y2="28" stroke="#38bdf8" strokeWidth="1" strokeDasharray="2 2" />
-                </g>
-
-                {/* Queue Card Chassis */}
-                <rect x="0" y="28" width="150" height="98" rx="12" fill="#060e22" stroke="#38bdf8" strokeWidth="1.6" filter="url(#card-glow)" />
-                <text x="14" y="44" fill="#38bdf8" fontSize="8" fontFamily="monospace" fontWeight="bold">OPD QUEUE</text>
-
-                {/* Patient List Rows */}
-                <g transform="translate(14, 52)">
-                  <text x="0" y="10" fill="#ffffff" fontSize="8">01 Mr. Sharma</text>
-                  <rect x="80" y="1" width="44" height="12" rx="3" fill="#06281e" stroke="#10b981" strokeWidth="0.8" />
-                  <text x="102" y="9" fill="#10b981" fontSize="6.5" textAnchor="middle" fontWeight="bold">In Room</text>
-
-                  <text x="0" y="24" fill="#ffffff" fontSize="8">02 Ms. Kapoor</text>
-                  <rect x="80" y="15" width="44" height="12" rx="3" fill="#081c3a" stroke="#38bdf8" strokeWidth="0.8" />
-                  <text x="102" y="23" fill="#38bdf8" fontSize="6.5" textAnchor="middle" fontWeight="bold">Next</text>
-
-                  <text x="0" y="38" fill="#ffffff" fontSize="8">03 Dr. Mehta</text>
-                  <rect x="80" y="29" width="44" height="12" rx="3" fill="#1b0f33" stroke="#a855f7" strokeWidth="0.8" />
-                  <text x="102" y="37" fill="#c084fc" fontSize="6.5" textAnchor="middle" fontWeight="bold">Waiting</text>
-                </g>
+                <text x="30" y="157" fill="#CBD5E1" fontSize="8.4" fontWeight="500" className="pan-sans">Longitudinal EHR</text>
+                <rect x="132" y="151" width="124" height="5" rx="2.5" fill="#1A172B" />
+                <rect x="132" y="151" width="106" height="5" rx="2.5" fill="#A855F7" />
+                <text x="318" y="156.5" textAnchor="end" fill="#C4B5FD" fontSize="7.2" className="pan-mono">14 VISITS</text>
+                <text x="30" y="176" fill="#CBD5E1" fontSize="8.4" fontWeight="500" className="pan-sans">Investigations</text>
+                <rect x="132" y="170" width="124" height="5" rx="2.5" fill="#1A172B" />
+                <rect x="132" y="170" width="88" height="5" rx="2.5" fill="#38BDF8" />
+                <text x="318" y="175.5" textAnchor="end" fill="#7DD3FC" fontSize="7.2" className="pan-mono">LAB SYNC</text>
+                <text x="30" y="195" fill="#CBD5E1" fontSize="8.4" fontWeight="500" className="pan-sans">Allergies</text>
+                <rect x="132" y="189" width="124" height="5" rx="2.5" fill="#1A172B" />
+                <rect x="132" y="189" width="44" height="5" rx="2.5" fill="#FB7185" />
+                <text x="318" y="194.5" textAnchor="end" fill="#FDA4AF" fontSize="7.2" className="pan-mono">2 FLAGGED</text>
               </g>
-            </g>
-
-            {/* CARD 3: Adverse Drug Interaction Screening (Right) */}
-            <g transform="translate(360, 155)">
-              <g>
-                <animateTransform attributeName="transform" type="translate" values="0 0; 0 -5; 0 0" dur="7s" repeatCount="indefinite" />
-                
-                {/* Callout Pill */}
-                <g transform="translate(10, -14)">
-                  <rect x="0" y="0" width="135" height="18" rx="9" fill="#081e22" stroke="#10b981" strokeWidth="1" />
-                  <circle cx="10" cy="9" r="3" fill="#10b981" />
-                  <text x="18" y="12" fill="#ede8d0" fontSize="7" fontFamily="sans-serif" fontWeight="bold">Adverse Drug Screening</text>
-                  <line x1="50" y1="18" x2="50" y2="26" stroke="#10b981" strokeWidth="1" strokeDasharray="2 2" />
-                </g>
-
-                {/* Warning Box Chassis */}
-                <rect x="0" y="26" width="165" height="52" rx="10" fill="#16081e" stroke="#f43f5e" strokeWidth="1.5" filter="url(#card-glow)" />
-                <g transform="translate(12, 42)">
-                  <polygon points="10,-6 18,10 2,10" fill="#f59e0b" />
-                  <text x="10" y="7" fill="#000000" fontSize="8" fontWeight="bold" textAnchor="middle">!</text>
-                  <text x="26" y="2" fill="#ffffff" fontSize="8" fontWeight="bold">Potential Drug Interaction</text>
-                  <text x="26" y="14" fill="#f43f5e" fontSize="7.5" fontFamily="monospace">Amoxicillin + Warfarin</text>
+              <rect x="30" y="211" width="288" height="132" rx="12" fill="#08070F" stroke="#25213B" strokeWidth="1.1" />
+              <circle cx="43" cy="227" r="2.4" fill="#38BDF8" />
+              <text x="51" y="229.8" fill="#7DD3FC" fontSize="7.6" fontWeight="700" className="pan-mono">STYLUS DIGITAL PAD</text>
+              <text x="306" y="229.8" textAnchor="end" fill="#64748B" fontSize="7.2" className="pan-mono">NATURAL INK AI</text>
+              <line x1="42" y1="248" x2="306" y2="248" stroke="#FFFFFF" strokeOpacity="0.05" strokeWidth="1" />
+              <line x1="42" y1="274" x2="306" y2="274" stroke="#FFFFFF" strokeOpacity="0.05" strokeWidth="1" />
+              <line x1="42" y1="300" x2="306" y2="300" stroke="#FFFFFF" strokeOpacity="0.05" strokeWidth="1" />
+              <line x1="42" y1="324" x2="306" y2="324" stroke="#FFFFFF" strokeOpacity="0.05" strokeWidth="1" />
+              <text x="45" y="270" fill="#EAE1C8" opacity="0.22" fontSize="18" fontWeight="700" className="pan-sans">Rx</text>
+              <path d="M 68 294 C 82 260, 98 256, 108 286 C 116 308, 134 258, 148 278 C 160 296, 174 264, 190 278 C 202 288, 212 272, 224 276" fill="none" stroke="#38BDF8" strokeWidth="5" strokeLinecap="round" strokeOpacity="0.16" className="pan-rx-stroke" />
+              <path d="M 68 294 C 82 260, 98 256, 108 286 C 116 308, 134 258, 148 278 C 160 296, 174 264, 190 278 C 202 288, 212 272, 224 276" fill="none" stroke="url(#pan-rx-ink)" strokeWidth="2.2" strokeLinecap="round" className="pan-rx-stroke" />
+              <path d="M 74 312 C 118 308, 168 310, 214 306" fill="none" stroke="#A855F7" strokeWidth="1.2" strokeLinecap="round" strokeOpacity="0.55" className="pan-rx-stroke" />
+              <g className="pan-stylus-g">
+                <circle cx="224" cy="276" r="6" fill="none" stroke="#38BDF8" strokeWidth="1.2" className="pan-nib-ring" />
+                <circle cx="224" cy="276" r="2.6" fill="#38BDF8" filter="url(#pan-cyan-glow)" />
+                <g transform="translate(224, 276) rotate(-42)">
+                  <polygon points="0,0 13,-3.2 13,3.2" fill="#94A3B8" />
+                  <polygon points="0,0 5,-1.2 5,1.2" fill="#38BDF8" />
+                  <rect x="13" y="-3.6" width="58" height="7.2" rx="2" fill="url(#pan-stylus-body)" stroke="#64748B" strokeWidth="0.7" />
+                  <rect x="21" y="-3.6" width="3.5" height="7.2" fill="#EAE1C8" />
+                  <rect x="44" y="-1.2" width="14" height="2.4" rx="1.2" fill="#A855F7" opacity="0.85" />
+                  <rect x="70" y="-3.2" width="8" height="6.4" rx="3" fill="#475569" />
                 </g>
               </g>
             </g>
-
-            {/* 3D PERSPECTIVE DIGITAL DRAWING TABLET (Bottom Center) */}
-            <g transform="translate(185, 225)">
-              {/* Perspective Glass Plinth */}
-              <polygon points="0,45 220,15 285,100 65,130" fill="#090418" stroke="url(#pad-rim-grad)" strokeWidth="3" filter="url(#card-glow)" />
-              <polygon points="8,47 215,19 275,98 68,126" fill="#03010a" stroke="rgba(255,255,255,0.15)" strokeWidth="1" />
-
-              {/* Stylus Digital Handwriting Waveform */}
-              <path
-                d="M 50,85 Q 90,60 120,80 T 170,70 T 225,82"
-                fill="none"
-                stroke="#ede8d0"
-                strokeWidth="3.5"
-                strokeLinecap="round"
-                filter="url(#card-glow)"
-              />
-              <path
-                d="M 70,105 Q 110,95 150,105 T 210,98"
-                fill="none"
-                stroke="rgba(192, 132, 252, 0.7)"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-
-              {/* Quick Action Dock Buttons on Tablet Rim */}
-              <g transform="translate(180, 102)">
-                <rect x="0" y="0" width="16" height="12" rx="3" fill="#160a2c" stroke="#8b5cf6" strokeWidth="0.8" />
-                <rect x="20" y="0" width="16" height="12" rx="3" fill="#160a2c" stroke="#8b5cf6" strokeWidth="0.8" />
-                <rect x="40" y="0" width="16" height="12" rx="3" fill="#160a2c" stroke="#8b5cf6" strokeWidth="0.8" />
-                <circle cx="8" cy="6" r="2" fill="#38bdf8" />
-                <circle cx="28" cy="6" r="2" fill="#ede8d0" />
-                <circle cx="48" cy="6" r="2" fill="#f43f5e" />
-              </g>
-
-              {/* FLOATING 3D STYLUS PEN TOUCHING THE INK */}
-              <g transform="translate(115, 25)">
-                <animateTransform attributeName="transform" type="translate" values="0 0; 6 -3; 0 0" dur="3s" repeatCount="indefinite" />
-                <line x1="42" y1="-55" x2="0" y2="40" stroke="#ede8d0" strokeWidth="6" strokeLinecap="round" />
-                <line x1="42" y1="-55" x2="0" y2="40" stroke="#8b5cf6" strokeWidth="3" strokeLinecap="round" />
-                {/* Glowing Pen Tip Touching Screen */}
-                <circle cx="0" cy="40" r="4" fill="#38bdf8" filter="url(#card-glow)" />
-                <circle cx="0" cy="40" r="12" fill="none" stroke="#38bdf8" strokeWidth="1" className="animate-ping" />
-              </g>
+            <g className="pan-float-a" filter="url(#pan-soft-glow)">
+              <rect x="358" y="34" width="168" height="146" rx="14" fill="url(#pan-cyan-card-bg)" stroke="url(#pan-cyan-stroke)" strokeWidth="1.3" />
+              <text x="372" y="54" fill="#7DD3FC" fontSize="8" fontWeight="700" className="pan-mono">SMART OPD QUEUE</text>
+              <circle cx="511" cy="51" r="3" fill="#38BDF8" className="pan-pulse" />
+              <line x1="370" y1="64" x2="514" y2="64" stroke="#38BDF8" strokeOpacity="0.16" strokeWidth="1" />
+              <rect x="368" y="73" width="148" height="28" rx="7" fill="#0F172A" fillOpacity="0.7" stroke="#1E293B" strokeWidth="0.8" />
+              <text x="376" y="90" fill="#64748B" fontSize="7.8" className="pan-mono">01</text>
+              <text x="392" y="90" fill="#F8FAFC" fontSize="8.6" fontWeight="500" className="pan-sans">Mr. Sharma</text>
+              <rect x="462" y="79" width="48" height="16" rx="8" fill="#064E3B" fillOpacity="0.6" stroke="#34D399" strokeWidth="0.7" />
+              <text x="486" y="89.5" textAnchor="middle" fill="#6EE7B7" fontSize="6.6" fontWeight="700" className="pan-mono">IN ROOM</text>
+              <rect x="368" y="107" width="148" height="28" rx="7" fill="#0F172A" fillOpacity="0.55" stroke="#1E293B" strokeWidth="0.8" />
+              <text x="376" y="124" fill="#64748B" fontSize="7.8" className="pan-mono">02</text>
+              <text x="392" y="124" fill="#E2E8F0" fontSize="8.6" fontWeight="500" className="pan-sans">Ms. Kapoor</text>
+              <rect x="470" y="113" width="40" height="16" rx="8" fill="#082F49" fillOpacity="0.7" stroke="#38BDF8" strokeWidth="0.7" />
+              <text x="490" y="123.5" textAnchor="middle" fill="#7DD3FC" fontSize="6.6" fontWeight="700" className="pan-mono">NEXT</text>
+              <rect x="368" y="141" width="148" height="28" rx="7" fill="#0F172A" fillOpacity="0.45" stroke="#1E293B" strokeWidth="0.8" />
+              <text x="376" y="158" fill="#64748B" fontSize="7.8" className="pan-mono">03</text>
+              <text x="392" y="158" fill="#CBD5E1" fontSize="8.6" fontWeight="500" className="pan-sans">Dr. Mehta</text>
+              <rect x="462" y="147" width="48" height="16" rx="8" fill="#2E1065" fillOpacity="0.65" stroke="#A855F7" strokeWidth="0.7" />
+              <text x="486" y="157.5" textAnchor="middle" fill="#D8B4FE" fontSize="6.6" fontWeight="700" className="pan-mono">WAIT 4m</text>
             </g>
-
-            {/* Bottom Callout Tags */}
-            <g transform="translate(80, 380)">
-              <rect x="0" y="0" width="140" height="24" rx="12" fill="#0b0416" stroke="#8b5cf6" strokeWidth="1" />
-              <text x="70" y="15" fill="#ede8d0" fontSize="8" fontFamily="monospace" textAnchor="middle" fontWeight="bold">Digital Pad (Handwriting)</text>
-              <line x1="140" y1="12" x2="195" y2="300" stroke="#8b5cf6" strokeWidth="1" strokeDasharray="3 3" />
-            </g>
-
-            <g transform="translate(340, 380)">
-              <rect x="0" y="0" width="170" height="24" rx="12" fill="#09051c" stroke="#38bdf8" strokeWidth="1" />
-              <text x="85" y="15" fill="#38bdf8" fontSize="8" fontFamily="monospace" textAnchor="middle" fontWeight="bold">Clinician Cockpit (Fluid 3D)</text>
-              <line x1="340" y1="12" x2="310" y2="340" stroke="#38bdf8" strokeWidth="1" strokeDasharray="3 3" />
+            <g className="pan-float-b" filter="url(#pan-soft-glow)">
+              <rect x="358" y="212" width="168" height="134" rx="14" fill="url(#pan-rose-card-bg)" stroke="url(#pan-rose-stroke)" strokeWidth="1.3" />
+              <g transform="translate(370, 226)">
+                <path d="M 8 1.5 L 15 13.5 L 1 13.5 Z" fill="#FB7185" fillOpacity="0.18" stroke="#FB7185" strokeWidth="1.25" strokeLinejoin="round" />
+                <line x1="8" y1="5.8" x2="8" y2="9.4" stroke="#FECDD3" strokeWidth="1.3" strokeLinecap="round" />
+                <circle cx="8" cy="11.5" r="0.8" fill="#FECDD3" />
+              </g>
+              <text x="392" y="237" fill="#FDA4AF" fontSize="7.8" fontWeight="700" className="pan-mono">INTERACTION GUARD</text>
+              <line x1="370" y1="248" x2="514" y2="248" stroke="#FB7185" strokeOpacity="0.2" strokeWidth="1" />
+              <text x="371" y="270" fill="#FFF1F2" fontSize="10.4" fontWeight="700" className="pan-sans">Amoxicillin + Warfarin</text>
+              <text x="371" y="286" fill="#94A3B8" fontSize="8.2" className="pan-sans">Adverse Drug Screening · Auto</text>
+              <rect x="369" y="300" width="146" height="30" rx="8" fill="#4C0519" fillOpacity="0.58" stroke="#FB7185" strokeWidth="0.85" strokeOpacity="0.7" />
+              <circle cx="379" cy="315" r="2.5" fill="#FB7185" className="pan-pulse" />
+              <text x="387" y="317.8" fill="#FECDD3" fontSize="6.3" fontWeight="700" className="pan-mono">INR ELEVATION RISK · ALT READY</text>
             </g>
           </svg>
         </div>
       )}
 
-      {/* ========================================================================= */}
-      {/* 3. ARCHITECTURE: 4-Node Connected Matrix with Central Hub                  */}
-      {/* Features: Center RBCurexia Hub, Top CURENEST, Left PANACEA,               */}
-      {/* Right PHARMIXO, Bottom LABONIX, connected with glowing data conduits       */}
-      {/* ========================================================================= */}
-      {pageId === 'architecture' && (
+{pageId === 'architecture' && (
         <div className="relative w-full h-full flex items-center justify-center">
           {/* Ambient Lighting */}
           <div className="absolute w-[400px] h-[400px] bg-purple-600/25 rounded-full blur-[110px] pointer-events-none" />
@@ -676,475 +682,574 @@ export default function PageThemedVisual({ pageId = 'pulseport' }) {
       {/* 4. NETWORK: Clinician Constellation & Specialist Radar (KEPT AS REQUESTED)*/}
       {/* User instructed: "only keep for network rest all change"                   */}
       {/* ========================================================================= */}
-      {pageId === 'network' && (
+            {pageId === 'network' && (
         <div className="relative w-full h-full flex items-center justify-center">
-          {/* Edge-to-Edge Atmospheric Aura */}
-          <div className="absolute w-[360px] h-[360px] bg-purple-600/20 rounded-full blur-[90px] pointer-events-none" />
-          <div className="absolute w-[280px] h-[280px] bg-pink-500/10 rounded-full blur-[80px] pointer-events-none" />
-
-          <svg viewBox="0 0 500 420" className="w-full h-full max-w-[500px] overflow-visible drop-shadow-2xl">
+          <svg viewBox="0 0 480 340" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style={{ maxWidth: '480px', overflow: 'visible' }}>
             <defs>
-              <linearGradient id="radar-beam" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#a855f7" stopOpacity="0" />
-                <stop offset="80%" stopColor="#c084fc" stopOpacity="0.4" />
-                <stop offset="100%" stopColor="#ede8d0" stopOpacity="0.9" />
+              <radialGradient id="psDeepAura" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#A855F7" stopOpacity="0.2" />
+                <stop offset="55%" stopColor="#38BDF8" stopOpacity="0.07" />
+                <stop offset="100%" stopColor="#09080E" stopOpacity="0" />
+              </radialGradient>
+              <linearGradient id="psCoreGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#C084FC" />
+                <stop offset="55%" stopColor="#8B5CF6" />
+                <stop offset="100%" stopColor="#38BDF8" />
               </linearGradient>
+              <filter id="psHubGlow" x="-35%" y="-35%" width="170%" height="170%">
+                <feDropShadow dx="0" dy="0" stdDeviation="10" floodColor="#A855F7" floodOpacity="0.45" />
+              </filter>
+              <filter id="psPacketGlow" x="-60%" y="-60%" width="220%" height="220%">
+                <feDropShadow dx="0" dy="0" stdDeviation="3.5" floodColor="#38BDF8" floodOpacity="0.9" />
+              </filter>
+              <path id="path-top-right" d="M 240 52 L 336 108 L 274 144" fill="none" />
+              <path id="path-bot-right" d="M 336 232 L 240 288 L 240 206" fill="none" />
+              <path id="path-left-loop" d="M 144 232 L 144 108 L 206 144" fill="none" />
+              <style>{`
+                .ps-m { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; letter-spacing: 0.09em; }
+                .ps-s { font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+                @keyframes psOrbitCW { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+                @keyframes psOrbitCCW { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
+                @keyframes psDashMove { to { stroke-dashoffset: -32; } }
+                @keyframes psCoreBreath { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+                .ring-cw { transform-box: fill-box; transform-origin: center; animation: psOrbitCW 36s linear infinite; }
+                .ring-ccw { transform-box: fill-box; transform-origin: center; animation: psOrbitCCW 26s linear infinite; }
+                .mesh-line { stroke-dasharray: 4 4; animation: psDashMove 1.6s linear infinite; }
+                .core-pulse { transform-box: fill-box; transform-origin: center; animation: psCoreBreath 3.8s ease-in-out infinite; }
+              `}</style>
             </defs>
-
-            {/* Circular Radar Background Sweeps */}
-            <g transform="translate(250, 210)">
-              <circle cx="0" cy="0" r="160" fill="none" stroke="rgba(168, 85, 247, 0.15)" strokeWidth="1.2" />
-              <circle cx="0" cy="0" r="120" fill="none" stroke="rgba(237, 232, 208, 0.12)" strokeWidth="1" strokeDasharray="4 6" />
-              <circle cx="0" cy="0" r="75" fill="none" stroke="rgba(56, 189, 248, 0.2)" strokeWidth="1" />
-              <circle cx="0" cy="0" r="30" fill="rgba(168, 85, 247, 0.15)" stroke="#c084fc" strokeWidth="1.5" />
-
-              {/* Radar Axis Crosshairs */}
-              <line x1="-170" y1="0" x2="170" y2="0" stroke="rgba(255,255,255,0.1)" strokeWidth="0.8" />
-              <line x1="0" y1="-170" x2="0" y2="170" stroke="rgba(255,255,255,0.1)" strokeWidth="0.8" />
-
-              {/* Sweeping Rotating Radar Beam */}
-              <g className="animate-[radar-sweep-beam_8s_linear_infinite]" style={{ transformOrigin: '0px 0px' }}>
-                <path d="M 0 0 L 160 0 A 160 160 0 0 0 113 -113 Z" fill="url(#radar-beam)" opacity="0.4" />
-                <line x1="0" y1="0" x2="160" y2="0" stroke="#ede8d0" strokeWidth="1.8" />
-              </g>
-
-              {/* Constellation Star Links between Clinicians */}
-              <line x1="-90" y1="-60" x2="0" y2="0" stroke="rgba(237, 232, 208, 0.3)" strokeWidth="1.2" strokeDasharray="3 3" />
-              <line x1="80" y1="-70" x2="0" y2="0" stroke="rgba(237, 232, 208, 0.3)" strokeWidth="1.2" strokeDasharray="3 3" />
-              <line x1="100" y1="60" x2="0" y2="0" stroke="rgba(237, 232, 208, 0.3)" strokeWidth="1.2" strokeDasharray="3 3" />
-              <line x1="-70" y1="85" x2="0" y2="0" stroke="rgba(237, 232, 208, 0.3)" strokeWidth="1.2" strokeDasharray="3 3" />
-              <line x1="-90" y1="-60" x2="80" y2="-70" stroke="rgba(168, 85, 247, 0.4)" strokeWidth="1" />
-              <line x1="80" y1="-70" x2="100" y2="60" stroke="rgba(168, 85, 247, 0.4)" strokeWidth="1" />
-              <line x1="100" y1="60" x2="-70" y2="85" stroke="rgba(168, 85, 247, 0.4)" strokeWidth="1" />
-
-              {/* Clinician Node Stars with Glowing Badges */}
-              <circle cx="0" cy="0" r="8" fill="#ede8d0" />
-              <circle cx="0" cy="0" r="16" fill="none" stroke="#ede8d0" strokeWidth="1" className="animate-ping" />
-
-              <g transform="translate(-90, -60)">
-                <circle cx="0" cy="0" r="6" fill="#f43f5e" />
-                <circle cx="0" cy="0" r="12" fill="none" stroke="#f43f5e" strokeWidth="1" opacity="0.6" />
-                <text x="0" y="-12" fill="#ede8d0" fontSize="8" fontFamily="monospace" textAnchor="middle">CARDIOLOGY</text>
-              </g>
-
-              <g transform="translate(80, -70)">
-                <circle cx="0" cy="0" r="6" fill="#38bdf8" />
-                <circle cx="0" cy="0" r="12" fill="none" stroke="#38bdf8" strokeWidth="1" opacity="0.6" />
-                <text x="0" y="-12" fill="#ede8d0" fontSize="8" fontFamily="monospace" textAnchor="middle">NEUROLOGY</text>
-              </g>
-
-              <g transform="translate(100, 60)">
-                <circle cx="0" cy="0" r="6" fill="#a855f7" />
-                <circle cx="0" cy="0" r="12" fill="none" stroke="#a855f7" strokeWidth="1" opacity="0.6" />
-                <text x="0" y="18" fill="#ede8d0" fontSize="8" fontFamily="monospace" textAnchor="middle">ONCOLOGY</text>
-              </g>
-
-              <g transform="translate(-70, 85)">
-                <circle cx="0" cy="0" r="6" fill="#10b981" />
-                <circle cx="0" cy="0" r="12" fill="none" stroke="#10b981" strokeWidth="1" opacity="0.6" />
-                <text x="0" y="18" fill="#ede8d0" fontSize="8" fontFamily="monospace" textAnchor="middle">ORTHOPEDICS</text>
-              </g>
+            <circle cx="240" cy="170" r="154" fill="url(#psDeepAura)" />
+            <circle cx="240" cy="170" r="118" fill="none" stroke="#A855F7" strokeWidth="1" strokeOpacity="0.25" />
+            <circle cx="240" cy="170" r="118" fill="none" stroke="#38BDF8" strokeWidth="1.2" strokeOpacity="0.4" strokeDasharray="5 9" className="ring-cw" />
+            <circle cx="240" cy="170" r="76" fill="none" stroke="#C084FC" strokeWidth="1" strokeOpacity="0.32" strokeDasharray="3 6" className="ring-ccw" />
+            <g strokeOpacity="0.35" strokeWidth="1" fill="none">
+              <polygon points="240,52 336,108 336,232 240,288 144,232 144,108" stroke="#A855F7" />
+              <line x1="240" y1="52" x2="240" y2="288" stroke="#38BDF8" strokeDasharray="2 5" />
+              <line x1="336" y1="108" x2="144" y2="232" stroke="#C084FC" strokeDasharray="2 5" />
+              <line x1="336" y1="232" x2="144" y2="108" stroke="#34D399" strokeDasharray="2 5" />
+            </g>
+            <g className="mesh-line" fill="none" strokeWidth="1.35" strokeOpacity="0.7">
+              <line x1="240" y1="52" x2="240" y2="134" stroke="#C084FC" />
+              <line x1="336" y1="108" x2="274" y2="148" stroke="#38BDF8" />
+              <line x1="336" y1="232" x2="274" y2="192" stroke="#34D399" />
+              <line x1="240" y1="288" x2="240" y2="206" stroke="#38BDF8" />
+              <line x1="144" y1="232" x2="206" y2="192" stroke="#C084FC" />
+              <line x1="144" y1="108" x2="206" y2="148" stroke="#FBBF24" />
+            </g>
+            <g className="ps-m" fontSize="7" fontWeight="600">
+              <rect x="204" y="88" width="72" height="15" rx="4" fill="#140F24" stroke="#A855F7" strokeWidth="0.8" />
+              <text x="240" y="98" textAnchor="middle" fill="#E9D5FF">CASE THREADS</text>
+              <rect x="275" y="198" width="76" height="15" rx="4" fill="#0B1E1A" stroke="#34D399" strokeWidth="0.8" />
+              <text x="313" y="208" textAnchor="middle" fill="#A7F3D0">DEPT REFERRAL</text>
+              <rect x="129" y="198" width="76" height="15" rx="4" fill="#0C1929" stroke="#38BDF8" strokeWidth="0.8" />
+              <text x="167" y="208" textAnchor="middle" fill="#BAE6FD">CLINICAL NOTES</text>
+            </g>
+            <circle r="3.2" fill="#38BDF8" filter="url(#psPacketGlow)">
+              <animateMotion dur="4.5s" repeatCount="indefinite">
+                <mpath href="#path-top-right" />
+              </animateMotion>
+            </circle>
+            <circle r="3.2" fill="#34D399" filter="url(#psPacketGlow)">
+              <animateMotion dur="5.2s" repeatCount="indefinite">
+                <mpath href="#path-bot-right" />
+              </animateMotion>
+            </circle>
+            <circle r="3.2" fill="#C084FC" filter="url(#psPacketGlow)">
+              <animateMotion dur="4.8s" repeatCount="indefinite">
+                <mpath href="#path-left-loop" />
+              </animateMotion>
+            </circle>
+            <g className="core-pulse" filter="url(#psHubGlow)">
+              <circle cx="240" cy="170" r="39" fill="#0C0915" stroke="url(#psCoreGrad)" strokeWidth="2.2" />
+              <circle cx="240" cy="170" r="33" fill="none" stroke="#A855F7" strokeWidth="0.7" strokeOpacity="0.45" />
+              <text x="240" y="165" textAnchor="middle" fill="#F8FAFC" fontSize="8.5" fontWeight="700" className="ps-m">PLUGINS</text>
+              <text x="240" y="177" textAnchor="middle" fill="#C084FC" fontSize="8.5" fontWeight="700" className="ps-m">SOCIAL</text>
+              <text x="240" y="188" textAnchor="middle" fill="#94A3B8" fontSize="6.5" className="ps-m">MD MESH</text>
+            </g>
+            <g>
+              <circle cx="240" cy="52" r="14" fill="#141022" stroke="#C084FC" strokeWidth="1.8" />
+              <text x="240" y="55" textAnchor="middle" fill="#F8FAFC" fontSize="8" fontWeight="700" className="ps-m">MD</text>
+              <text x="240" y="31" textAnchor="middle" fill="#E9D5FF" fontSize="8.5" fontWeight="600" className="ps-m">CARDIOLOGY</text>
+              <text x="240" y="21" textAnchor="middle" fill="#94A3B8" fontSize="7" className="ps-s">Complex Case Consult</text>
+            </g>
+            <g>
+              <circle cx="336" cy="108" r="14" fill="#0C1726" stroke="#38BDF8" strokeWidth="1.8" />
+              <text x="336" y="111" textAnchor="middle" fill="#F8FAFC" fontSize="8" fontWeight="700" className="ps-m">MD</text>
+              <text x="356" y="105" textAnchor="start" fill="#BAE6FD" fontSize="8.5" fontWeight="600" className="ps-m">NEUROLOGY</text>
+              <text x="356" y="116" textAnchor="start" fill="#94A3B8" fontSize="7" className="ps-s">Peer Review &amp; Articles</text>
+            </g>
+            <g>
+              <circle cx="336" cy="232" r="14" fill="#0B1E1A" stroke="#34D399" strokeWidth="1.8" />
+              <text x="336" y="235" textAnchor="middle" fill="#F8FAFC" fontSize="8" fontWeight="700" className="ps-m">HP</text>
+              <text x="356" y="229" textAnchor="start" fill="#A7F3D0" fontSize="8.5" fontWeight="600" className="ps-m">PARTNER HOSPITALS</text>
+              <text x="356" y="240" textAnchor="start" fill="#94A3B8" fontSize="7" className="ps-s">Inter-Dept Referrals</text>
+            </g>
+            <g>
+              <circle cx="240" cy="288" r="14" fill="#0C1726" stroke="#38BDF8" strokeWidth="1.8" />
+              <text x="240" y="291" textAnchor="middle" fill="#F8FAFC" fontSize="8" fontWeight="700" className="ps-m">MS</text>
+              <text x="240" y="314" textAnchor="middle" fill="#BAE6FD" fontSize="8.5" fontWeight="600" className="ps-m">SURGEONS</text>
+              <text x="240" y="325" textAnchor="middle" fill="#94A3B8" fontSize="7" className="ps-s">Pre/Post-Op Alignment</text>
+            </g>
+            <g>
+              <circle cx="144" cy="232" r="14" fill="#141022" stroke="#C084FC" strokeWidth="1.8" />
+              <text x="144" y="235" textAnchor="middle" fill="#F8FAFC" fontSize="8" fontWeight="700" className="ps-m">MS</text>
+              <text x="124" y="229" textAnchor="end" fill="#E9D5FF" fontSize="8.5" fontWeight="600" className="ps-m">ORTHOPEDICS</text>
+              <text x="124" y="240" textAnchor="end" fill="#94A3B8" fontSize="7" className="ps-s">Shared Care Plans</text>
+            </g>
+            <g>
+              <circle cx="144" cy="108" r="14" fill="#1E180B" stroke="#FBBF24" strokeWidth="1.8" />
+              <text x="144" y="111" textAnchor="middle" fill="#F8FAFC" fontSize="8" fontWeight="700" className="ps-m">DM</text>
+              <text x="124" y="105" textAnchor="end" fill="#FEF3C7" fontSize="8.5" fontWeight="600" className="ps-m">SPECIALISTS</text>
+              <text x="124" y="116" textAnchor="end" fill="#94A3B8" fontSize="7" className="ps-s">Published Insights</text>
             </g>
           </svg>
         </div>
       )}
 
-      {/* ========================================================================= */}
-      {/* 5. CONCIERGE: Executive Concierge Hub & 4 Orbiting Portals                 */}
-      {/* Exact Match to Reference Screenshot (media_1795210382239_f03e563a.jpg)    */}
-      {/* Features: Central Circular Hub with Executive Suit/Tie Silhouette & Label  */}
-      {/* "EXECUTIVE CONCIERGE", connected via curved glowing conduits to:           */}
-      {/* Clinician Network (Top-Left), Partner Hospitals (Top-Right),               */}
-      {/* Seminars & Events (Bottom-Left), Internship Fellowships (Bottom-Right)     */}
-      {/* ========================================================================= */}
       {pageId === 'concierge' && (
         <div className="relative w-full h-full flex items-center justify-center">
-          {/* Ambient Purple/Champagne Glow */}
-          <div className="absolute w-[380px] h-[380px] bg-purple-600/25 rounded-full blur-[100px] pointer-events-none" />
-          <div className="absolute w-[300px] h-[300px] bg-amber-400/15 rounded-full blur-[90px] pointer-events-none" />
-
-          <svg viewBox="0 0 540 440" className="w-full h-full max-w-[540px] overflow-visible drop-shadow-2xl">
+          <svg id="concierge-hub-svg" viewBox="0 0 540 380" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style={{ maxWidth: '560px', overflow: 'visible' }}>
             <defs>
-              <linearGradient id="concierge-hub-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#c084fc" />
-                <stop offset="50%" stopColor="#818cf8" />
-                <stop offset="100%" stopColor="#ede8d0" />
+              <radialGradient id="con-aura" cx="50%" cy="50%" r="52%">
+                <stop offset="0%" stopColor="#EAE1C8" stopOpacity="0.15" />
+                <stop offset="42%" stopColor="#A855F7" stopOpacity="0.12" />
+                <stop offset="100%" stopColor="#07060B" stopOpacity="0" />
+              </radialGradient>
+              <linearGradient id="con-card-bg" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#141122" stopOpacity="0.95" />
+                <stop offset="100%" stopColor="#0A0812" stopOpacity="0.98" />
               </linearGradient>
-
-              <filter id="concierge-glow" x="-30%" y="-30%" width="160%" height="160%">
-                <feGaussianBlur stdDeviation="4.5" result="blur" />
-                <feMerge>
-                  <feMergeNode in="blur" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
+              <radialGradient id="con-core-bg" cx="40%" cy="35%" r="65%">
+                <stop offset="0%" stopColor="#1C1730" />
+                <stop offset="100%" stopColor="#09080F" />
+              </radialGradient>
+              <linearGradient id="con-violet-stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#C084FC" stopOpacity="0.95" />
+                <stop offset="100%" stopColor="#7E22CE" stopOpacity="0.35" />
+              </linearGradient>
+              <linearGradient id="con-cyan-stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#38BDF8" stopOpacity="0.95" />
+                <stop offset="100%" stopColor="#0284C7" stopOpacity="0.35" />
+              </linearGradient>
+              <linearGradient id="con-champagne-stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#EAE1C8" stopOpacity="0.95" />
+                <stop offset="100%" stopColor="#A6936B" stopOpacity="0.35" />
+              </linearGradient>
+              <linearGradient id="con-emerald-stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#34D399" stopOpacity="0.95" />
+                <stop offset="100%" stopColor="#059669" stopOpacity="0.35" />
+              </linearGradient>
+              <linearGradient id="con-core-stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#EAE1C8" />
+                <stop offset="50%" stopColor="#A855F7" />
+                <stop offset="100%" stopColor="#38BDF8" />
+              </linearGradient>
+              <filter id="con-hub-glow" x="-35%" y="-35%" width="170%" height="170%">
+                <feDropShadow dx="0" dy="0" stdDeviation="12" floodColor="#A855F7" floodOpacity="0.35" />
               </filter>
+              <filter id="con-card-shadow" x="-15%" y="-15%" width="130%" height="130%">
+                <feDropShadow dx="0" dy="8" stdDeviation="10" floodColor="#000000" floodOpacity="0.52" />
+              </filter>
+              <filter id="con-packet-glow" x="-80%" y="-80%" width="260%" height="260%">
+                <feDropShadow dx="0" dy="0" stdDeviation="3.2" floodColor="#EAE1C8" floodOpacity="0.95" />
+              </filter>
+              <path id="con-path-tl" d="M 236 164 C 210 144, 214 62, 186 62" fill="none" />
+              <path id="con-path-tr" d="M 304 164 C 330 144, 326 62, 354 62" fill="none" />
+              <path id="con-path-bl" d="M 236 216 C 210 236, 214 318, 186 318" fill="none" />
+              <path id="con-path-br" d="M 304 216 C 330 236, 326 318, 354 318" fill="none" />
+              <style>{`
+                .con-mono { font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; letter-spacing: 0.09em; }
+                .con-sans { font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif; }
+                @keyframes conSpinCW { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+                @keyframes conSpinCCW { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
+                @keyframes conFloatUp { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-4px); } }
+                @keyframes conFloatDown { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(4px); } }
+                @keyframes conDashFlow { to { stroke-dashoffset: -28; } }
+                @keyframes conPulseLive { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.45; transform: scale(0.75); } }
+                .con-orbit-cw { transform-box: fill-box; transform-origin: center; animation: conSpinCW 42s linear infinite; }
+                .con-orbit-ccw { transform-box: fill-box; transform-origin: center; animation: conSpinCCW 22s linear infinite; }
+                .con-card-tl { animation: conFloatUp 5.4s ease-in-out infinite; }
+                .con-card-tr { animation: conFloatDown 5.8s ease-in-out infinite; }
+                .con-card-bl { animation: conFloatDown 6.2s ease-in-out infinite; }
+                .con-card-br { animation: conFloatUp 5.6s ease-in-out infinite; }
+                .con-wire-dash { stroke-dasharray: 4 6; animation: conDashFlow 1.7s linear infinite; }
+                .con-live-dot { transform-box: fill-box; transform-origin: center; animation: conPulseLive 1.8s ease-in-out infinite; }
+              `}</style>
             </defs>
-
-            {/* 4 Curved Glowing Conduits connecting Center Hub to the 4 Orbiting Spheres */}
-            <g fill="none" strokeWidth="2.5" opacity="0.85">
-              {/* Conduit 1: Center to Top-Left (Clinician Network) */}
-              <path d="M 270 210 Q 180 200 135 115" stroke="#a855f7" filter="url(#concierge-glow)" />
-              <path d="M 270 210 Q 180 200 135 115" stroke="#ffffff" strokeWidth="1" strokeDasharray="3 5" />
-              
-              {/* Conduit 2: Center to Top-Right (Partner Hospitals) */}
-              <path d="M 270 210 Q 360 200 405 115" stroke="#38bdf8" filter="url(#concierge-glow)" />
-              <path d="M 270 210 Q 360 200 405 115" stroke="#ffffff" strokeWidth="1" strokeDasharray="3 5" />
-              
-              {/* Conduit 3: Center to Bottom-Left (Seminars & Events) */}
-              <path d="M 270 210 Q 180 220 135 305" stroke="#ede8d0" filter="url(#concierge-glow)" />
-              <path d="M 270 210 Q 180 220 135 305" stroke="#ffffff" strokeWidth="1" strokeDasharray="3 5" />
-              
-              {/* Conduit 4: Center to Bottom-Right (Internship Fellowships) */}
-              <path d="M 270 210 Q 360 220 405 305" stroke="#c084fc" filter="url(#concierge-glow)" />
-              <path d="M 270 210 Q 360 220 405 305" stroke="#ffffff" strokeWidth="1" strokeDasharray="3 5" />
+            <ellipse cx="270" cy="190" rx="235" ry="175" fill="url(#con-aura)" />
+            <circle cx="270" cy="190" r="154" fill="none" stroke="#EAE1C8" strokeWidth="0.9" strokeOpacity="0.13" strokeDasharray="3 9" className="con-orbit-cw" />
+            <circle cx="270" cy="190" r="114" fill="none" stroke="#A855F7" strokeWidth="0.9" strokeOpacity="0.16" />
+            <circle cx="270" cy="190" r="78" fill="none" stroke="#38BDF8" strokeWidth="0.8" strokeOpacity="0.14" strokeDasharray="2 6" />
+            <g fill="none" strokeWidth="2.4" strokeOpacity="0.16">
+              <use href="#con-path-tl" stroke="#C084FC" />
+              <use href="#con-path-tr" stroke="#38BDF8" />
+              <use href="#con-path-bl" stroke="#EAE1C8" />
+              <use href="#con-path-br" stroke="#34D399" />
             </g>
-
-            {/* Traveling Light Photons */}
-            <circle cx="200" cy="165" r="3" fill="#ffffff" filter="url(#concierge-glow)" className="animate-ping" />
-            <circle cx="340" cy="165" r="3" fill="#ffffff" filter="url(#concierge-glow)" className="animate-ping" style={{ animationDelay: '0.6s' }} />
-            <circle cx="200" cy="255" r="3" fill="#ffffff" filter="url(#concierge-glow)" className="animate-ping" style={{ animationDelay: '1.2s' }} />
-            <circle cx="340" cy="255" r="3" fill="#ffffff" filter="url(#concierge-glow)" className="animate-ping" style={{ animationDelay: '1.8s' }} />
-
-            {/* CENTRAL EXECUTIVE CONCIERGE HUB */}
-            <g transform="translate(270, 210)">
-              {/* Expanding Pulse Halo Rings */}
-              <circle cx="0" cy="0" r="54" fill="none" stroke="#c084fc" strokeWidth="1.5" className="animate-[pulse-ring_3.5s_ease-out_infinite]" />
-              <circle cx="0" cy="0" r="68" fill="none" stroke="#ede8d0" strokeWidth="1" className="animate-[pulse-ring_3.5s_ease-out_infinite]" style={{ animationDelay: '1.2s' }} />
-
-              {/* Hub Outer Ring */}
-              <circle cx="0" cy="0" r="44" fill="#0c051e" stroke="url(#concierge-hub-grad)" strokeWidth="3" filter="url(#concierge-glow)" />
-              <circle cx="0" cy="0" r="37" fill="#14082c" stroke="rgba(255, 255, 255, 0.2)" strokeWidth="1" />
-
-              {/* Executive Silhouette: Suit, Collar & Tie */}
-              <g transform="translate(0, -6)">
-                {/* Head */}
-                <circle cx="0" cy="-7" r="5.5" fill="#ede8d0" />
-                {/* Suit Shoulders & Lapels */}
-                <path d="M -15 15 L -10 2 L 0 6 L 10 2 L 15 15 Z" fill="#ffffff" opacity="0.9" />
-                <polygon points="-5,3 0,11 5,3" fill="#14082c" />
-                {/* Tie */}
-                <polygon points="-2,6 2,6 1.5,15 0,17 -1.5,15" fill="#38bdf8" />
-              </g>
-
-              {/* Hub Label Badge */}
-              <g transform="translate(0, 26)">
-                <rect x="-65" y="0" width="130" height="18" rx="9" fill="#080314" stroke="#c084fc" strokeWidth="1" />
-                <text x="0" y="12" fill="#ede8d0" fontSize="7.5" fontFamily="monospace" textAnchor="middle" fontWeight="bold" letterSpacing="0.5">
-                  EXECUTIVE CONCIERGE
-                </text>
-              </g>
+            <g fill="none" strokeWidth="1.35" strokeOpacity="0.72">
+              <use href="#con-path-tl" stroke="#C084FC" className="con-wire-dash" />
+              <use href="#con-path-tr" stroke="#38BDF8" className="con-wire-dash" />
+              <use href="#con-path-bl" stroke="#EAE1C8" className="con-wire-dash" />
+              <use href="#con-path-br" stroke="#34D399" className="con-wire-dash" />
             </g>
-
-            {/* ========================================================================= */}
-            {/* THE 4 ORBITING SPHERES (Matching Reference Screenshot)                    */}
-            {/* ========================================================================= */}
-
-            {/* SPHERE 1: TOP-LEFT - CLINICIAN NETWORK */}
-            <g transform="translate(135, 115)" className="cursor-pointer">
-              <g>
-                <animateTransform attributeName="transform" type="translate" values="0 0; 0 -6; 0 0" dur="6s" repeatCount="indefinite" />
-                <circle cx="0" cy="0" r="32" fill="rgba(168, 85, 247, 0.2)" filter="url(#concierge-glow)" />
-                <circle cx="0" cy="0" r="26" fill="#0d051f" stroke="#c084fc" strokeWidth="2" filter="url(#concierge-glow)" />
-                <circle cx="0" cy="0" r="21" fill="#15082e" stroke="rgba(255, 255, 255, 0.15)" strokeWidth="1" />
-
-                {/* Stethoscope / Cross Icon */}
-                <g transform="translate(0, -2)">
-                  <path d="M -7 -6 C -7 2, 7 2, 7 -6" fill="none" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
-                  <path d="M 0 -1 V 7 M -3 7 H 3" stroke="#38bdf8" strokeWidth="2" strokeLinecap="round" />
-                  <circle cx="0" cy="7" r="2" fill="#38bdf8" />
-                </g>
-
-                <text x="0" y="42" fill="#ede8d0" fontSize="9.5" fontFamily="system-ui, sans-serif" textAnchor="middle" fontWeight="600">
-                  Clinician Network
-                </text>
+            <circle r="3" fill="#C084FC" filter="url(#con-packet-glow)">
+              <animateMotion dur="2.6s" repeatCount="indefinite">
+                <mpath href="#con-path-tl" />
+              </animateMotion>
+            </circle>
+            <circle r="3" fill="#38BDF8" filter="url(#con-packet-glow)">
+              <animateMotion dur="2.9s" begin="0.4s" repeatCount="indefinite">
+                <mpath href="#con-path-tr" />
+              </animateMotion>
+            </circle>
+            <circle r="3" fill="#EAE1C8" filter="url(#con-packet-glow)">
+              <animateMotion dur="2.8s" begin="0.8s" repeatCount="indefinite">
+                <mpath href="#con-path-bl" />
+              </animateMotion>
+            </circle>
+            <circle r="3" fill="#34D399" filter="url(#con-packet-glow)">
+              <animateMotion dur="2.5s" begin="1.2s" repeatCount="indefinite">
+                <mpath href="#con-path-br" />
+              </animateMotion>
+            </circle>
+            <g filter="url(#con-hub-glow)">
+              <g className="con-orbit-ccw">
+                <circle cx="270" cy="190" r="56" fill="none" stroke="#EAE1C8" strokeWidth="1.6" strokeDasharray="36 52 24 64" strokeLinecap="round" opacity="0.82" />
+                <circle cx="270" cy="190" r="49" fill="none" stroke="#A855F7" strokeWidth="1.2" strokeDasharray="28 48" strokeLinecap="round" opacity="0.72" />
               </g>
+              <circle cx="270" cy="190" r="41" fill="url(#con-core-bg)" stroke="url(#con-core-stroke)" strokeWidth="1.7" />
+              <circle cx="270" cy="190" r="35" fill="none" stroke="#FFFFFF" strokeOpacity="0.08" strokeWidth="0.9" />
+              <g transform="translate(270, 184)">
+                <polygon points="0,-18 18,0 0,18 -18,0" fill="#161228" stroke="#EAE1C8" strokeWidth="1.35" />
+                <polygon points="0,-11 11,0 0,11 -11,0" fill="none" stroke="#A855F7" strokeWidth="0.95" opacity="0.85" />
+                <rect x="-2" y="-6.5" width="4" height="13" rx="1" fill="#EAE1C8" />
+                <rect x="-6.5" y="-2" width="13" height="4" rx="1" fill="#EAE1C8" />
+              </g>
+              <rect x="190" y="218" width="160" height="24" rx="12" fill="#0D0B16" stroke="url(#con-champagne-stroke)" strokeWidth="1.1" />
+              <circle cx="204" cy="230" r="2.8" fill="#34D399" className="con-live-dot" />
+              <text x="213" y="232.8" fill="#EAE1C8" fontSize="7.4" fontWeight="700" className="con-mono">MUMBAI CONCIERGE · LIVE</text>
             </g>
-
-            {/* SPHERE 2: TOP-RIGHT - PARTNER HOSPITALS */}
-            <g transform="translate(405, 115)" className="cursor-pointer">
-              <g>
-                <animateTransform attributeName="transform" type="translate" values="0 0; 0 -6; 0 0" dur="6.5s" repeatCount="indefinite" />
-                <circle cx="0" cy="0" r="32" fill="rgba(56, 189, 248, 0.2)" filter="url(#concierge-glow)" />
-                <circle cx="0" cy="0" r="26" fill="#050e20" stroke="#38bdf8" strokeWidth="2" filter="url(#concierge-glow)" />
-                <circle cx="0" cy="0" r="21" fill="#081732" stroke="rgba(255, 255, 255, 0.15)" strokeWidth="1" />
-
-                {/* Hospital Building Icon */}
-                <g transform="translate(0, -2)">
-                  <rect x="-9" y="-9" width="18" height="18" rx="2" fill="none" stroke="#ffffff" strokeWidth="1.5" />
-                  <path d="M -3 -5 H 3 M 0 -8 V -2" stroke="#38bdf8" strokeWidth="1.6" strokeLinecap="round" />
-                  <rect x="-6" y="0" width="3.5" height="3.5" fill="#ffffff" />
-                  <rect x="2.5" y="0" width="3.5" height="3.5" fill="#ffffff" />
-                  <rect x="-6" y="5" width="3.5" height="3.5" fill="#ffffff" />
-                  <rect x="2.5" y="5" width="3.5" height="3.5" fill="#ffffff" />
-                </g>
-
-                <text x="0" y="42" fill="#ede8d0" fontSize="9.5" fontFamily="system-ui, sans-serif" textAnchor="middle" fontWeight="600">
-                  Partner Hospitals
-                </text>
+            <g className="con-card-tl" filter="url(#con-card-shadow)">
+              <rect x="12" y="28" width="174" height="68" rx="14" fill="url(#con-card-bg)" stroke="url(#con-violet-stroke)" strokeWidth="1.35" />
+              <rect x="24" y="45" width="34" height="34" rx="9" fill="#2E1065" fillOpacity="0.55" stroke="#C084FC" strokeWidth="0.9" strokeOpacity="0.65" />
+              <g transform="translate(32, 53)" fill="none" stroke="#E9D5FF" strokeWidth="1.35" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="9" cy="4" r="2.5" />
+                <circle cx="3" cy="14" r="2" />
+                <circle cx="15" cy="14" r="2" />
+                <path d="M 7.8 6.2 L 4.2 12.2 M 10.2 6.2 L 13.8 12.2 M 5 14 L 13 14" />
               </g>
+              <text x="67" y="58" fill="#E9D5FF" fontSize="8.4" fontWeight="700" className="con-mono">CLINICIAN NETWORK</text>
+              <text x="67" y="73" fill="#94A3B8" fontSize="9.2" className="con-sans">Doctors &amp; Specialists</text>
             </g>
-
-            {/* SPHERE 3: BOTTOM-LEFT - SEMINARS & EVENTS */}
-            <g transform="translate(135, 305)" className="cursor-pointer">
-              <g>
-                <animateTransform attributeName="transform" type="translate" values="0 0; 0 -6; 0 0" dur="7s" repeatCount="indefinite" />
-                <circle cx="0" cy="0" r="32" fill="rgba(237, 232, 208, 0.2)" filter="url(#concierge-glow)" />
-                <circle cx="0" cy="0" r="26" fill="#140f06" stroke="#ede8d0" strokeWidth="2" filter="url(#concierge-glow)" />
-                <circle cx="0" cy="0" r="21" fill="#20180a" stroke="rgba(255, 255, 255, 0.15)" strokeWidth="1" />
-
-                {/* Presentation Screen / Podium Icon */}
-                <g transform="translate(0, -2)">
-                  <rect x="-10" y="-8" width="20" height="13" rx="1.5" fill="none" stroke="#ede8d0" strokeWidth="1.5" />
-                  <path d="M -6 -2 L -2 -5 L 2 -1 L 6 -6" fill="none" stroke="#38bdf8" strokeWidth="1.5" strokeLinecap="round" />
-                  <line x1="0" y1="5" x2="0" y2="9" stroke="#ffffff" strokeWidth="1.5" />
-                  <line x1="-5" y1="9" x2="5" y2="9" stroke="#ffffff" strokeWidth="1.5" />
-                </g>
-
-                <text x="0" y="42" fill="#ede8d0" fontSize="9.5" fontFamily="system-ui, sans-serif" textAnchor="middle" fontWeight="600">
-                  Seminars &amp; Events
-                </text>
+            <g className="con-card-tr" filter="url(#con-card-shadow)">
+              <rect x="354" y="28" width="174" height="68" rx="14" fill="url(#con-card-bg)" stroke="url(#con-cyan-stroke)" strokeWidth="1.35" />
+              <rect x="366" y="45" width="34" height="34" rx="9" fill="#082F49" fillOpacity="0.6" stroke="#38BDF8" strokeWidth="0.9" strokeOpacity="0.65" />
+              <g transform="translate(374, 53)" fill="none" stroke="#BAE6FD" strokeWidth="1.35" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="2" y="3" width="14" height="13" rx="2" />
+                <path d="M 9 6.5 V 12.5 M 6 9.5 H 12" />
+                <line x1="0.5" y1="16" x2="17.5" y2="16" />
               </g>
+              <text x="409" y="58" fill="#BAE6FD" fontSize="8.4" fontWeight="700" className="con-mono">PARTNER HOSPITALS</text>
+              <text x="409" y="73" fill="#94A3B8" fontSize="9.2" className="con-sans">Panacea &amp; CureNEST</text>
             </g>
-
-            {/* SPHERE 4: BOTTOM-RIGHT - INTERNSHIP FELLOWSHIPS */}
-            <g transform="translate(405, 305)" className="cursor-pointer">
-              <g>
-                <animateTransform attributeName="transform" type="translate" values="0 0; 0 -6; 0 0" dur="6.5s" repeatCount="indefinite" />
-                <circle cx="0" cy="0" r="32" fill="rgba(192, 132, 252, 0.2)" filter="url(#concierge-glow)" />
-                <circle cx="0" cy="0" r="26" fill="#0d041e" stroke="#c084fc" strokeWidth="2" filter="url(#concierge-glow)" />
-                <circle cx="0" cy="0" r="21" fill="#170732" stroke="rgba(255, 255, 255, 0.15)" strokeWidth="1" />
-
-                {/* Graduation Scholar Cap Icon */}
-                <g transform="translate(0, -2)">
-                  <polygon points="0,-8 11,-2 0,4 -11,-2" fill="#ffffff" />
-                  <path d="M -7 0 V 6 C -7 9, 7 9, 7 6 V 0" fill="none" stroke="#c084fc" strokeWidth="1.6" />
-                  <line x1="8" y1="-0.5" x2="8" y2="6" stroke="#ede8d0" strokeWidth="1.2" />
-                  <circle cx="8" cy="6.5" r="1" fill="#ede8d0" />
-                </g>
-
-                <text x="0" y="42" fill="#ede8d0" fontSize="9.5" fontFamily="system-ui, sans-serif" textAnchor="middle" fontWeight="600">
-                  Internship Fellowships
-                </text>
+            <g className="con-card-bl" filter="url(#con-card-shadow)">
+              <rect x="12" y="284" width="174" height="68" rx="14" fill="url(#con-card-bg)" stroke="url(#con-champagne-stroke)" strokeWidth="1.35" />
+              <rect x="24" y="301" width="34" height="34" rx="9" fill="#2A2417" fillOpacity="0.7" stroke="#EAE1C8" strokeWidth="0.9" strokeOpacity="0.65" />
+              <g transform="translate(32, 309)" fill="none" stroke="#F5EFE0" strokeWidth="1.35" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="1.5" y="2.5" width="15" height="10.5" rx="2" />
+                <path d="M 4.5 9.5 L 7.2 6.8 L 10 9.2 L 13.5 5.5" />
+                <path d="M 9 13 V 16 M 6 16 H 12" />
               </g>
+              <text x="67" y="314" fill="#F5EFE0" fontSize="8.4" fontWeight="700" className="con-mono">SEMINARS &amp; EVENTS</text>
+              <text x="67" y="329" fill="#94A3B8" fontSize="9.2" className="con-sans">Free Tech Sessions</text>
+            </g>
+            <g className="con-card-br" filter="url(#con-card-shadow)">
+              <rect x="354" y="284" width="174" height="68" rx="14" fill="url(#con-card-bg)" stroke="url(#con-emerald-stroke)" strokeWidth="1.35" />
+              <rect x="366" y="301" width="34" height="34" rx="9" fill="#064E3B" fillOpacity="0.55" stroke="#34D399" strokeWidth="0.9" strokeOpacity="0.65" />
+              <g transform="translate(374, 309)" fill="none" stroke="#A7F3D0" strokeWidth="1.35" strokeLinecap="round" strokeLinejoin="round">
+                <polygon points="9,2.5 17,6.5 9,10.5 1,6.5" />
+                <path d="M 4.5 8.5 V 13 C 6.8 14.8, 11.2 14.8, 13.5 13 V 8.5" />
+                <line x1="17" y1="6.5" x2="17" y2="12" />
+              </g>
+              <text x="409" y="314" fill="#A7F3D0" fontSize="8.4" fontWeight="700" className="con-mono">FELLOWSHIPS</text>
+              <text x="409" y="329" fill="#94A3B8" fontSize="9.2" className="con-sans">Clinical Internships</text>
             </g>
           </svg>
         </div>
       )}
 
-      {/* ========================================================================= */}
-      {/* 6. LABONIX: Pathology Diagnostics Laboratory, Centrifuge & Test Tubes     */}
-      {/* Features: Rotating centrifuge rotor with specimen vials, biochemistry     */}
-      {/* analyzer screen with 42ms specimen tracking and automated pipetting arm   */}
-      {/* ========================================================================= */}
       {pageId === 'labonix' && (
         <div className="relative w-full h-full flex items-center justify-center">
-          {/* Cyan/Purple Laboratory Ambient Glow */}
-          <div className="absolute w-[360px] h-[360px] bg-cyan-500/20 rounded-full blur-[100px] pointer-events-none" />
-          <div className="absolute w-[280px] h-[280px] bg-purple-600/15 rounded-full blur-[80px] pointer-events-none" />
-
-          <svg viewBox="0 0 520 420" className="w-full h-full max-w-[520px] overflow-visible drop-shadow-2xl">
+          <svg id="labonix-summary-svg" viewBox="0 0 500 350" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style={{ maxWidth: '520px', overflow: 'visible' }}>
             <defs>
-              <linearGradient id="lab-plinth-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#22d3ee" />
-                <stop offset="100%" stopColor="#818cf8" />
+              <radialGradient id="lbxAura" cx="50%" cy="50%" r="52%">
+                <stop offset="0%" stopColor="#38BDF8" stopOpacity="0.14" />
+                <stop offset="48%" stopColor="#A855F7" stopOpacity="0.08" />
+                <stop offset="100%" stopColor="#07060B" stopOpacity="0" />
+              </radialGradient>
+              <linearGradient id="lbxConsoleBg" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#131020" stopOpacity="0.96" />
+                <stop offset="100%" stopColor="#0B0912" stopOpacity="0.98" />
               </linearGradient>
-
-              <filter id="lab-glow" x="-30%" y="-30%" width="160%" height="160%">
-                <feGaussianBlur stdDeviation="4" result="blur" />
-                <feMerge>
-                  <feMergeNode in="blur" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
+              <linearGradient id="lbxPillBg" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#141122" stopOpacity="0.94" />
+                <stop offset="100%" stopColor="#0B0913" stopOpacity="0.98" />
+              </linearGradient>
+              <linearGradient id="lbxCoreStroke" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#38BDF8" stopOpacity="0.95" />
+                <stop offset="52%" stopColor="#A855F7" stopOpacity="0.85" />
+                <stop offset="100%" stopColor="#34D399" stopOpacity="0.85" />
+              </linearGradient>
+              <linearGradient id="lbxVioletStroke" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#C084FC" stopOpacity="0.95" />
+                <stop offset="100%" stopColor="#7E22CE" stopOpacity="0.4" />
+              </linearGradient>
+              <linearGradient id="lbxCyanStroke" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#38BDF8" stopOpacity="0.95" />
+                <stop offset="100%" stopColor="#0284C7" stopOpacity="0.4" />
+              </linearGradient>
+              <linearGradient id="lbxChampagneStroke" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#EAE1C8" stopOpacity="0.92" />
+                <stop offset="100%" stopColor="#B49F73" stopOpacity="0.38" />
+              </linearGradient>
+              <linearGradient id="lbxEmeraldStroke" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#34D399" stopOpacity="0.95" />
+                <stop offset="100%" stopColor="#059669" stopOpacity="0.4" />
+              </linearGradient>
+              <linearGradient id="lbxStageGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#C084FC" />
+                <stop offset="50%" stopColor="#38BDF8" />
+                <stop offset="100%" stopColor="#34D399" />
+              </linearGradient>
+              <linearGradient id="lbxLaserGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#38BDF8" stopOpacity="0" />
+                <stop offset="50%" stopColor="#38BDF8" stopOpacity="0.95" />
+                <stop offset="100%" stopColor="#38BDF8" stopOpacity="0" />
+              </linearGradient>
+              <filter id="lbxConsoleGlow" x="-15%" y="-15%" width="130%" height="130%">
+                <feDropShadow dx="0" dy="0" stdDeviation="10" floodColor="#38BDF8" floodOpacity="0.24" />
               </filter>
+              <filter id="lbxDotGlow" x="-80%" y="-80%" width="260%" height="260%">
+                <feDropShadow dx="0" dy="0" stdDeviation="3" floodColor="#38BDF8" floodOpacity="0.9" />
+              </filter>
+              <path id="lbx-in-left" d="M 90 60 C 90 85, 175 78, 175 104" fill="none" />
+              <path id="lbx-in-mid" d="M 250 60 L 250 104" fill="none" />
+              <path id="lbx-in-right" d="M 410 60 C 410 85, 325 78, 325 104" fill="none" />
+              <path id="lbx-out-left" d="M 185 246 C 185 268, 138 266, 138 290" fill="none" />
+              <path id="lbx-out-right" d="M 315 246 C 315 268, 362 266, 362 290" fill="none" />
+              <style>{`
+                .lbx-mono { font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; letter-spacing: 0.1em; }
+                .lbx-sans { font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif; }
+                @keyframes lbxFlowDown { to { stroke-dashoffset: -27; } }
+                @keyframes lbxPulseLive { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.45; transform: scale(0.75); } }
+                @keyframes lbxHaloPing { 0% { opacity: 0.75; transform: scale(1); } 100% { opacity: 0; transform: scale(2.15); } }
+                @keyframes lbxLaserSweep { 0%, 100% { transform: translateX(0px); } 50% { transform: translateX(62px); } }
+                @keyframes lbxStageFill { 0% { stroke-dashoffset: 284; } 45%, 78% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: 284; } }
+                @keyframes lbxFloatSubtle { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-2.5px); } }
+                .lbx-wire { stroke-dasharray: 4 5; animation: lbxFlowDown 1.45s linear infinite; }
+                .lbx-live-dot { transform-box: fill-box; transform-origin: center; animation: lbxPulseLive 1.8s ease-in-out infinite; }
+                .lbx-cyan-halo { transform-box: fill-box; transform-origin: center; animation: lbxHaloPing 2s cubic-bezier(0.2, 0.8, 0.2, 1) infinite; }
+                .lbx-laser { animation: lbxLaserSweep 2.6s ease-in-out infinite; }
+                .lbx-progress-bar { stroke-dasharray: 284; stroke-dashoffset: 284; animation: lbxStageFill 4.8s ease-in-out infinite; }
+                .lbx-pill-float { animation: lbxFloatSubtle 5.5s ease-in-out infinite; }
+              `}</style>
             </defs>
-
-            {/* Workbench Laboratory Table Base */}
-            <g transform="translate(60, 275)">
-              <polygon points="0,0 380,0 420,60 -40,60" fill="#071324" stroke="rgba(34, 211, 238, 0.3)" strokeWidth="1.5" />
-              <line x1="20" y1="20" x2="360" y2="20" stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
+            <ellipse cx="250" cy="175" rx="220" ry="155" fill="url(#lbxAura)" />
+            <g fill="none" strokeWidth="1.4" strokeOpacity="0.65">
+              <use href="#lbx-in-left" stroke="#C084FC" className="lbx-wire" />
+              <use href="#lbx-in-mid" stroke="#38BDF8" className="lbx-wire" />
+              <use href="#lbx-in-right" stroke="#EAE1C8" className="lbx-wire" />
             </g>
-
-            {/* ROTATING CENTRIFUGE ROTOR with Color-Coded Sample Tubes */}
-            <g transform="translate(160, 180)">
-              <circle cx="0" cy="0" r="85" fill="#061222" stroke="#22d3ee" strokeWidth="2" filter="url(#lab-glow)" />
-              <circle cx="0" cy="0" r="72" fill="#091b30" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
-
-              <g className="animate-[spin-slow_16s_linear_infinite]" style={{ transformOrigin: '0px 0px' }}>
-                {[0, 45, 90, 135, 180, 225, 270, 315].map((ang, i) => {
-                  const rad = (ang * Math.PI) / 180;
-                  const x = Math.cos(rad) * 55;
-                  const y = Math.sin(rad) * 55;
-                  const c = ['#a855f7', '#38bdf8', '#f43f5e', '#10b981'][i % 4];
-                  return (
-                    <g key={i} transform={`translate(${x}, ${y})`}>
-                      <circle cx="0" cy="0" r="9" fill="#13082a" stroke={c} strokeWidth="1.8" />
-                      <circle cx="0" cy="0" r="3.5" fill={c} />
-                    </g>
-                  );
-                })}
-              </g>
-
-              {/* Centrifuge Spindle Core */}
-              <circle cx="0" cy="0" r="18" fill="#ede8d0" />
-              <circle cx="0" cy="0" r="8" fill="#061222" />
+            <circle r="3" fill="#C084FC" filter="url(#lbxDotGlow)">
+              <animateMotion dur="2.4s" repeatCount="indefinite">
+                <mpath href="#lbx-in-left" />
+              </animateMotion>
+            </circle>
+            <circle r="3" fill="#38BDF8" filter="url(#lbxDotGlow)">
+              <animateMotion dur="2.0s" begin="0.4s" repeatCount="indefinite">
+                <mpath href="#lbx-in-mid" />
+              </animateMotion>
+            </circle>
+            <circle r="3" fill="#EAE1C8" filter="url(#lbxDotGlow)">
+              <animateMotion dur="2.5s" begin="0.8s" repeatCount="indefinite">
+                <mpath href="#lbx-in-right" />
+              </animateMotion>
+            </circle>
+            <g className="lbx-pill-float">
+              <rect x="22" y="14" width="136" height="46" rx="11" fill="url(#lbxPillBg)" stroke="url(#lbxVioletStroke)" strokeWidth="1.35" />
+              <text x="90" y="33" textAnchor="middle" fill="#E9D5FF" fontSize="9" fontWeight="700" className="lbx-mono">PANACEA MD</text>
+              <text x="90" y="48" textAnchor="middle" fill="#94A3B8" fontSize="8.5" className="lbx-sans">Doctor Referral</text>
             </g>
-
-            {/* DIAGNOSTIC TEST TUBE RACK */}
-            <g transform="translate(290, 135)">
-              <rect x="0" y="40" width="130" height="40" rx="4" fill="#0d1f38" stroke="#22d3ee" strokeWidth="1.5" />
-              {[
-                { x: 15, cap: '#a855f7' },
-                { x: 42, cap: '#f43f5e' },
-                { x: 70, cap: '#38bdf8' },
-                { x: 98, cap: '#10b981' }
-              ].map((t, idx) => (
-                <g key={idx} transform={`translate(${t.x}, 0)`}>
-                  <rect x="0" y="0" width="16" height="58" rx="8" fill="rgba(56, 189, 248, 0.15)" stroke="#ede8d0" strokeWidth="1.2" />
-                  <rect x="-1" y="-3" width="18" height="8" rx="3" fill={t.cap} />
-                  <line x1="4" y1="20" x2="12" y2="20" stroke="rgba(255,255,255,0.4)" strokeWidth="0.8" />
-                  <line x1="4" y1="30" x2="12" y2="30" stroke="rgba(255,255,255,0.4)" strokeWidth="0.8" />
-                  <line x1="4" y1="40" x2="12" y2="40" stroke="rgba(255,255,255,0.4)" strokeWidth="0.8" />
+            <g className="lbx-pill-float" style={{ animationDelay: '0.6s' }}>
+              <rect x="182" y="14" width="136" height="46" rx="11" fill="url(#lbxPillBg)" stroke="url(#lbxCyanStroke)" strokeWidth="1.35" />
+              <text x="250" y="33" textAnchor="middle" fill="#BAE6FD" fontSize="9" fontWeight="700" className="lbx-mono">PULSEPORT APP</text>
+              <text x="250" y="48" textAnchor="middle" fill="#94A3B8" fontSize="8.5" className="lbx-sans">Home Booking</text>
+            </g>
+            <g className="lbx-pill-float" style={{ animationDelay: '1.2s' }}>
+              <rect x="342" y="14" width="136" height="46" rx="11" fill="url(#lbxPillBg)" stroke="url(#lbxChampagneStroke)" strokeWidth="1.35" />
+              <text x="410" y="33" textAnchor="middle" fill="#F5EFE0" fontSize="9" fontWeight="700" className="lbx-mono">WALK-IN / LAB</text>
+              <text x="410" y="48" textAnchor="middle" fill="#94A3B8" fontSize="8.5" className="lbx-sans">Partner Labs</text>
+            </g>
+            <g fill="none" strokeWidth="1.4" strokeOpacity="0.68">
+              <use href="#lbx-out-left" stroke="#34D399" className="lbx-wire" />
+              <use href="#lbx-out-right" stroke="#38BDF8" className="lbx-wire" />
+            </g>
+            <circle r="3" fill="#34D399" filter="url(#lbxDotGlow)">
+              <animateMotion dur="2.1s" begin="0.3s" repeatCount="indefinite">
+                <mpath href="#lbx-out-left" />
+              </animateMotion>
+            </circle>
+            <circle r="3" fill="#38BDF8" filter="url(#lbxDotGlow)">
+              <animateMotion dur="2.1s" begin="1.0s" repeatCount="indefinite">
+                <mpath href="#lbx-out-right" />
+              </animateMotion>
+            </circle>
+            <g filter="url(#lbxConsoleGlow)">
+              <rect x="56" y="104" width="388" height="142" rx="16" fill="url(#lbxConsoleBg)" stroke="url(#lbxCoreStroke)" strokeWidth="1.6" />
+              <rect x="72" y="116" width="6" height="6" rx="1.5" fill="#38BDF8" />
+              <text x="84" y="122.5" fill="#38BDF8" fontSize="9.5" fontWeight="700" className="lbx-mono">LABONIX LAB OS</text>
+              <circle cx="342" cy="119" r="3.2" fill="#34D399" className="lbx-live-dot" />
+              <text x="351" y="122.5" fill="#6EE7B7" fontSize="8.2" fontWeight="600" className="lbx-mono">LIVE PIPELINE</text>
+              <line x1="72" y1="132" x2="428" y2="132" stroke="#1E1B2E" strokeWidth="1" />
+              <rect x="72" y="140" width="356" height="44" rx="10" fill="#090810" stroke="#1E2538" strokeWidth="1" />
+              <text x="86" y="158.5" fill="#F8FAFC" fontSize="12.5" fontWeight="700" className="lbx-mono">LB-482-917</text>
+              <text x="86" y="174.5" fill="#94A3B8" fontSize="8.2" fontWeight="500" className="lbx-mono">CBC · THYROID · HbA1c</text>
+              <g>
+                <rect x="328" y="147" width="86" height="30" rx="6" fill="#0E121E" stroke="#1E293B" strokeWidth="1" />
+                <g fill="#CBD5E1" opacity="0.82">
+                  <rect x="338" y="152" width="2" height="20" rx="0.5" /><rect x="342" y="152" width="1" height="20" rx="0.5" />
+                  <rect x="345" y="152" width="3" height="20" rx="0.5" /><rect x="351" y="152" width="1.5" height="20" rx="0.5" />
+                  <rect x="355" y="152" width="2.5" height="20" rx="0.5" /><rect x="360" y="152" width="1" height="20" rx="0.5" />
+                  <rect x="363" y="152" width="3.5" height="20" rx="0.5" /><rect x="369" y="152" width="1.5" height="20" rx="0.5" />
+                  <rect x="373" y="152" width="2" height="20" rx="0.5" /><rect x="377" y="152" width="1" height="20" rx="0.5" />
+                  <rect x="380" y="152" width="3" height="20" rx="0.5" /><rect x="386" y="152" width="1.5" height="20" rx="0.5" />
+                  <rect x="390" y="152" width="2.5" height="20" rx="0.5" /><rect x="395" y="152" width="1" height="20" rx="0.5" />
+                  <rect x="398" y="152" width="2.5" height="20" rx="0.5" /><rect x="403" y="152" width="1.5" height="20" rx="0.5" />
                 </g>
-              ))}
+                <g className="lbx-laser">
+                  <rect x="334" y="149" width="10" height="26" fill="url(#lbxLaserGrad)" opacity="0.55" />
+                  <line x1="339" y1="149" x2="339" y2="175" stroke="#38BDF8" strokeWidth="1.6" />
+                </g>
+              </g>
+              <rect x="197" y="191" width="106" height="14" rx="7" fill="#082F49" fillOpacity="0.85" stroke="#38BDF8" strokeWidth="0.75" strokeOpacity="0.65" />
+              <text x="250" y="200.5" textAnchor="middle" fill="#7DD3FC" fontSize="7.2" fontWeight="600" className="lbx-sans">Phlebotomist · Live</text>
+              <line x1="108" y1="215" x2="392" y2="215" stroke="#1E293B" strokeWidth="2.5" strokeLinecap="round" />
+              <line x1="108" y1="215" x2="392" y2="215" stroke="url(#lbxStageGrad)" strokeWidth="2.5" strokeLinecap="round" className="lbx-progress-bar" />
+              <circle cx="108" cy="215" r="7" fill="#131020" stroke="#C084FC" strokeWidth="1.4" />
+              <circle cx="108" cy="215" r="3.5" fill="#C084FC" />
+              <text x="108" y="235" textAnchor="middle" fill="#D8B4FE" fontSize="8" fontWeight="600" className="lbx-mono">ORDERED</text>
+              <circle cx="250" cy="215" r="6.5" fill="none" stroke="#38BDF8" strokeWidth="1.4" className="lbx-cyan-halo" />
+              <circle cx="250" cy="215" r="7.5" fill="#0B1929" stroke="#38BDF8" strokeWidth="1.6" />
+              <circle cx="250" cy="215" r="3.8" fill="#38BDF8" className="lbx-live-dot" />
+              <text x="250" y="235" textAnchor="middle" fill="#7DD3FC" fontSize="8" fontWeight="700" className="lbx-mono">COLLECTED</text>
+              <circle cx="392" cy="215" r="7" fill="#0A1F1B" stroke="#34D399" strokeWidth="1.4" />
+              <circle cx="392" cy="215" r="3.5" fill="#34D399" />
+              <text x="392" y="235" textAnchor="middle" fill="#6EE7B7" fontSize="8" fontWeight="600" className="lbx-mono">REPORTED</text>
             </g>
-
-            {/* DIAGNOSTIC ANALYZER DIGITAL CONSOLE */}
-            <g transform="translate(275, 40)">
-              <rect x="0" y="0" width="160" height="80" rx="10" fill="#05101f" stroke="#22d3ee" strokeWidth="1.8" filter="url(#lab-glow)" />
-              <text x="12" y="20" fill="#22d3ee" fontSize="8" fontFamily="monospace" fontWeight="bold">LABONIX SPECTRUM</text>
-              <circle cx="145" cy="16" r="3" fill="#10b981" className="animate-ping" />
-
-              {/* Chemical Spectrum Wave */}
-              <path d="M 12 45 Q 30 25 50 45 T 90 45 T 130 45 T 148 45" fill="none" stroke="#22d3ee" strokeWidth="1.8" />
-              <text x="12" y="65" fill="#ede8d0" fontSize="7.5" fontFamily="monospace">SPECIMEN #TX-8821: 42ms</text>
+            <g className="lbx-pill-float" style={{ animationDelay: '0.4s' }}>
+              <rect x="50" y="290" width="176" height="48" rx="12" fill="url(#lbxPillBg)" stroke="url(#lbxEmeraldStroke)" strokeWidth="1.4" />
+              <text x="138" y="310" textAnchor="middle" fill="#6EE7B7" fontSize="9.2" fontWeight="700" className="lbx-mono">DESIGN STUDIO</text>
+              <text x="138" y="325.5" textAnchor="middle" fill="#94A3B8" fontSize="8.5" className="lbx-sans">Auto Report · Bill · Rx</text>
             </g>
-
-            {/* AUTOMATED ROBOTIC PIPETTOR ARM */}
-            <g transform="translate(210, 60)">
-              <line x1="0" y1="0" x2="0" y2="60" stroke="#ede8d0" strokeWidth="3" />
-              <rect x="-6" y="55" width="12" height="15" rx="2" fill="#22d3ee" />
-              <line x1="0" y1="70" x2="0" y2="85" stroke="#22d3ee" strokeWidth="1.8" />
-              {/* Falling Droplet */}
-              <circle cx="0" cy="94" r="2.5" fill="#22d3ee" filter="url(#lab-glow)" className="animate-[drip-fall_1.5s_linear_infinite]" />
-            </g>
-
-            {/* Status Callout Pill */}
-            <g transform="translate(80, 360)">
-              <rect x="0" y="0" width="180" height="24" rx="12" fill="#071224" stroke="#22d3ee" strokeWidth="1" />
-              <circle cx="14" cy="12" r="3.5" fill="#22d3ee" />
-              <text x="24" y="15" fill="#ede8d0" fontSize="8" fontFamily="monospace" fontWeight="bold">Pathology Gateway (ASTM/HL7)</text>
+            <g className="lbx-pill-float" style={{ animationDelay: '1s' }}>
+              <rect x="274" y="290" width="176" height="48" rx="12" fill="url(#lbxPillBg)" stroke="url(#lbxCyanStroke)" strokeWidth="1.4" />
+              <text x="362" y="310" textAnchor="middle" fill="#7DD3FC" fontSize="9.2" fontWeight="700" className="lbx-mono">LEDGER &amp; SYNC</text>
+              <text x="362" y="325.5" textAnchor="middle" fill="#94A3B8" fontSize="8.5" className="lbx-sans">Doctor + Patient Alert</text>
             </g>
           </svg>
         </div>
       )}
 
-      {/* ========================================================================= */}
-      {/* 7. PULSEPORT: Biometric Identity Kiosk & Continuous Wearable Telemetry    */}
-      {/* Features: 3D Biometric Check-In Kiosk with Laser Face Scanner, and        */}
-      {/* Medicore Smartwatch with Pulsating ECG Wave & Ambulatory SpO2 Stream      */}
-      {/* ========================================================================= */}
       {pageId === 'pulseport' && (
         <div className="relative w-full h-full flex items-center justify-center">
-          {/* Cyan/Purple Telemetry Aura */}
-          <div className="absolute w-[360px] h-[360px] bg-cyan-500/20 rounded-full blur-[100px] pointer-events-none" />
-          <div className="absolute w-[280px] h-[280px] bg-purple-600/20 rounded-full blur-[90px] pointer-events-none" />
-
-          <svg viewBox="0 0 520 420" className="w-full h-full max-w-[520px] overflow-visible drop-shadow-2xl">
+          <svg viewBox="0 0 460 320" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style={{ maxWidth: '470px', overflow: 'visible' }}>
             <defs>
-              <linearGradient id="kiosk-frame-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#38bdf8" />
-                <stop offset="100%" stopColor="#818cf8" />
+              <linearGradient id="cyanGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#38BDF8" stopOpacity="0.95" />
+                <stop offset="100%" stopColor="#0284C7" stopOpacity="0.35" />
               </linearGradient>
-
-              <filter id="telemetry-glow" x="-30%" y="-30%" width="160%" height="160%">
-                <feGaussianBlur stdDeviation="4" result="blur" />
-                <feMerge>
-                  <feMergeNode in="blur" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
+              <linearGradient id="violetGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#C084FC" stopOpacity="0.95" />
+                <stop offset="100%" stopColor="#7E22CE" stopOpacity="0.35" />
+              </linearGradient>
+              <linearGradient id="emeraldGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#34D399" stopOpacity="0.9" />
+                <stop offset="100%" stopColor="#059669" stopOpacity="0.3" />
+              </linearGradient>
+              <linearGradient id="cardSurface" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#13111C" stopOpacity="0.94" />
+                <stop offset="100%" stopColor="#09080E" stopOpacity="0.98" />
+              </linearGradient>
+              <filter id="neonBlue" x="-25%" y="-25%" width="150%" height="150%">
+                <feDropShadow dx="0" dy="0" stdDeviation="9" floodColor="#38BDF8" floodOpacity="0.32" />
               </filter>
+              <filter id="neonPurple" x="-25%" y="-25%" width="150%" height="150%">
+                <feDropShadow dx="0" dy="0" stdDeviation="9" floodColor="#A855F7" floodOpacity="0.32" />
+              </filter>
+              <style>{`
+                .mono-label { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; letter-spacing: 0.12em; }
+                .sans-title { font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+                @keyframes floatSlow { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-5px); } }
+                @keyframes floatDelayed { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(5px); } }
+                @keyframes pulseDot { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.75); } }
+                @keyframes flowDash { to { stroke-dashoffset: -24; } }
+                @keyframes progressFill { 0%, 15% { width: 42px; } 50%, 85% { width: 96px; } 100% { width: 42px; } }
+                .card-left { animation: floatSlow 5s ease-in-out infinite; }
+                .card-right-top { animation: floatDelayed 5.5s ease-in-out infinite; }
+                .card-right-bot { animation: floatSlow 6s ease-in-out infinite; }
+                .live-dot { transform-box: fill-box; transform-origin: center; animation: pulseDot 1.8s ease-in-out infinite; }
+                .data-wire { stroke-dasharray: 4 4; animation: flowDash 1.4s linear infinite; }
+                .queue-bar { animation: progressFill 6s ease-in-out infinite; }
+              `}</style>
             </defs>
-
-            {/* 1. TOUCHLESS BIOMETRIC CHECK-IN KIOSK (Left) */}
-            <g transform="translate(65, 80)">
-              <g>
-                <animateTransform attributeName="transform" type="translate" values="0 0; 0 -6; 0 0" dur="6.5s" repeatCount="indefinite" />
-                
-                {/* Kiosk Chassis */}
-                <rect x="0" y="0" width="150" height="210" rx="16" fill="#090418" stroke="url(#kiosk-frame-grad)" strokeWidth="2.5" filter="url(#telemetry-glow)" />
-                <text x="16" y="24" fill="#38bdf8" fontSize="8" fontFamily="monospace" fontWeight="bold">PULSEPORT KIOSK</text>
-                
-                {/* Facial Recognition Camera Window */}
-                <rect x="15" y="34" width="120" height="105" rx="10" fill="#04020a" stroke="rgba(56, 189, 248, 0.4)" strokeWidth="1" />
-                
-                {/* Biometric Face Mesh Silhouette */}
-                <ellipse cx="75" cy="80" rx="28" ry="36" fill="none" stroke="#ede8d0" strokeWidth="1.4" opacity="0.8" />
-                <circle cx="65" cy="74" r="2.5" fill="#38bdf8" />
-                <circle cx="85" cy="74" r="2.5" fill="#38bdf8" />
-                <path d="M 68 96 Q 75 101 82 96" fill="none" stroke="#ede8d0" strokeWidth="1.2" />
-
-                {/* Laser Sweep Beam Scanning the Face */}
-                <g className="animate-[laser-sweep_2.5s_ease-in-out_infinite]">
-                  <line x1="17" y1="36" x2="133" y2="36" stroke="#38bdf8" strokeWidth="2.5" filter="url(#telemetry-glow)" />
-                </g>
-
-                {/* Verification Badge */}
-                <g transform="translate(15, 148)">
-                  <rect x="0" y="0" width="120" height="24" rx="5" fill="#062218" stroke="#10b981" strokeWidth="1" />
-                  <text x="60" y="16" fill="#10b981" fontSize="8" fontFamily="monospace" textAnchor="middle" fontWeight="bold">VERIFIED: AARAV (0.8s)</text>
-                </g>
-                <text x="16" y="192" fill="#9ca3af" fontSize="7.5" fontFamily="monospace">QUEUE: #OPD-101 READY</text>
-              </g>
+            <circle cx="145" cy="160" r="95" fill="#38BDF8" opacity="0.06" />
+            <circle cx="330" cy="160" r="95" fill="#A855F7" opacity="0.07" />
+            <path d="M 218 122 C 245 122, 248 92, 272 92" fill="none" stroke="#38BDF8" strokeWidth="1.5" strokeOpacity="0.6" className="data-wire" />
+            <path d="M 218 205 C 245 205, 248 225, 272 225" fill="none" stroke="#A855F7" strokeWidth="1.5" strokeOpacity="0.6" className="data-wire" />
+            <g className="card-left" filter="url(#neonBlue)">
+              <rect x="34" y="36" width="184" height="248" rx="22" fill="url(#cardSurface)" stroke="url(#cyanGlow)" strokeWidth="1.75" />
+              <text x="52" y="64" fill="#7DD3FC" fontSize="8.5" fontWeight="600" className="mono-label">PULSEPORT APP</text>
+              <circle cx="194" cy="61" r="3.5" fill="#10B981" className="live-dot" />
+              <text x="52" y="88" fill="#F8FAFC" fontSize="13" fontWeight="600" className="sans-title">Dr. A. Mehta</text>
+              <text x="52" y="103" fill="#94A3B8" fontSize="9.5" className="sans-title">Live Queue · Panacea Sync</text>
+              <rect x="50" y="116" width="152" height="66" rx="12" fill="#0F172A" stroke="#1E293B" strokeWidth="1" />
+              <text x="64" y="135" fill="#64748B" fontSize="8" className="mono-label">TOKEN</text>
+              <text x="64" y="157" fill="#38BDF8" fontSize="20" fontWeight="700" className="sans-title">#14</text>
+              <line x1="118" y1="126" x2="118" y2="170" stroke="#1E293B" strokeWidth="1" />
+              <text x="130" y="135" fill="#64748B" fontSize="8" className="mono-label">AHEAD</text>
+              <text x="130" y="157" fill="#F8FAFC" fontSize="20" fontWeight="700" className="sans-title">02</text>
+              <rect x="64" y="168" width="124" height="4" rx="2" fill="#1E293B" />
+              <rect x="64" y="168" width="68" height="4" rx="2" fill="#38BDF8" className="queue-bar" />
+              <rect x="50" y="194" width="152" height="32" rx="9" fill="#064E3B" fillOpacity="0.35" stroke="url(#emeraldGlow)" strokeWidth="1" />
+              <circle cx="64" cy="210" r="3" fill="#34D399" />
+              <text x="74" y="213" fill="#6EE7B7" fontSize="8.5" fontWeight="600" className="mono-label">FAMILY: MUM · READY</text>
+              <text x="52" y="252" fill="#64748B" fontSize="8" className="mono-label">EN · हिं · म · ગુ · اُردُو</text>
+              <text x="52" y="266" fill="#94A3B8" fontSize="8" className="mono-label">ZERO WAITING ROOM</text>
             </g>
-
-            {/* 2. MEDICORE SMARTWATCH CONTINUOUS VITALS (Right) */}
-            <g transform="translate(265, 95)">
-              <g>
-                <animateTransform attributeName="transform" type="translate" values="0 0; 0 -7; 0 0" dur="6s" repeatCount="indefinite" />
-                
-                {/* Watch Strap */}
-                <rect x="35" y="-20" width="100" height="225" rx="14" fill="#080314" stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
-
-                {/* Watch Chassis */}
-                <rect x="0" y="0" width="170" height="185" rx="32" fill="#0e061e" stroke="#c084fc" strokeWidth="2.5" filter="url(#telemetry-glow)" />
-                <rect x="10" y="10" width="150" height="165" rx="24" fill="#05020c" stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
-
-                {/* Watch UI Header */}
-                <text x="24" y="32" fill="#c084fc" fontSize="9" fontFamily="monospace" fontWeight="bold">MEDICORE WATCH</text>
-                <circle cx="145" cy="28" r="3.5" fill="#10b981" className="animate-ping" />
-
-                {/* Heart Rate Display */}
-                <text x="24" y="68" fill="#ffffff" fontSize="28" fontWeight="300">74</text>
-                <text x="68" y="58" fill="#f43f5e" fontSize="9" fontFamily="monospace" fontWeight="bold">BPM</text>
-
-                {/* Continuous Real-Time ECG Waveform */}
-                <path
-                  d="M 18 105 L 36 105 L 42 95 L 48 117 L 54 85 L 60 113 L 66 105 L 86 105 L 92 95 L 98 117 L 104 85 L 110 113 L 116 105 L 152 105"
-                  fill="none"
-                  stroke="#10b981"
-                  strokeWidth="2.4"
-                  strokeLinecap="round"
-                  strokeDasharray="240"
-                  className="animate-[ecg-flow_2s_linear_infinite]"
-                />
-
-                <text x="24" y="152" fill="#38bdf8" fontSize="8.5" fontFamily="monospace">SpO2: 99% · AMBULATORY</text>
-              </g>
+            <g className="card-right-top" filter="url(#neonPurple)">
+              <rect x="272" y="42" width="156" height="106" rx="18" fill="url(#cardSurface)" stroke="url(#violetGlow)" strokeWidth="1.75" />
+              <text x="288" y="66" fill="#D8B4FE" fontSize="8.5" fontWeight="600" className="mono-label">LABONIX HOME LAB</text>
+              <text x="288" y="96" fill="#F8FAFC" fontSize="22" fontWeight="700" className="sans-title">12 <tspan fontSize="11" fill="#A855F7" fontWeight="500">MIN AWAY</tspan></text>
+              <circle cx="293" cy="116" r="3" fill="#A855F7" />
+              <line x1="296" y1="116" x2="322" y2="116" stroke="#A855F7" strokeWidth="1.5" />
+              <circle cx="325" cy="116" r="3.5" fill="#38BDF8" className="live-dot" />
+              <line x1="329" y1="116" x2="355" y2="116" stroke="#334155" strokeWidth="1.5" />
+              <circle cx="358" cy="116" r="3" fill="#334155" />
+              <text x="288" y="133" fill="#94A3B8" fontSize="8" className="mono-label">SAMPLE ON THE WAY</text>
             </g>
-
-            {/* Wireless Cellular Telemetry Beam between Kiosk & Watch */}
-            <g stroke="rgba(56, 189, 248, 0.4)" strokeWidth="1.5" strokeDasharray="3 5">
-              <line x1="215" y1="180" x2="265" y2="180" />
+            <g className="card-right-bot">
+              <rect x="272" y="168" width="156" height="106" rx="18" fill="url(#cardSurface)" stroke="url(#cyanGlow)" strokeWidth="1.5" />
+              <text x="288" y="192" fill="#7DD3FC" fontSize="8.5" fontWeight="600" className="mono-label">PHARMIXO · RX</text>
+              <text x="288" y="218" fill="#F8FAFC" fontSize="14" fontWeight="600" className="sans-title">Digital Rx Sync</text>
+              <text x="288" y="234" fill="#94A3B8" fontSize="9.5" className="sans-title">1-Tap Chemist Order</text>
+              <rect x="288" y="245" width="114" height="18" rx="6" fill="#1E1B4B" stroke="#6366F1" strokeWidth="0.8" />
+              <text x="297" y="257" fill="#A5B4FC" fontSize="7.5" fontWeight="600" className="mono-label">ECOSYSTEM LINKED</text>
             </g>
-            <circle cx="240" cy="180" r="3" fill="#38bdf8" filter="url(#telemetry-glow)" className="animate-ping" />
           </svg>
         </div>
       )}
 
-      {/* ========================================================================= */}
-      {/* 8. CURENEST: Hospital Inpatient Bed & Ward Telemetry Monitor              */}
-      {/* ========================================================================= */}
-      {pageId === 'curenest' && (
+{pageId === 'curenest' && (
         <div className="relative w-full h-full flex items-center justify-center">
           <div className="absolute w-[360px] h-[360px] bg-cyan-600/15 rounded-full blur-[90px] pointer-events-none" />
           <div className="absolute w-[280px] h-[280px] bg-purple-600/15 rounded-full blur-[80px] pointer-events-none" />

@@ -9,7 +9,7 @@ function getDestinationInfo(pathname) {
     return {
       num: '01',
       name: 'Overview',
-      label: 'THE LIVING HEART',
+      label: 'OVERVIEW',
       tagline: 'PLATFORM TOPOLOGY & CLINICAL CONTINUITY',
     };
   }
@@ -17,7 +17,7 @@ function getDestinationInfo(pathname) {
     return {
       num: '02',
       name: 'Our Mission',
-      label: 'OUR MANIFESTO',
+      label: 'OUR MISSION',
       tagline: 'PHILOSOPHY OF HEALING & SYSTEMIC REFORMATION',
     };
   }
@@ -33,7 +33,7 @@ function getDestinationInfo(pathname) {
     return {
       num: '04',
       name: 'Labonix Gateway',
-      label: 'LABONIX DIAGNOSTICS',
+      label: 'LABONIX GATEWAY',
       tagline: 'AUTOMATED PATHOLOGY & DIAGNOSTIC LIMS',
     };
   }
@@ -65,7 +65,7 @@ function getDestinationInfo(pathname) {
     return {
       num: '08',
       name: 'Executive Concierge',
-      label: 'MUMBAI HQ & CONCIERGE',
+      label: 'EXECUTIVE CONCIERGE',
       tagline: 'DEPLOYMENT BRIEFINGS & HOSPITAL VISITS',
     };
   }
@@ -102,7 +102,6 @@ class TransitionParticle {
   }
 
   reset(w, h, cx, cy) {
-    // Distribute across screen, biased toward edges and main content quadrant
     const fromEdge = Math.random() < 0.65;
     if (fromEdge) {
       const side = Math.floor(Math.random() * 4);
@@ -130,12 +129,12 @@ class TransitionParticle {
     this.currentY = this.y;
 
     this.radius = 1 + Math.random() * 2.2;
-    this.baseAlpha = 0.4 + Math.random() * 0.55;
+    this.baseAlpha = 0.45 + Math.random() * 0.5;
     this.alpha = this.baseAlpha;
 
     // Orbital positioning around center
-    this.orbitRadius = 28 + Math.random() * 110;
-    this.orbitSpeed = (0.025 + Math.random() * 0.045) * (Math.random() < 0.5 ? 1 : -1);
+    this.orbitRadius = 32 + Math.random() * 115;
+    this.orbitSpeed = (0.024 + Math.random() * 0.04) * (Math.random() < 0.5 ? 1 : -1);
     this.orbitAngle = Math.random() * Math.PI * 2;
 
     // Swirl factor during phase 1 collapse
@@ -151,12 +150,13 @@ class TransitionParticle {
       '#C084FC', // Lavender Violet
       '#06B6D4', // Cyan
       '#EC4899', // Subtle Magenta Accent
+      '#FFFFFF', // Pure White Starlight
     ];
     this.color = palette[Math.floor(Math.random() * palette.length)];
 
     // Outward explosion vector for Phase 4 reconstruction
-    const outAngle = Math.atan2(this.y - cy, this.x - cx) + (Math.random() - 0.5) * 0.5;
-    const speed = 7 + Math.random() * 14;
+    const outAngle = Math.atan2(this.y - cy, this.x - cx) + (Math.random() - 0.5) * 0.6;
+    const speed = 8 + Math.random() * 15;
     this.vxOut = Math.cos(outAngle) * speed;
     this.vyOut = Math.sin(outAngle) * speed;
   }
@@ -164,20 +164,21 @@ class TransitionParticle {
 
 export default function PageTransitionCurtain() {
   const location = useLocation();
-  const [isTransitioning, setIsTransitioning] = useState(false);
   const [phase, setPhase] = useState('idle'); // 'idle' | 'dissolving' | 'forming' | 'revealing' | 'reconstructing'
   const [destinationInfo, setDestinationInfo] = useState({
     num: '01',
     name: 'Overview',
-    label: 'THE LIVING HEART',
+    label: 'OVERVIEW',
     tagline: 'PLATFORM TOPOLOGY & CLINICAL CONTINUITY',
   });
-  const [backdropOpacity, setBackdropOpacity] = useState(0);
 
   const prevPathRef = useRef(location.pathname);
+  const containerRef = useRef(null);
   const canvasRef = useRef(null);
+  const hudRef = useRef(null);
   const animFrameRef = useRef(null);
-  const particlesRef = useRef([]);
+  const safetyTimerRef = useRef(null);
+  const isTransitioningRef = useRef(false);
 
   useEffect(() => {
     // Only animate on actual path change
@@ -188,120 +189,192 @@ export default function PageTransitionCurtain() {
     prevPathRef.current = location.pathname;
 
     // Check if user prefers reduced motion
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const prefersReduced = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
     if (prefersReduced) {
       window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
       return;
     }
 
-    // Begin Particle Dissolve + Reconstruction Sequence (~1050ms total)
-    setIsTransitioning(true);
-    setPhase('dissolving');
-    setBackdropOpacity(1);
+    // Cancel any ongoing animation or safety timer
+    if (animFrameRef.current) {
+      cancelAnimationFrame(animFrameRef.current);
+      animFrameRef.current = null;
+    }
+    if (safetyTimerRef.current) {
+      clearTimeout(safetyTimerRef.current);
+      safetyTimerRef.current = null;
+    }
 
-    const DURATION = 1050; // Total transition milliseconds
-    let startTime = null;
-    let hasScrolled = false;
+    // Set transition active
+    isTransitioningRef.current = true;
+    setPhase('dissolving');
+
+    // Make container visible immediately with direct DOM manipulation for maximum responsiveness
+    if (containerRef.current) {
+      containerRef.current.style.opacity = '1';
+      containerRef.current.style.visibility = 'visible';
+    }
+
+    // Absolute guaranteed fallback: force reset after 1200ms so screen CAN NEVER get stuck black
+    safetyTimerRef.current = setTimeout(() => {
+      endTransition();
+    }, 1200);
 
     const canvas = canvasRef.current;
     if (!canvas) {
-      // Fallback scroll if canvas unavailable
+      // Immediate fallback if canvas not available
       window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-      setIsTransitioning(false);
+      endTransition();
       return;
     }
 
     const ctx = canvas.getContext('2d');
+    if (!ctx) {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      endTransition();
+      return;
+    }
+
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const width = window.innerWidth;
-    const height = window.innerHeight;
+    const width = window.innerWidth || 1200;
+    const height = window.innerHeight || 800;
     canvas.width = Math.floor(width * dpr);
     canvas.height = Math.floor(height * dpr);
-    ctx.scale(dpr, dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
     const cx = width / 2;
     const cy = height / 2;
 
-    // Instantiate particles (360 on desktop, 150 on mobile)
+    // Instantiate particles (320 on desktop, 130 on mobile)
     const isMobile = width < 768;
-    const count = isMobile ? 150 : 360;
+    const count = isMobile ? 130 : 320;
     const particles = [];
     for (let i = 0; i < count; i++) {
       particles.push(new TransitionParticle(width, height, cx, cy));
     }
-    particlesRef.current = particles;
+
+    const DURATION = 980; // Total transition duration in milliseconds
+    let startTime = null;
+    let hasScrolled = false;
+    let currentPhase = 'dissolving';
+
+    const endTransition = () => {
+      isTransitioningRef.current = false;
+      if (animFrameRef.current) {
+        cancelAnimationFrame(animFrameRef.current);
+        animFrameRef.current = null;
+      }
+      if (safetyTimerRef.current) {
+        clearTimeout(safetyTimerRef.current);
+        safetyTimerRef.current = null;
+      }
+      if (containerRef.current) {
+        containerRef.current.style.opacity = '0';
+        containerRef.current.style.visibility = 'hidden';
+      }
+      setPhase('idle');
+      if (canvasRef.current) {
+        const c = canvasRef.current;
+        const cCtx = c.getContext('2d');
+        if (cCtx) cCtx.clearRect(0, 0, c.width, c.height);
+      }
+    };
 
     const render = (now) => {
+      if (!isTransitioningRef.current) return;
       if (!startTime) startTime = now;
       const elapsed = now - startTime;
       const progress = Math.min(elapsed / DURATION, 1);
 
-      // Phase state synchronization
-      if (progress < 0.26) {
-        setPhase('dissolving');
+      // Phase state synchronization only when phase changes (avoids 60fps React render thrashing)
+      let nextPhase = currentPhase;
+      if (progress < 0.25) {
+        nextPhase = 'dissolving';
       } else if (progress < 0.52) {
-        setPhase('forming');
+        nextPhase = 'forming';
       } else if (progress < 0.74) {
-        setPhase('revealing');
+        nextPhase = 'revealing';
       } else {
-        setPhase('reconstructing');
+        nextPhase = 'reconstructing';
       }
 
-      // Midpoint instant scroll to top (around ~380ms when central vortex obscures page)
-      if (progress >= 0.38 && !hasScrolled) {
+      if (nextPhase !== currentPhase) {
+        currentPhase = nextPhase;
+        setPhase(nextPhase);
+      }
+
+      // Midpoint instant scroll to top (around ~340ms when central vortex & HUD obscure the page)
+      if (progress >= 0.34 && !hasScrolled) {
         window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
         hasScrolled = true;
       }
 
-      // Dynamic backdrop opacity during phase 4 outward expansion
+      // Dynamic backdrop & HUD opacity during Phase 4 outward reconstruction
       if (progress >= 0.74) {
         const outFactor = (progress - 0.74) / 0.26;
-        setBackdropOpacity(Math.max(0, 1 - outFactor * 1.1));
+        const fade = Math.max(0, 1 - outFactor * 1.15);
+        if (containerRef.current) {
+          containerRef.current.style.opacity = String(fade);
+        }
+        if (hudRef.current) {
+          hudRef.current.style.opacity = String(Math.max(0, 1 - outFactor * 1.4));
+          hudRef.current.style.transform = `scale(${1 + outFactor * 0.08})`;
+        }
       } else {
-        setBackdropOpacity(1);
+        if (containerRef.current) {
+          containerRef.current.style.opacity = '1';
+        }
+        if (hudRef.current) {
+          if (progress < 0.25) {
+            hudRef.current.style.opacity = '0';
+            hudRef.current.style.transform = 'scale(0.92)';
+          } else {
+            hudRef.current.style.opacity = '1';
+            hudRef.current.style.transform = 'scale(1)';
+          }
+        }
       }
 
-      // Canvas clearing with deep translucent cosmic background
+      // Canvas clearing with deep translucent cosmic trail
       if (progress < 0.74) {
-        ctx.fillStyle = 'rgba(4, 2, 8, 0.28)';
+        ctx.fillStyle = 'rgba(4, 2, 10, 0.28)';
         ctx.fillRect(0, 0, width, height);
       } else {
         ctx.clearRect(0, 0, width, height);
       }
 
-      // Render & update particles
+      // Render & update particles with luminous additive blending
       ctx.save();
       ctx.globalCompositeOperation = 'lighter';
 
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
 
-        if (progress < 0.26) {
-          // PHASE 1: Dissolution towards center vortex
-          const t1 = progress / 0.26;
-          // Organic curved whirlpool path
+        if (progress < 0.25) {
+          // PHASE 1: Dissolution towards center vortex with swirling spiral motion
+          const t1 = progress / 0.25;
           const directX = p.startX + (cx - p.startX) * (t1 * t1);
           const directY = p.startY + (cy - p.startY) * (t1 * t1);
           const angle = Math.atan2(cy - p.startY, cx - p.startX);
-          const perpX = -Math.sin(angle) * (1 - t1) * 80 * p.swirlFactor;
-          const perpY = Math.cos(angle) * (1 - t1) * 80 * p.swirlFactor;
+          const perpX = -Math.sin(angle) * (1 - t1) * 75 * p.swirlFactor;
+          const perpY = Math.cos(angle) * (1 - t1) * 75 * p.swirlFactor;
 
           p.currentX = directX + perpX;
           p.currentY = directY + perpY;
           p.alpha = p.baseAlpha;
         } else if (progress < 0.74) {
-          // PHASE 2 & 3: Central orbital energy formation
+          // PHASE 2 & 3: Central orbital energy formation around the R monogram
           p.orbitAngle += p.orbitSpeed;
-          const breath = 1 + Math.sin(progress * 18 + i) * 0.08;
+          const breath = 1 + Math.sin(progress * 16 + i) * 0.07;
           const r = p.orbitRadius * breath;
           p.currentX = cx + Math.cos(p.orbitAngle) * r;
           p.currentY = cy + Math.sin(p.orbitAngle) * r;
-          p.alpha = Math.min(1, p.baseAlpha * 1.25);
+          p.alpha = Math.min(1, p.baseAlpha * 1.3);
         } else {
-          // PHASE 4: Radial cosmic expansion & dissolution
+          // PHASE 4: Radial cosmic expansion & dissolution to unveil new page
           const t4 = (progress - 0.74) / 0.26;
-          p.currentX += p.vxOut * (1 + t4 * 3.5);
-          p.currentY += p.vyOut * (1 + t4 * 3.5);
+          p.currentX += p.vxOut * (1 + t4 * 3.4);
+          p.currentY += p.vyOut * (1 + t4 * 3.4);
           p.alpha = Math.max(0, p.baseAlpha * (1 - t4));
         }
 
@@ -315,8 +388,8 @@ export default function PageTransitionCurtain() {
         ctx.fill();
       }
 
-      // Subtle molecular web connection lines between nearby particles during Phase 2 & 3
-      if (progress >= 0.26 && progress < 0.74) {
+      // Subtle molecular web connection threads during central formation (Phase 2 & 3)
+      if (progress >= 0.25 && progress < 0.74) {
         ctx.shadowBlur = 0;
         ctx.lineWidth = 0.6;
         for (let i = 0; i < particles.length; i += 3) {
@@ -324,8 +397,8 @@ export default function PageTransitionCurtain() {
             const p1 = particles[i];
             const p2 = particles[j];
             const distSq = (p1.currentX - p2.currentX) ** 2 + (p1.currentY - p2.currentY) ** 2;
-            if (distSq < 1800) {
-              const alphaLine = (1 - Math.sqrt(distSq) / 42.4) * 0.16;
+            if (distSq < 1700) {
+              const alphaLine = (1 - Math.sqrt(distSq) / 41.2) * 0.16;
               ctx.strokeStyle = `rgba(56, 189, 248, ${alphaLine})`;
               ctx.beginPath();
               ctx.moveTo(p1.currentX, p1.currentY);
@@ -341,10 +414,7 @@ export default function PageTransitionCurtain() {
       if (progress < 1) {
         animFrameRef.current = requestAnimationFrame(render);
       } else {
-        // Complete transition sequence
-        setIsTransitioning(false);
-        setPhase('idle');
-        setBackdropOpacity(0);
+        endTransition();
       }
     };
 
@@ -352,37 +422,39 @@ export default function PageTransitionCurtain() {
 
     return () => {
       if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
+      if (safetyTimerRef.current) clearTimeout(safetyTimerRef.current);
     };
   }, [location.pathname]);
 
-  if (!isTransitioning && phase === 'idle') return null;
+  const isVisible = phase !== 'idle';
 
   return (
     <div
+      ref={containerRef}
       aria-hidden="true"
       className="fixed inset-0 z-[100] pointer-events-none select-none overflow-hidden transition-opacity duration-300"
-      style={{ opacity: backdropOpacity }}
+      style={{
+        opacity: isVisible ? 1 : 0,
+        visibility: isVisible ? 'visible' : 'hidden',
+      }}
     >
       <style>{`
-        @keyframes ecgFlow {
+        @keyframes ecgFlowTrans {
           0% { stroke-dashoffset: 320; }
           100% { stroke-dashoffset: 0; }
         }
-        @keyframes orbitSpinSlow {
-          to { transform: rotate(360deg); }
-        }
-        @keyframes pulseCoreGlow {
-          0%, 100% { transform: scale(0.95); opacity: 0.6; }
-          50% { transform: scale(1.1); opacity: 0.95; }
+        @keyframes spinSlowTrans {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
         }
       `}</style>
 
-      {/* Deep Obsidian / Navy Cosmic Background Backdrop with Soft Aurora Waves */}
-      <div className="absolute inset-0 bg-[#040209] transition-opacity duration-300" />
+      {/* Deep Obsidian / Cosmic Background Backdrop with Soft Aurora Waves */}
+      <div className="absolute inset-0 bg-[#04020a]" />
       <div className="absolute top-1/4 left-1/4 w-[600px] h-[400px] rounded-full bg-blue-600/10 blur-[130px] pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[400px] rounded-full bg-purple-600/10 blur-[130px] pointer-events-none" />
 
-      {/* High-Performance 60FPS Particles Canvas */}
+      {/* High-Performance 60FPS Particles Canvas - ALWAYS Mounted */}
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full block z-10 pointer-events-none"
@@ -390,17 +462,12 @@ export default function PageTransitionCurtain() {
 
       {/* Central Identity HUD (Appears in Phase 2 & 3, Disperses in Phase 4) */}
       <div
-        className={`absolute inset-0 flex flex-col items-center justify-center z-20 transition-all duration-300 ${
-          phase === 'forming' || phase === 'revealing'
-            ? 'opacity-100 scale-100'
-            : phase === 'reconstructing'
-            ? 'opacity-0 scale-110 pointer-events-none'
-            : 'opacity-0 scale-95 pointer-events-none'
-        }`}
+        ref={hudRef}
+        className="absolute inset-0 flex flex-col items-center justify-center z-20 pointer-events-none transition-all duration-300 opacity-0 scale-95"
       >
         <div className="relative flex flex-col items-center text-center px-6 py-4 max-w-lg mx-auto">
-          {/* Glowing R Monogram with Tilted Orbit Ring matching reference */}
-          <div className="relative w-28 h-24 flex items-center justify-center mb-3">
+          {/* Glowing R Monogram with Tilted Orbit Ring matching reference media_1795431437522_e79f733e.jpg */}
+          <div className="relative w-28 h-24 flex items-center justify-center mb-2.5">
             <svg
               viewBox="0 0 120 100"
               className="w-24 h-20 overflow-visible"
@@ -414,12 +481,12 @@ export default function PageTransitionCurtain() {
                   <stop offset="100%" stopColor="#E879F9" />
                 </linearGradient>
                 <linearGradient id="transOrbitGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#38BDF8" stopOpacity="0.8" />
-                  <stop offset="50%" stopColor="#A855F7" stopOpacity="0.4" />
+                  <stop offset="0%" stopColor="#38BDF8" stopOpacity="0.85" />
+                  <stop offset="50%" stopColor="#A855F7" stopOpacity="0.45" />
                   <stop offset="100%" stopColor="#38BDF8" stopOpacity="0.1" />
                 </linearGradient>
                 <filter id="starGlow" x="-50%" y="-50%" width="200%" height="200%">
-                  <feGaussianBlur stdDeviation="3" result="blur" />
+                  <feGaussianBlur stdDeviation="3.5" result="blur" />
                   <feMerge>
                     <feMergeNode in="blur" />
                     <feMergeNode in="SourceGraphic" />
@@ -438,7 +505,7 @@ export default function PageTransitionCurtain() {
                 strokeWidth="1.2"
                 fill="none"
                 strokeDasharray="4 3"
-                opacity="0.8"
+                opacity="0.85"
               />
 
               {/* Glowing orbital star point */}
@@ -451,7 +518,7 @@ export default function PageTransitionCurtain() {
               <path
                 d="M 40 30 L 72 30 C 82 30 88 35 88 42 C 88 48 83 53 74 54 L 88 72 L 76 72 L 64 55 L 52 55 L 52 72 L 40 72 Z M 52 39 L 52 47 L 70 47 C 74 47 77 45 77 43 C 77 40 74 39 70 39 Z"
                 fill="url(#transRGrad)"
-                filter="drop-shadow(0 0 14px rgba(56, 189, 248, 0.6))"
+                filter="drop-shadow(0 0 16px rgba(56, 189, 248, 0.65))"
               />
             </svg>
           </div>
@@ -496,7 +563,7 @@ export default function PageTransitionCurtain() {
                   stroke="url(#ecgGradTrans)"
                   strokeWidth="1.8"
                   strokeDasharray="160"
-                  className="animate-[ecgFlow_1.2s_linear_infinite]"
+                  className="animate-[ecgFlowTrans_1.2s_linear_infinite]"
                 />
               </svg>
             </div>

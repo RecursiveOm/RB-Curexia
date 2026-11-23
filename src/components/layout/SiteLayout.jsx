@@ -6,7 +6,6 @@ import GlobalFooter from './GlobalFooter.jsx';
 import ScrollToTop from './ScrollToTop.jsx';
 import FilmGrain from './FilmGrain.jsx';
 import ProductLightbox from './ProductLightbox.jsx';
-import PageTransitionCurtain from './PageTransitionCurtain.jsx';
 import { recordVisitorSession } from '../../firebase/services.js';
 
 export default function SiteLayout({ children }) {
@@ -31,7 +30,6 @@ export default function SiteLayout({ children }) {
   return (
     <div className="relative min-h-screen bg-[#040208] text-bone flex flex-col font-sans selection:bg-purple-600 selection:text-white">
       <ScrollToTop />
-      <PageTransitionCurtain />
       <FilmGrain />
 
       {/* Cosmic Twinkling Starfield Canvas (Global Background) */}

@@ -9,7 +9,7 @@ const ROOM_NODES = [
     accent: '#8b5cf6',
     route: '/panacea',
     logo: '/assets/brand-panacea.png',
-    liveUrl: null,
+    liveUrl: 'https://panaceadashboard.in/',
     equipment: [
       'Executive Physician Desk with Dual Curved Diagnostic Screens',
       'Natural Stylus Digital Pad for Handwriting OCR e-Rx',
@@ -44,7 +44,7 @@ const ROOM_NODES = [
     tag: 'CRITICAL CARE, WARD OS & ICU',
     accent: '#06b6d4',
     route: '/curenest',
-    logo: '/assets/rbcurexia-logo-4k.webp',
+    logo: '/assets/brand-curenest.png',
     liveUrl: null,
     equipment: [
       'Motorized High-Acuity ICU / Ward Bed with Safety Railings',
@@ -554,6 +554,37 @@ export default function ArchitectureRooms3D() {
                     <polygon points="0,15 30,0 45,6 15,21" fill="#0d3142" stroke="#67e8f9" strokeWidth="1.4" />
                     {/* Medication Cup */}
                     <ellipse cx="20" cy="10" rx="3" ry="1.5" fill="#ede8d0" />
+                  </g>
+
+                  {/* WALL FIXTURE: CureNEST Ward OS Telemetry Terminal & Brand Signage (Right Wall) */}
+                  <g id="curenest-wall-signage" transform="translate(340, 48)">
+                    {/* Isometric Display Panel mounted on Right Wall */}
+                    <polygon points="0,0 85,42 85,102 0,60" fill="#061824" stroke="#06b6d4" strokeWidth="1.6" filter="drop-shadow(0 0 10px rgba(6,182,212,0.3))" />
+                    <polygon points="4,5 81,43 81,97 4,59" fill="#030e16" stroke="#22d3ee" strokeWidth="1" />
+
+                    {/* Illuminated Top Accent Bar */}
+                    <polygon points="5,6 80,43 80,52 5,15" fill="rgba(6,182,212,0.25)" />
+                    <text x="12" y="24" fill="#22d3ee" fontSize="6.5" fontFamily="monospace" fontWeight="bold" letterSpacing="0.8" transform="skewY(26.5)">
+                      CURENEST · WARD OS
+                    </text>
+
+                    {/* Embedded Official CureNEST Brand Logo */}
+                    <g transform="translate(8, 24) skewY(26.5)">
+                      <image
+                        href="/assets/brand-curenest.png"
+                        x="0"
+                        y="0"
+                        width="68"
+                        height="38"
+                        preserveAspectRatio="xMidYMid meet"
+                      />
+                    </g>
+
+                    {/* Live Hospital Telemetry Status Indicator */}
+                    <circle cx="14" cy="85" r="2.5" fill="#34d399" filter="drop-shadow(0 0 5px #34d399)" />
+                    <text x="20" y="87" fill="#38bdf8" fontSize="5.5" fontFamily="monospace" fontWeight="bold" transform="skewY(26.5)">
+                      WARD 3B · BED 04 ONLINE
+                    </text>
                   </g>
                 </g>
               )}

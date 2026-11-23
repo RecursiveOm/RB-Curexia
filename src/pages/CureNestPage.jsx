@@ -97,7 +97,14 @@ export default function CureNestPage() {
 
           <div className="lg:col-span-6 p-8 rounded-3xl bg-[#0b051c] border border-white/10 space-y-6">
             <div className="flex items-center justify-between pb-4 border-b border-white/[0.08]">
-              <span className="text-xs font-mono text-cyan-400">WARD TELEMETRY METRICS</span>
+              <div className="flex items-center gap-3">
+                <img
+                  src="/assets/brand-curenest.png"
+                  alt="CureNEST"
+                  className="h-8 w-auto object-contain"
+                />
+                <span className="text-xs font-mono text-cyan-400">WARD TELEMETRY METRICS</span>
+              </div>
               <span className="text-xs font-mono text-emerald-400">ALL NODES ONLINE</span>
             </div>
             <div className="space-y-4 font-mono text-xs text-white/80">

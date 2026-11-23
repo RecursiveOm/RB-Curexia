@@ -78,7 +78,7 @@ export default function PanaceaPage() {
         title="Panacea Clinical"
         highlight="Operating System."
         description="The next-generation clinician cockpit: unifying longitudinal EHR dossiers, natural stylus digital pad handwriting, adverse drug interaction screening, and smart OPD queues into one fluid 3D workstation interface."
-        primaryCtaText="Launch Panacea Live"
+        primaryCtaText="Launch Panacea Live (panaceadashboard.in)"
         primaryCtaLink="https://panaceadashboard.in/"
         secondaryCtaText="Inspect Architecture"
         secondaryCtaLink="/architecture"
@@ -99,7 +99,7 @@ export default function PanaceaPage() {
               <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-500/20 via-pink-500/10 to-cyan-500/20 rounded-[26px] blur-sm pointer-events-none -z-10" />
 
               {/* Top Monitor Bezel */}
-              <div className="flex items-center justify-between px-4 py-3 bg-[#080412]/90 rounded-2xl border border-white/10 mb-3 backdrop-blur-md">
+              <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-3 bg-[#080412]/90 rounded-2xl border border-white/10 mb-3 backdrop-blur-md">
                 <div className="flex items-center gap-2.5">
                   <span className="w-3 h-3 rounded-full bg-rose-500/80 border border-rose-400/50 inline-block" />
                   <span className="w-3 h-3 rounded-full bg-amber-500/80 border border-amber-400/50 inline-block" />
@@ -110,34 +110,68 @@ export default function PanaceaPage() {
                   </span>
                 </div>
 
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-3">
                   <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-400/30 text-[10px] font-mono text-emerald-300">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                     99.99% UPTIME · ENCRYPTED
                   </div>
+                  <a
+                    href="https://panaceadashboard.in/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-3.5 py-1 rounded-full bg-champagne text-obsidian text-[10px] font-mono font-semibold tracking-wider uppercase hover:bg-white transition-all shadow-md flex items-center gap-1.5 hover:scale-105"
+                  >
+                    <span>Launch Panacea Live</span>
+                    <span>↗</span>
+                  </a>
                 </div>
               </div>
 
               {/* Main Product UI Image */}
-              <div className="relative rounded-xl overflow-hidden bg-white shadow-inner">
-                <img
-                  src="/assets/embedded-23185802ea52.webp"
-                  alt="Panacea Dashboard Interface Preview"
-                  className="w-full h-auto block"
-                  loading="lazy"
-                />
+              <div className="relative rounded-xl overflow-hidden bg-white shadow-inner group">
+                <a
+                  href="https://panaceadashboard.in/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block relative cursor-pointer"
+                  title="Open live Panacea Dashboard at https://panaceadashboard.in/"
+                >
+                  <img
+                    src="/assets/embedded-23185802ea52.webp"
+                    alt="Panacea Dashboard Interface Preview"
+                    className="w-full h-auto block transition-transform duration-500 group-hover:scale-[1.01]"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-purple-950/0 group-hover:bg-purple-950/25 transition-colors flex items-center justify-center pointer-events-none">
+                    <span className="opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 px-5 py-2.5 rounded-full bg-[#080412]/95 border border-champagne text-champagne text-xs font-mono font-semibold tracking-wider uppercase shadow-2xl flex items-center gap-2">
+                      <span>Visit Live System · https://panaceadashboard.in/</span>
+                      <span>↗</span>
+                    </span>
+                  </div>
+                </a>
               </div>
 
               {/* HUD Telemetry Bar */}
-              <div className="mt-4 pt-4 border-t border-white/[0.08] grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="mt-4 pt-4 border-t border-white/[0.08] flex flex-wrap items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
                   <span className="w-2.5 h-2.5 rounded-full bg-cyan-400" />
                   <span className="text-xs font-mono text-white/80">
                     LATENCY: &lt; 14MS (ZERO-LATENCY LOCAL DEXIE CACHE)
                   </span>
                 </div>
-                <div className="flex items-center justify-start md:justify-end gap-3 text-xs font-mono text-purple-300">
-                  <span>AES-256 ENCRYPTED · DIGITAL PAD SYNCED</span>
+                <div className="flex items-center gap-4 text-xs font-mono">
+                  <span className="text-purple-300">
+                    AES-256 ENCRYPTED · DIGITAL PAD SYNCED
+                  </span>
+                  <a
+                    href="https://panaceadashboard.in/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-champagne hover:text-white flex items-center gap-1 transition-colors underline underline-offset-4"
+                  >
+                    <span>https://panaceadashboard.in/</span>
+                    <span>↗</span>
+                  </a>
                 </div>
               </div>
             </div>
@@ -283,6 +317,35 @@ export default function PanaceaPage() {
               </p>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* 4.5 Dedicated Live Cloud Deployment Banner */}
+      <section className="relative z-10 w-full py-16 px-6 sm:px-12 lg:px-16 border-t border-white/[0.08] bg-gradient-to-r from-purple-950/40 via-[#0a0518] to-cyan-950/40">
+        <div className="w-full max-w-[1520px] mx-auto flex flex-col md:flex-row items-center justify-between gap-8 p-8 sm:p-10 rounded-3xl bg-white/[0.03] border border-purple-500/30 shadow-2xl backdrop-blur-xl">
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+              <span className="text-[10px] font-mono tracking-widest uppercase text-champagne font-semibold">
+                LIVE PRODUCTION CLOUD DEPLOYMENT
+              </span>
+            </div>
+            <h3 className="text-2xl sm:text-3xl font-light text-white satin-headline">
+              Ready to explore <span className="satin-champagne font-normal">Panacea Clinical OS?</span>
+            </h3>
+            <p className="text-sm text-stonewarm/90 max-w-xl leading-relaxed">
+              Launch the live clinician cockpit directly at <a href="https://panaceadashboard.in/" target="_blank" rel="noopener noreferrer" className="text-champagne font-mono underline underline-offset-4 hover:text-white">https://panaceadashboard.in/</a> to experience zero-latency longitudinal EHR dossiers, stylus OCR, and smart OPD queues.
+            </p>
+          </div>
+          <a
+            href="https://panaceadashboard.in/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-8 py-4 rounded-full bg-champagne text-obsidian font-display font-semibold text-xs tracking-wider uppercase hover:bg-white transition-all shadow-xl shadow-champagne/15 flex items-center gap-2.5 shrink-0 hover:scale-105"
+          >
+            <span>Launch panaceadashboard.in</span>
+            <span className="text-base leading-none">↗</span>
+          </a>
         </div>
       </section>
 

@@ -79,6 +79,7 @@ export const SPECIALIZED_PRODUCTS = [
     tagline: 'Chairside Consultation Cockpit & Real-Time EHR',
     badge: 'OUTPATIENT & CLINICS',
     path: '/panacea',
+    liveUrl: 'https://panaceadashboard.in/',
     accent: '#8b5cf6',
     icon: 'steth',
     description: 'Unified electronic health record workstation featuring natural stylus digital pad handwriting recognition, adverse drug interaction screening, and WhatsApp QR queue check-ins.'

@@ -14,6 +14,8 @@ export default function PulsePortPage() {
         primaryCtaLink="https://pulseport.in"
         secondaryCtaText="Inspect Architecture"
         secondaryCtaLink="/architecture"
+        liveUrl="https://pulseport.in"
+        liveUrlLabel="Visit PulsePort Telemetry · pulseport.in"
         pageId="pulseport"
       />
 

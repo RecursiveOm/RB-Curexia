@@ -14,6 +14,8 @@ export default function LabonixPage() {
         primaryCtaLink="https://labonix.in"
         secondaryCtaText="Inspect Architecture"
         secondaryCtaLink="/architecture"
+        liveUrl="https://labonix.in"
+        liveUrlLabel="Visit Labonix Gateway · labonix.in"
         pageId="labonix"
       />
 

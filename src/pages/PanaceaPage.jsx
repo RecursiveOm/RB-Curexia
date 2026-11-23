@@ -78,10 +78,12 @@ export default function PanaceaPage() {
         title="Panacea Clinical"
         highlight="Operating System."
         description="The next-generation clinician cockpit: unifying longitudinal EHR dossiers, natural stylus digital pad handwriting, adverse drug interaction screening, and smart OPD queues into one fluid 3D workstation interface."
-        primaryCtaText="Explore System Architecture"
-        primaryCtaLink="/architecture"
-        secondaryCtaText="Book a Hospital Demo"
-        secondaryCtaLink="/concierge"
+        primaryCtaText="Launch Panacea Live"
+        primaryCtaLink="https://panaceadashboard.in/"
+        secondaryCtaText="Inspect Architecture"
+        secondaryCtaLink="/architecture"
+        liveUrl="https://panaceadashboard.in/"
+        liveUrlLabel="Visit Panacea · https://panaceadashboard.in/"
         pageId="panacea"
       />
 

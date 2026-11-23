@@ -127,24 +127,6 @@ export default function GlobalFooter() {
     e.currentTarget.style.setProperty('--card-y', `${e.clientY - rect.top}px`);
   };
 
-  // Monumental Wordmark cursor spotlight (Purple & Champagne, strictly NO blue)
-  const handleWordmarkMouseMove = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const xPct = ((e.clientX - rect.left) / Math.max(1, rect.width)) * 100;
-    const yPct = ((e.clientY - rect.top) / Math.max(1, rect.height)) * 100;
-    if (footerRef.current) {
-      footerRef.current.style.setProperty('--wm-x', `${xPct}%`);
-      footerRef.current.style.setProperty('--wm-y', `${yPct}%`);
-      footerRef.current.style.setProperty('--wm-opacity', '1');
-    }
-  };
-
-  const handleWordmarkMouseLeave = () => {
-    if (footerRef.current) {
-      footerRef.current.style.setProperty('--wm-opacity', '0');
-    }
-  };
-
   // Magnetic button animation
   const handleMagneticMove = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -269,12 +251,6 @@ export default function GlobalFooter() {
     }
   };
 
-  // Back to top click handler
-  const handleBackToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    showToast('Returned to top of RBCurexia.');
-  };
-
   const currentTheme = activePlatform ? PLATFORM_THEMES[activePlatform] : null;
   const auroraPrimary = currentTheme ? currentTheme.rgbA : '168, 85, 247';
   const auroraSecondary = currentTheme ? currentTheme.rgbB : '56, 189, 248';
@@ -289,9 +265,6 @@ export default function GlobalFooter() {
       style={{
         '--aurora-primary': auroraPrimary,
         '--aurora-secondary': auroraSecondary,
-        '--wm-x': '50%',
-        '--wm-y': '50%',
-        '--wm-opacity': '0',
       }}
     >
       <style>{`
@@ -466,132 +439,6 @@ export default function GlobalFooter() {
 
         .pin-ring {
           animation: pinRipple 2.2s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
-        }
-
-        /* =================================================================== */
-        /* MONUMENTAL WORDMARK: ULTRA-PREMIUM DARK SAPPHIRE BLUE FLASH         */
-        /* (STRICTLY NO BOX, NO CHEAP PINK, DARK BLUE, REFINED & NOT BRIGHT)   */
-        /* =================================================================== */
-        .monumental-wrap {
-          position: relative;
-          user-select: none;
-          background: transparent;
-        }
-
-        /* Architectural Hairline Outline */
-        .wordmark-outline {
-          font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
-          font-weight: 700;
-          letter-spacing: 0.14em;
-          color: transparent;
-          -webkit-text-stroke: 1px rgba(255, 255, 255, 0.08);
-          line-height: 0.88;
-        }
-
-        /* Subtle Dark Sapphire Ambient Base (Frameless, strictly text-clipped) */
-        .wordmark-dark-blue-base {
-          font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
-          font-weight: 700;
-          letter-spacing: 0.14em;
-          line-height: 0.88;
-          background: linear-gradient(
-            180deg,
-            rgba(56, 189, 248, 0.08) 0%,
-            rgba(29, 78, 216, 0.15) 50%,
-            rgba(15, 23, 42, 0.3) 100%
-          );
-          -webkit-background-clip: text;
-          background-clip: text;
-          color: transparent;
-          -webkit-text-stroke: 1px rgba(56, 189, 248, 0.12);
-          pointer-events: none;
-        }
-
-        /* Premium Dark Blue Metallic Flash Sweeping Right to Left */
-        @keyframes darkBlueFlashRTL {
-          0% {
-            background-position: 220% 50%;
-            opacity: 0;
-          }
-          12% {
-            opacity: 0.85;
-          }
-          50% {
-            opacity: 0.95;
-          }
-          85% {
-            background-position: -120% 50%;
-            opacity: 0.85;
-          }
-          96%, 100% {
-            background-position: -120% 50%;
-            opacity: 0;
-          }
-        }
-
-        .wordmark-dark-blue-flash {
-          font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
-          font-weight: 700;
-          letter-spacing: 0.14em;
-          line-height: 0.88;
-          background: linear-gradient(
-            270deg,
-            transparent 0%,
-            rgba(15, 23, 42, 0) 25%,
-            rgba(30, 58, 138, 0.4) 40%,
-            rgba(29, 78, 216, 0.75) 47%,
-            rgba(147, 197, 253, 0.9) 50%,
-            rgba(37, 99, 235, 0.75) 53%,
-            rgba(30, 58, 138, 0.4) 60%,
-            rgba(15, 23, 42, 0) 75%,
-            transparent 100%
-          );
-          background-size: 260% 100%;
-          -webkit-background-clip: text;
-          background-clip: text;
-          color: transparent;
-          -webkit-text-stroke: 1px rgba(96, 165, 250, 0.25);
-          animation: darkBlueFlashRTL 6s cubic-bezier(0.25, 1, 0.35, 1) infinite;
-          filter: drop-shadow(0 0 18px rgba(29, 78, 216, 0.4));
-          pointer-events: none;
-        }
-
-        /* Cursor-following dark sapphire spotlight glow (not bright, strictly text-clipped) */
-        .wordmark-glow {
-          font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
-          font-weight: 700;
-          letter-spacing: 0.14em;
-          line-height: 0.88;
-          background: linear-gradient(270deg, #1E3A8A 0%, #1D4ED8 35%, #2563EB 55%, #38BDF8 80%, #1E3A8A 100%);
-          -webkit-background-clip: text;
-          background-clip: text;
-          color: transparent;
-          -webkit-text-stroke: 1px rgba(56, 189, 248, 0.35);
-          -webkit-mask-image: radial-gradient(
-            260px circle at var(--wm-x, 50%) var(--wm-y, 50%),
-            rgba(0, 0, 0, 0.85) 0%,
-            rgba(0, 0, 0, 0.4) 45%,
-            rgba(0, 0, 0, 0) 75%
-          );
-          mask-image: radial-gradient(
-            260px circle at var(--wm-x, 50%) var(--wm-y, 50%),
-            rgba(0, 0, 0, 0.85) 0%,
-            rgba(0, 0, 0, 0.4) 45%,
-            rgba(0, 0, 0, 0) 75%
-          );
-          opacity: var(--wm-opacity, 0);
-          transition: opacity 0.35s ease;
-          filter: drop-shadow(0 0 20px rgba(29, 78, 216, 0.35));
-          pointer-events: none;
-        }
-
-        /* Orbital Back-to-Top Ring */
-        @keyframes spinOrbit {
-          to { transform: rotate(360deg); }
-        }
-
-        .orbit-ring-spin {
-          animation: spinOrbit 11s linear infinite;
         }
 
         /* Compliance Popover entrance */
@@ -909,8 +756,10 @@ export default function GlobalFooter() {
 
             <div className="space-y-2">
               {/* 1. Panacea Clinical OS */}
-              <Link
-                to="/panacea"
+              <a
+                href="https://panaceadashboard.in/"
+                target="_blank"
+                rel="noopener noreferrer"
                 data-platform="panacea"
                 onMouseEnter={() => setActivePlatform('panacea')}
                 onMouseLeave={() => setActivePlatform(null)}
@@ -922,7 +771,7 @@ export default function GlobalFooter() {
                   activePlatform === 'panacea'
                     ? 'is-spotlight border-purple-400/50 bg-purple-500/[0.08]'
                     : 'border-transparent hover:border-purple-400/40 hover:bg-purple-500/[0.06]'
-                } cursor-pointer transition-all`}
+                } transition-all`}
               >
                 <div>
                   <div className="flex items-center gap-2">
@@ -931,8 +780,11 @@ export default function GlobalFooter() {
                   </div>
                   <p className="font-mono text-[9.5px] tracking-[0.12em] uppercase text-[#78748F] pl-3.5 mt-0.5">OUTPATIENT &amp; CLINICS</p>
                 </div>
-                <span className="font-mono text-[9px] uppercase tracking-wider text-purple-300/60 group-hover:text-purple-200 transition-colors">OS</span>
-              </Link>
+                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-[#131020] group-hover:bg-purple-500/20 border border-purple-400/30 group-hover:border-purple-400/60 font-mono text-[10px] text-[#C4B5FD] group-hover:text-purple-200 transition-all shrink-0">
+                  <span>panaceadashboard.in</span>
+                  <span className="text-[9px] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">&#8599;</span>
+                </span>
+              </a>
 
               {/* 2. CureNEST Ward OS */}
               <Link
@@ -1320,87 +1172,6 @@ export default function GlobalFooter() {
               </button>
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* ======================================================================= */}
-      {/* SIGNATURE ELEMENT 3: MONUMENTAL DARK SAPPHIRE WORDMARK + BACK-TO-TOP    */}
-      {/* ======================================================================= */}
-      <div
-        id="monumentalZone"
-        onMouseMove={handleWordmarkMouseMove}
-        onMouseLeave={handleWordmarkMouseLeave}
-        className="relative w-full pt-4 pb-8 px-4"
-      >
-        <div className="max-w-7xl mx-auto relative flex items-end justify-center">
-          <div className="monumental-wrap w-full text-center relative">
-            {/* 1. Base Wireframe Outline Layer */}
-            <div
-              aria-hidden="true"
-              className="wordmark-outline text-[13vw] sm:text-[11.5vw] lg:text-[138px] whitespace-nowrap"
-            >
-              RBCUREXIA
-            </div>
-
-            {/* 2. Subtle Dark Sapphire Ambient Base (Frameless, strictly text-clipped) */}
-            <div
-              aria-hidden="true"
-              className="wordmark-dark-blue-base absolute inset-0 text-[13vw] sm:text-[11.5vw] lg:text-[138px] whitespace-nowrap pointer-events-none"
-            >
-              RBCUREXIA
-            </div>
-
-            {/* 3. Premium Dark Blue Metallic Flash Sweeping Right-to-Left (Frameless, Strictly Text-Clipped) */}
-            <div
-              aria-hidden="true"
-              className="wordmark-dark-blue-flash absolute inset-0 text-[13vw] sm:text-[11.5vw] lg:text-[138px] whitespace-nowrap pointer-events-none"
-            >
-              RBCUREXIA
-            </div>
-
-            {/* 4. Cursor-Illuminated Dark Sapphire Spotlight (Not Bright, ZERO Box) */}
-            <div
-              aria-hidden="true"
-              className="wordmark-glow absolute inset-0 text-[13vw] sm:text-[11.5vw] lg:text-[138px] whitespace-nowrap pointer-events-none"
-            >
-              RBCUREXIA
-            </div>
-          </div>
-
-          {/* Magnetic Circular Orbital "Back to Top ↑" Button */}
-          <button
-            type="button"
-            onClick={handleBackToTop}
-            onMouseMove={handleMagneticMove}
-            onMouseLeave={handleMagneticLeave}
-            title="Back to Top"
-            aria-label="Back to Top"
-            className="magnetic-el group absolute right-2 sm:right-6 bottom-2 sm:bottom-5 z-30 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#0E0C18]/90 backdrop-blur-md border border-white/15 hover:border-[#EAE1C8]/65 flex items-center justify-center shadow-[0_8px_30px_rgba(0,0,0,0.65)] cursor-pointer transition-colors"
-          >
-            {/* Spinning Orbital SVG Ring (Dark Sapphire & Champagne) */}
-            <svg className="orbit-ring-spin absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 60 60">
-              <circle
-                cx="30"
-                cy="30"
-                r="26"
-                fill="none"
-                stroke="url(#topBtnOrbit)"
-                strokeWidth="1.2"
-                strokeDasharray="10 8"
-                opacity="0.7"
-              />
-              <defs>
-                <linearGradient id="topBtnOrbit" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#EAE1C8" />
-                  <stop offset="50%" stopColor="#1D4ED8" />
-                  <stop offset="100%" stopColor="#38BDF8" />
-                </linearGradient>
-              </defs>
-            </svg>
-            <span className="font-mono text-base text-[#EAE1C8] group-hover:-translate-y-0.5 transition-transform duration-200">
-              &uarr;
-            </span>
-          </button>
         </div>
       </div>
 

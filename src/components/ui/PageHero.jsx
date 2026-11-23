@@ -12,6 +12,8 @@ export default function PageHero({
   secondaryCtaText = 'Book a Demo',
   secondaryCtaLink = '/concierge',
   pageId = '',
+  liveUrl = '',
+  liveUrlLabel = '',
   children
 }) {
   return (
@@ -24,6 +26,29 @@ export default function PageHero({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
           {/* Left Column (7 cols): Eyebrow, Headline, Description & Action Buttons */}
           <div className="lg:col-span-7 space-y-6">
+            {/* Live External Application Launch Beacon */}
+            {liveUrl && (
+              <div className="pb-1">
+                <a
+                  href={liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-gradient-to-r from-purple-500/15 via-cyan-500/15 to-purple-500/15 border border-purple-400/40 hover:border-cyan-300 shadow-[0_0_24px_rgba(168,85,247,0.2)] hover:shadow-[0_0_32px_rgba(56,189,248,0.4)] transition-all duration-300"
+                >
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400 shadow-[0_0_8px_#10B981]" />
+                  </span>
+                  <span className="font-mono text-[11px] font-semibold tracking-wider text-[#EAE1C8] group-hover:text-white uppercase">
+                    {liveUrlLabel || `Visit Live Application · ${liveUrl.replace('https://', '').replace(/\/$/, '')}`}
+                  </span>
+                  <span className="text-cyan-300 font-mono text-xs group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">
+                    ↗
+                  </span>
+                </a>
+              </div>
+            )}
+
             {/* Eyebrow */}
             <div className="flex items-center gap-3">
               <span className="font-display text-xs font-semibold tracking-[0.28em] uppercase text-purple-400">

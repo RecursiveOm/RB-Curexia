@@ -16,6 +16,8 @@ export default function NetworkPage() {
         primaryCtaLink="https://plugins.social/"
         secondaryCtaText="Inspect Network Radar"
         secondaryCtaLink="#network-topology"
+        liveUrl="https://plugins.social/"
+        liveUrlLabel="Visit Plugins Social · plugins.social"
         pageId="network"
       />
 

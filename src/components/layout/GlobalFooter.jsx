@@ -593,7 +593,7 @@ export default function GlobalFooter() {
                     <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400 shadow-[0_0_10px_#10B981]" />
                   </span>
                   <span className="font-mono text-[10.5px] font-semibold tracking-[0.15em] uppercase text-[#C4B5FD]">
-                    MUMBAI REGISTERED OFFICE &amp; HQ
+                    MUMBAI HQ &amp; PUNE OFFICES
                   </span>
                 </div>
 
@@ -627,7 +627,7 @@ export default function GlobalFooter() {
               >
                 <div className="flex items-start justify-between gap-2.5">
                   <p className="text-[12px] leading-[1.6] text-[#A29EB6] group-hover:text-slate-100 transition-colors">
-                    <span className="font-semibold text-[#EAE1C8]">Campus I:</span> Unit No. 5, Sarita Apt, Rustomjee Irani Marg, Jaywant Sawant Marg, Dahisar West, Mumbai, Maharashtra 400068, India
+                    <span className="font-semibold text-[#EAE1C8]">Campus I (Mumbai):</span> Unit No. 5, Sarita Apt, Rustomjee Irani Marg, Jaywant Sawant Marg, Dahisar West, Mumbai, Maharashtra 400068, India
                   </p>
                   <div className="shrink-0 flex flex-col items-center gap-1.5 pt-0.5">
                     <span className="relative flex h-2 w-2" title="Dahisar West Pin">
@@ -666,7 +666,7 @@ export default function GlobalFooter() {
               >
                 <div className="flex items-start justify-between gap-2.5">
                   <p className="text-[12px] leading-[1.6] text-[#A29EB6] group-hover:text-slate-100 transition-colors">
-                    <span className="font-semibold text-[#EAE1C8]">Campus II:</span> 803/A Wing, Jayram Heights, New Link Road, Dahisar West, Mumbai, Maharashtra 400068, India
+                    <span className="font-semibold text-[#EAE1C8]">Campus II (Mumbai):</span> 803/A Wing, Jayram Heights, New Link Road, Dahisar West, Mumbai, Maharashtra 400068, India
                   </p>
                   <div className="shrink-0 flex flex-col items-center gap-1.5 pt-0.5">
                     <span className="relative flex h-2 w-2" title="New Link Road Pin">
@@ -681,10 +681,49 @@ export default function GlobalFooter() {
                 </div>
               </div>
 
-              {/* Sub-tag + Dahisar Coordinates */}
+              {/* Tactile Glass Card: Pune Office */}
+              <div
+                role="button"
+                tabIndex={0}
+                onMouseMove={handleCardMouseMove}
+                onClick={() =>
+                  handleCopyText(
+                    'Pune Office: Office no 215, 2nd floor, Onyx Bizmark 52, Tilekar Nagar, Kondhwa Budruk, Pune, Maharashtra 411048, India',
+                    'Pune Office Address'
+                  )
+                }
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleCopyText(
+                      'Pune Office: Office no 215, 2nd floor, Onyx Bizmark 52, Tilekar Nagar, Kondhwa Budruk, Pune, Maharashtra 411048, India',
+                      'Pune Office Address'
+                    );
+                  }
+                }}
+                className="reactive-card group rounded-xl p-3.5 cursor-pointer"
+              >
+                <div className="flex items-start justify-between gap-2.5">
+                  <p className="text-[12px] leading-[1.6] text-[#A29EB6] group-hover:text-slate-100 transition-colors">
+                    <span className="font-semibold text-[#EAE1C8]">Pune Office:</span> Office no 215, 2nd floor, Onyx Bizmark 52, Tilekar Nagar, Kondhwa Budruk, Pune, Maharashtra 411048
+                  </p>
+                  <div className="shrink-0 flex flex-col items-center gap-1.5 pt-0.5">
+                    <span className="relative flex h-2 w-2" title="Pune Kondhwa Pin">
+                      <span className="pin-ring absolute inline-flex h-full w-full rounded-full bg-emerald-400" />
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+                    </span>
+                    <svg className="w-3.5 h-3.5 text-slate-500 group-hover:text-[#EAE1C8] transition-colors" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <rect x="9" y="9" width="13" height="13" rx="2" />
+                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              {/* Sub-tag + Maharashtra Coordinates */}
               <div className="pt-1 flex items-center justify-between font-mono text-[10px] tracking-[0.18em] uppercase text-[#827C9A]">
-                <span>MUMBAI &middot; MAHARASHTRA &middot; INDIA</span>
-                <span className="text-purple-400/75 hidden sm:inline">19.2502° N · 72.8591° E</span>
+                <span>MUMBAI &middot; PUNE &middot; MAHARASHTRA &middot; INDIA</span>
+                <span className="text-purple-400/75 hidden sm:inline">19.25°N, 72.86°E · 18.47°N, 73.89°E</span>
               </div>
             </div>
           </div>

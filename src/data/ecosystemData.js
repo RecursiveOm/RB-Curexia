@@ -285,6 +285,7 @@ export const MUMBAI_HQ_INFO = {
   name: 'RBCUREXIA HEALTHCARE TECHNOLOGIES',
   campus1: 'Unit No. 5, Sarita Apt, Rustomjee Irani Marg, Jaywant Sawant Marg, Dahisar West, Mumbai, Maharashtra 400068',
   campus2: '803/A Wing, Jayram Heights, New Link Road, Dahisar West, Mumbai, Maharashtra 400068',
+  puneOffice: 'Office no 215, 2nd floor, Onyx Bizmark 52, Tilekar Nagar, Kondhwa Budruk, Pune, Maharashtra 411048',
   phone: '+91 9987976863',
   email: 'support@rbcurexia.com',
   workingHours: 'Monday – Saturday: 08:00 – 20:00 IST · Emergency Desk 24/7'

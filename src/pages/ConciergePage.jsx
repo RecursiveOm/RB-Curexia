@@ -208,17 +208,20 @@ export default function ConciergePage() {
               </div>
             </div>
 
-            {/* Mumbai HQ Addresses */}
+            {/* Corporate Offices */}
             <div className="p-7 rounded-3xl bg-[#090416] border border-white/10 space-y-4">
               <span className="text-[10px] font-mono tracking-widest uppercase text-stonewarm block font-semibold">
-                MUMBAI HEADQUARTERS (DAHISAR WEST 400068)
+                CORPORATE HEADQUARTERS &amp; REGIONAL CENTERS
               </span>
               <div className="space-y-3 text-xs text-bone/85 leading-relaxed font-light">
                 <p>
-                  <strong className="text-champagne font-medium">Campus I:</strong> {MUMBAI_HQ_INFO.campus1}
+                  <strong className="text-champagne font-medium">Campus I (Mumbai):</strong> {MUMBAI_HQ_INFO.campus1}
                 </p>
                 <p>
-                  <strong className="text-champagne font-medium">Campus II:</strong> {MUMBAI_HQ_INFO.campus2}
+                  <strong className="text-champagne font-medium">Campus II (Mumbai):</strong> {MUMBAI_HQ_INFO.campus2}
+                </p>
+                <p>
+                  <strong className="text-champagne font-medium">Pune Office:</strong> {MUMBAI_HQ_INFO.puneOffice}
                 </p>
                 <p className="text-[11px] text-purple-300 font-mono pt-1">
                   {MUMBAI_HQ_INFO.workingHours}

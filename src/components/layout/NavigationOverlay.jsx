@@ -138,14 +138,15 @@ export default function NavigationOverlay({ isOpen, onClose }) {
             </div>
           </div>
 
-          {/* Mumbai HQ */}
+          {/* Corporate Offices */}
           <div className="space-y-2">
             <span className="text-[10px] font-semibold tracking-[0.24em] uppercase text-stonewarm block">
-              MUMBAI HEADQUARTERS
+              MAHARASHTRA HEADQUARTERS &amp; OFFICES
             </span>
             <p className="text-xs text-bone/80 leading-relaxed font-light">
-              <strong className="text-champagne">Campus I:</strong> {MUMBAI_HQ_INFO.campus1}<br />
-              <strong className="text-champagne">Campus II:</strong> {MUMBAI_HQ_INFO.campus2}
+              <strong className="text-champagne">Campus I (Mumbai):</strong> {MUMBAI_HQ_INFO.campus1}<br />
+              <strong className="text-champagne">Campus II (Mumbai):</strong> {MUMBAI_HQ_INFO.campus2}<br />
+              <strong className="text-champagne">Pune Office:</strong> {MUMBAI_HQ_INFO.puneOffice}
             </p>
           </div>
 

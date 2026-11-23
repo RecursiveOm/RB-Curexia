@@ -44,7 +44,7 @@ const ROOM_NODES = [
     tag: 'CRITICAL CARE, WARD OS & ICU',
     accent: '#06b6d4',
     route: '/curenest',
-    logo: '/assets/brand-curenest.png',
+    logo: '/assets/brand-curenest-symbol.png',
     liveUrl: null,
     equipment: [
       'Motorized High-Acuity ICU / Ward Bed with Safety Railings',

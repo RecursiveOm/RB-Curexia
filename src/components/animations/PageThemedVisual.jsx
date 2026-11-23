@@ -627,12 +627,12 @@ export default function PageThemedVisual({ pageId = 'pulseport' }) {
               <image href="/assets/rbcurexia-logo-4k.webp" x="-26" y="-22" width="52" height="44" preserveAspectRatio="xMidYMid meet" />
             </g>
 
-            {/* NODE 1: TOP - CURENEST (IPD) */}
+            {/* NODE 1: TOP - CURENEST (IPD) - Official Brand Logo from User */}
             <g transform="translate(215, 35)" className="cursor-pointer">
               <g>
                 <animateTransform attributeName="transform" type="translate" values="0 0; 0 -6; 0 0" dur="6s" repeatCount="indefinite" />
                 <rect x="0" y="0" width="110" height="88" rx="14" fill="#0c051e" stroke="#8b5cf6" strokeWidth="2" filter="url(#hub-glow)" />
-                <image href="/assets/rbcurexia-logo-4k.webp" x="25" y="10" width="60" height="48" preserveAspectRatio="xMidYMid meet" />
+                <image href="/assets/brand-curenest-symbol.png" x="25" y="8" width="60" height="50" preserveAspectRatio="xMidYMid meet" />
                 <text x="55" y="66" fill="#ffffff" fontSize="10" fontWeight="bold" textAnchor="middle">CureNEST</text>
                 <text x="55" y="78" fill="#818cf8" fontSize="8" textAnchor="middle">for hospitals</text>
               </g>

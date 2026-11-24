@@ -4,17 +4,20 @@ import { join } from 'node:path';
 
 function loadEnvConfig() {
   const envPath = join(process.cwd(), 'functions', '.env');
+  const rootEnvPath = join(process.cwd(), '.env');
   let apiKey = process.env.RESEND_API_KEY || '';
   let recipient = process.env.CONTACT_NOTIFICATION_TO || 'omkar.zunje123@gmail.com';
   let sender = process.env.CONTACT_FROM_EMAIL || 'RBCurexia Alerts <onboarding@resend.dev>';
 
-  if (existsSync(envPath)) {
-    const lines = readFileSync(envPath, 'utf8').split('\n');
-    for (const line of lines) {
-      const trimmed = line.trim();
-      if (trimmed.startsWith('RESEND_API_KEY=')) apiKey = trimmed.split('=')[1].trim();
-      if (trimmed.startsWith('CONTACT_NOTIFICATION_TO=')) recipient = trimmed.split('=')[1].trim();
-      if (trimmed.startsWith('CONTACT_FROM_EMAIL=')) sender = trimmed.split('=')[1].trim();
+  for (const p of [rootEnvPath, envPath]) {
+    if (existsSync(p)) {
+      const lines = readFileSync(p, 'utf8').split('\n');
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (trimmed.startsWith('RESEND_API_KEY=')) apiKey = trimmed.split('=')[1].trim();
+        if (trimmed.startsWith('CONTACT_NOTIFICATION_TO=')) recipient = trimmed.split('=')[1].trim();
+        if (trimmed.startsWith('CONTACT_FROM_EMAIL=')) sender = trimmed.split('=')[1].trim();
+      }
     }
   }
 
